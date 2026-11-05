@@ -1,0 +1,212 @@
+[A1] J099 -> AGV-01  F=214.8  ct=212.0  et=0.0  dt=2.8  runner_up=AGV-02:214.8
+[A1] J098 -> AGV-02  F=367.6  ct=317.9  et=0.0  dt=49.7  runner_up=AGV-03:367.6
+[A1] J069 -> AGV-03  F=307.6  ct=307.6  et=0.0  dt=0.0  runner_up=AGV-04:307.6
+[A1] J025 -> AGV-04  F=426.5  ct=347.9  et=0.0  dt=78.6  runner_up=AGV-05:426.5
+[A1] J003 -> AGV-05  F=197.0  ct=197.0  et=0.0  dt=0.0  runner_up=AGV-06:197.0
+[A1] J018 -> AGV-06  F=177.9  ct=177.9  et=0.0  dt=0.0  runner_up=AGV-07:177.9
+[A1] J011 -> AGV-07  F=222.4  ct=217.6  et=4.8  dt=0.0  runner_up=AGV-08:222.4
+[A1] J074 -> AGV-08  F=187.6  ct=187.6  et=0.0  dt=0.0  runner_up=AGV-09:187.6
+[A1] J021 -> AGV-09  F=521.7  ct=393.2  et=0.0  dt=128.4  runner_up=AGV-10:521.7
+[A1] J042 -> AGV-10  F=421.3  ct=358.2  et=0.0  dt=63.0  runner_up=AGV-11:421.3
+[A1] J028 -> AGV-11  F=147.9  ct=147.9  et=0.0  dt=0.0  runner_up=AGV-12:147.9
+[A1] J061 -> AGV-12  F=300.0  ct=277.6  et=0.0  dt=22.4  runner_up=AGV-13:300.0
+[A1] J004 -> AGV-13  F=115.4  ct=92.0  et=23.4  dt=0.0  runner_up=AGV-14:115.4
+[A1] J070 -> AGV-14  F=247.6  ct=247.6  et=0.0  dt=0.0  runner_up=AGV-15:247.6
+[A1] J026 -> AGV-15  F=256.9  ct=232.6  et=24.3  dt=0.0  runner_up=AGV-16:256.9
+[A1] J027 -> AGV-16  F=308.8  ct=287.9  et=0.0  dt=20.9  runner_up=AGV-17:308.8
+[A1] J076 -> AGV-17  F=152.6  ct=152.6  et=0.0  dt=0.0  runner_up=AGV-18:152.6
+[A1] J048 -> AGV-18  F=157.3  ct=157.3  et=0.0  dt=0.0  runner_up=AGV-19:157.3
+[A1] J065 -> AGV-19  F=311.9  ct=247.6  et=64.3  dt=0.0  runner_up=AGV-20:311.9
+[A1] J047 -> AGV-20  F=232.6  ct=232.6  et=0.0  dt=0.0  runner_up=AGV-13:281.1
+[A1] J017 -> AGV-13  F=219.3  ct=219.3  et=0.0  dt=0.0  runner_up=AGV-17:219.9
+[A1] J009 -> AGV-11  F=295.2  ct=295.2  et=0.0  dt=0.0  runner_up=AGV-17:304.6
+[A1] J033 -> AGV-17  F=290.9  ct=290.2  et=0.0  dt=0.6  runner_up=AGV-06:332.1
+[A1] J082 -> AGV-08  F=315.2  ct=264.6  et=0.0  dt=50.6  runner_up=AGV-18:335.2
+[A1] J097 -> AGV-18  F=250.5  ct=250.5  et=0.0  dt=0.0  runner_up=AGV-06:324.0
+[A1] J085 -> AGV-07  F=390.5  ct=354.6  et=0.0  dt=35.9  runner_up=AGV-15:390.5
+[A1] J059 -> AGV-05  F=324.0  ct=324.0  et=0.0  dt=0.0  runner_up=AGV-06:375.2
+[A1] J058 -> AGV-06  F=348.5  ct=340.8  et=0.0  dt=7.6  runner_up=AGV-13:431.3
+[A1] J032 -> AGV-08  F=457.3  ct=371.6  et=0.0  dt=85.7  runner_up=AGV-13:477.3
+[A1] J072 -> AGV-13  F=410.3  ct=351.6  et=0.0  dt=58.7  runner_up=AGV-18:472.8
+[A1] J093 -> AGV-01  F=431.7  ct=369.6  et=0.0  dt=62.1  runner_up=AGV-18:459.4
+[A1] J024 -> AGV-14  F=425.2  ct=425.2  et=0.0  dt=0.0  runner_up=AGV-15:425.2
+[A1] J091 -> AGV-18  F=626.8  ct=538.5  et=0.0  dt=88.4  runner_up=AGV-03:660.4
+[A1] J023 -> AGV-15  F=324.6  ct=324.6  et=0.0  dt=0.0  runner_up=AGV-19:324.6
+[A1] J084 -> AGV-03  F=454.6  ct=454.6  et=0.0  dt=0.0  runner_up=AGV-06:457.8
+[A1] J052 -> AGV-20  F=384.6  ct=384.6  et=0.0  dt=0.0  runner_up=AGV-12:441.5
+[A1] J020 -> AGV-16  F=375.2  ct=375.2  et=0.0  dt=0.0  runner_up=AGV-05:396.0
+[A1] J013 -> AGV-19  F=395.2  ct=395.2  et=0.0  dt=0.0  runner_up=AGV-17:409.0
+[A1] J002 -> AGV-17  F=523.8  ct=477.8  et=0.0  dt=45.9  runner_up=AGV-12:558.6
+[A1] J010 -> AGV-12  F=480.2  ct=480.2  et=0.0  dt=0.0  runner_up=AGV-11:512.8
+[A1] J001 -> AGV-05  F=490.5  ct=441.6  et=0.0  dt=48.9  runner_up=AGV-02:509.0
+[A1] J064 -> AGV-11  F=372.2  ct=372.2  et=0.0  dt=0.0  runner_up=AGV-15:525.5
+[A1] J089 -> AGV-02  F=468.0  ct=450.8  et=0.0  dt=17.1  runner_up=AGV-07:489.5
+[A1] J012 -> AGV-15  F=521.2  ct=476.6  et=0.0  dt=44.6  runner_up=AGV-11:586.5
+[A1] J096 -> AGV-06  F=537.8  ct=537.8  et=0.0  dt=0.0  runner_up=AGV-13:598.6
+[A1] J057 -> AGV-11  F=504.5  ct=504.5  et=0.0  dt=0.0  runner_up=AGV-16:522.5
+[A1] J083 -> AGV-13  F=549.2  ct=488.6  et=0.0  dt=60.6  runner_up=AGV-10:562.5
+[A1] J056 -> AGV-16  F=701.3  ct=597.2  et=0.0  dt=104.0  runner_up=AGV-04:757.3
+[A1] J044 -> AGV-04  F=649.7  ct=550.5  et=0.0  dt=99.1  runner_up=AGV-07:672.4
+[A1] J060 -> AGV-07  F=648.2  ct=632.2  et=0.0  dt=15.9  runner_up=AGV-20:708.2
+[A1] J045 -> AGV-09  F=493.2  ct=455.8  et=0.0  dt=37.3  runner_up=AGV-19:497.2
+[A1] J038 -> AGV-20  F=524.2  ct=506.6  et=0.0  dt=17.6  runner_up=AGV-10:541.5
+[A1] J015 -> AGV-19  F=564.1  ct=508.5  et=0.0  dt=55.7  runner_up=AGV-10:600.1
+[A1] J100 -> AGV-15  F=782.2  ct=623.9  et=0.0  dt=158.3  runner_up=AGV-10:796.7
+[A1] J087 -> AGV-01  F=536.6  ct=536.6  et=0.0  dt=0.0  runner_up=AGV-08:538.6
+[A1] J049 -> AGV-10  F=545.8  ct=545.8  et=0.0  dt=0.0  runner_up=AGV-08:589.2
+[A1] J034 -> AGV-08  F=473.9  ct=473.9  et=0.0  dt=0.0  runner_up=AGV-05:543.9
+[A1] J041 -> AGV-14  F=683.5  ct=683.5  et=0.0  dt=0.0  runner_up=AGV-03:739.8
+[A1] J008 -> AGV-03  F=590.7  ct=572.2  et=0.0  dt=18.4  runner_up=AGV-09:593.1
+[A1] J007 -> AGV-05  F=588.6  ct=518.6  et=0.0  dt=70.0  runner_up=AGV-02:607.1
+[A1] J019 -> AGV-10  F=661.1  ct=637.8  et=0.0  dt=23.2  runner_up=AGV-09:701.1
+[A1] J006 -> AGV-09  F=796.8  ct=699.1  et=0.0  dt=97.8  runner_up=AGV-01:817.2
+[A1] J075 -> AGV-08  F=651.8  ct=651.8  et=0.0  dt=0.0  runner_up=AGV-02:668.5
+[A1] J073 -> AGV-02  F=687.7  ct=647.8  et=0.0  dt=39.8  runner_up=AGV-12:746.5
+[A1] J066 -> AGV-17  F=584.1  ct=554.8  et=0.0  dt=29.2  runner_up=AGV-12:618.9
+[A1] J040 -> AGV-12  F=715.3  ct=627.8  et=0.0  dt=87.4  runner_up=AGV-20:738.1
+[A1] J016 -> AGV-13  F=687.3  ct=586.5  et=0.0  dt=100.7  runner_up=AGV-19:727.0
+[A1] J067 -> AGV-18  F=811.3  ct=756.1  et=0.0  dt=55.3  runner_up=AGV-01:867.7
+[A1] J079 -> AGV-20  F=723.5  ct=623.9  et=0.0  dt=99.6  runner_up=AGV-05:747.5
+[A1] J043 -> AGV-11  F=606.8  ct=606.8  et=0.0  dt=0.0  runner_up=AGV-19:615.5
+[A1] J090 -> AGV-19  F=699.0  ct=676.1  et=0.0  dt=23.0  runner_up=AGV-04:773.8
+[A1] J036 -> AGV-01  F=735.3  ct=613.6  et=0.0  dt=121.7  runner_up=AGV-06:737.8
+[A1] J080 -> AGV-05  F=621.2  ct=621.2  et=0.0  dt=0.0  runner_up=AGV-17:712.7
+[A1] J035 -> AGV-04  F=717.4  ct=683.5  et=0.0  dt=34.0  runner_up=AGV-06:741.4
+[A1] J022 -> AGV-16  F=782.5  ct=644.5  et=0.0  dt=137.9  runner_up=AGV-13:791.7
+[A1] J030 -> AGV-06  F=639.8  ct=639.8  et=0.0  dt=0.0  runner_up=AGV-10:726.2
+[A1] J062 -> AGV-17  F=906.5  ct=787.5  et=0.0  dt=119.1  runner_up=AGV-03:941.3
+[A1] J055 -> AGV-13  F=710.4  ct=710.4  et=0.0  dt=0.0  runner_up=AGV-20:717.1
+[A1] J094 -> AGV-03  F=832.5  ct=699.2  et=0.0  dt=133.2  runner_up=AGV-20:856.5
+[A1] J046 -> AGV-11  F=655.0  ct=653.8  et=0.0  dt=1.1  runner_up=AGV-07:765.8
+[A1] J051 -> AGV-07  F=918.1  ct=824.5  et=0.0  dt=93.5  runner_up=AGV-11:931.3
+[A1] J078 -> AGV-01  F=923.8  ct=816.2  et=0.0  dt=107.5  runner_up=AGV-10:1002.2
+[A1] J081 -> AGV-20  F=786.2  ct=786.2  et=0.0  dt=0.0  runner_up=AGV-16:806.8
+[A1] J014 -> AGV-11  F=1037.9  ct=865.8  et=0.0  dt=172.0  runner_up=AGV-19:1052.3
+[A1] J063 -> AGV-19  F=939.5  ct=808.4  et=0.0  dt=131.1  runner_up=AGV-04:1014.2
+[A1] J037 -> AGV-02  F=782.3  ct=709.8  et=0.0  dt=72.4  runner_up=AGV-08:850.3
+[A1] J054 -> AGV-05  F=905.3  ct=799.5  et=0.0  dt=105.9  runner_up=AGV-12:918.5
+[A1] J086 -> AGV-12  F=787.0  ct=739.8  et=0.0  dt=47.1  runner_up=AGV-15:809.8
+[A1] J050 -> AGV-04  F=989.1  ct=901.1  et=0.0  dt=88.1  runner_up=AGV-14:989.1
+[A1] J053 -> AGV-08  F=743.8  ct=743.8  et=0.0  dt=0.0  runner_up=AGV-10:824.1
+[A1] J077 -> AGV-15  F=766.2  ct=766.2  et=0.0  dt=0.0  runner_up=AGV-06:766.8
+[A1] J029 -> AGV-10  F=709.8  ct=709.8  et=0.0  dt=0.0  runner_up=AGV-06:751.8
+[A1] J088 -> AGV-06  F=751.6  ct=711.8  et=0.0  dt=39.7  runner_up=AGV-16:791.6
+[A1] J068 -> AGV-16  F=817.4  ct=791.8  et=0.0  dt=25.5  runner_up=AGV-10:978.6
+[A1] J092 -> AGV-02  F=964.2  ct=927.5  et=0.0  dt=36.8  runner_up=AGV-08:972.2
+[A1] J005 -> AGV-06  F=935.6  ct=914.5  et=0.0  dt=21.2  runner_up=AGV-12:991.6
+[A1] J031 -> AGV-08  F=1080.0  ct=936.5  et=0.0  dt=143.6  runner_up=AGV-16:1116.0
+[A1] J039 -> AGV-14  F=793.2  ct=775.5  et=0.0  dt=17.8  runner_up=AGV-03:794.8
+[A1] J071 -> AGV-09  F=875.5  ct=816.4  et=0.0  dt=59.1  runner_up=AGV-03:875.8
+[A1] J095 -> AGV-10  F=842.5  ct=842.5  et=0.0  dt=0.0  runner_up=AGV-03:871.8
+[A2] AGV-01 (priority 1) planned  end=831.2  nodes=31  jobs=5
+[A3] AGV-02: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-02: conflict at edge into n7=3F (blocked by AGV-01)  passes=2  st_star=293.61  fallback=False
+[A3] AGV-02: conflict at edge into n12=3B (blocked by AGV-01)  passes=2  st_star=522.61  fallback=False
+[A2] AGV-02 (priority 2) planned  end=1813.7  nodes=39  jobs=5
+[A3] AGV-03: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-03: conflict at edge into n18=2G (blocked by AGV-01)  passes=1  st_star=189.0  fallback=False
+[A3] AGV-03: conflict at edge into n21=1C (blocked by AGV-01)  passes=2  st_star=104.61  fallback=False
+[A2] AGV-03 (priority 3) planned  end=1077.8  nodes=29  jobs=4
+[A3] AGV-04: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-04: conflict at edge into n7=3F (blocked by AGV-01)  passes=4  st_star=405.0  fallback=False
+[A3] AGV-04: conflict at node n9=3D (blocked by AGV-01)  passes=1  st_star=8.0  fallback=False
+[A3] AGV-04: conflict at edge into n14=2C (blocked by AGV-01)  passes=1  st_star=10.0  fallback=False
+[A3] AGV-04: conflict at edge into n22=2C (blocked by AGV-02)  passes=7  st_star=1269.68  fallback=False
+[A2] AGV-04 (priority 4) planned  end=2759.4  nodes=43  jobs=4
+[A3] AGV-05: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-05: conflict at node n5=2I (blocked by AGV-01)  passes=1  st_star=31.0  fallback=False
+[A3] AGV-05: conflict at edge into n25=2D (blocked by AGV-01)  passes=5  st_star=835.23  fallback=False
+[A3] AGV-05: conflict at edge into n27=3F (blocked by AGV-02)  passes=11  st_star=1477.53  fallback=False
+[A2] AGV-05 (priority 5) planned  end=3353.8  nodes=39  jobs=6
+[A3] AGV-06: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-06: conflict at edge into n6=2G (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-06: conflict at node n11=2D (blocked by AGV-01)  passes=1  st_star=65.39  fallback=False
+[A3] AGV-06: conflict at edge into n13=1C (blocked by AGV-03)  passes=1  st_star=43.39  fallback=False
+[A3] AGV-06: conflict at edge into n20=2G (blocked by AGV-03)  passes=1  st_star=44.61  fallback=False
+[A3] AGV-06: conflict at edge into n23=3F (blocked by AGV-01)  passes=1  st_star=39.39  fallback=False
+[A2] AGV-06 (priority 6) planned  end=1187.2  nodes=37  jobs=6
+[A3] AGV-07: conflict at node n8=2C (blocked by AGV-01)  passes=1  st_star=19.39  fallback=False
+[A3] AGV-07: conflict at edge into n9=3F (blocked by AGV-01)  passes=2  st_star=364.61  fallback=False
+[A3] AGV-07: conflict at node n11=3C (blocked by AGV-01)  passes=4  st_star=813.23  fallback=False
+[A3] AGV-07: conflict at edge into n25=1C (blocked by AGV-04)  passes=1  st_star=180.46  fallback=False
+[A2] AGV-07 (priority 7) planned  end=2287.5  nodes=39  jobs=4
+[A3] AGV-08: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-08: conflict at node n7=1C (blocked by AGV-06)  passes=1  st_star=17.16  fallback=False
+[A3] AGV-08: conflict at edge into n8=1F (blocked by AGV-06)  passes=1  st_star=15.0  fallback=False
+[A3] AGV-08: conflict at node n15=1I (blocked by AGV-01)  passes=1  st_star=12.84  fallback=False
+[A3] AGV-08: conflict at node n20=2G (blocked by AGV-03)  passes=1  st_star=6.0  fallback=False
+[A3] AGV-08: conflict at node n24=3B (blocked by AGV-01)  passes=1  st_star=2.77  fallback=False
+[A3] AGV-08: conflict at edge into n37=2C (blocked by AGV-02)  passes=14  st_star=1394.91  fallback=False
+[A3] AGV-08: conflict at edge into n40=1C (blocked by AGV-05)  passes=10  st_star=1457.53  fallback=False
+[A2] AGV-08 (priority 8) planned  end=3937.7  nodes=42  jobs=7
+[A3] AGV-09: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-09: conflict at edge into n7=3F (blocked by AGV-01)  passes=3  st_star=453.61  fallback=False
+[A3] AGV-09: conflict at edge into n9=3C (blocked by AGV-01)  passes=3  st_star=635.84  fallback=False
+[A3] AGV-09: conflict at edge into n24=3B (blocked by AGV-07)  passes=13  st_star=1654.91  fallback=False
+[A2] AGV-09 (priority 9) planned  end=3671.1  nodes=37  jobs=4
+[A3] AGV-10: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-10: conflict at edge into n7=3F (blocked by AGV-01)  passes=3  st_star=453.61  fallback=False
+[A3] AGV-10: conflict at edge into n9=3C (blocked by AGV-01)  passes=3  st_star=635.84  fallback=False
+[A3] AGV-10: conflict at edge into n22=3H (blocked by AGV-02)  passes=13  st_star=2833.21  fallback=False
+[A2] AGV-10 (priority 10) planned  end=4820.1  nodes=33  jobs=5
+[A3] AGV-11: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-11: conflict at edge into n19=2C (blocked by AGV-01)  passes=9  st_star=994.84  fallback=False
+[A3] AGV-11: conflict at edge into n20=2D (blocked by AGV-07)  passes=18  st_star=2139.98  fallback=False
+[A3] AGV-11: conflict at edge into n33=2C (blocked by AGV-10)  passes=8  st_star=1437.68  fallback=False
+[A2] AGV-11 (priority 11) planned  end=5604.0  nodes=38  jobs=7
+[A3] AGV-12: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-12: conflict at edge into n7=3F (blocked by AGV-01)  passes=3  st_star=453.61  fallback=False
+[A3] AGV-12: conflict at edge into n9=3C (blocked by AGV-01)  passes=3  st_star=635.84  fallback=False
+[A3] AGV-12: conflict at edge into n25=2E (blocked by AGV-02)  passes=31  st_star=4038.89  fallback=False
+[A2] AGV-12 (priority 12) planned  end=6043.2  nodes=36  jobs=4
+[A3] AGV-13: conflict at edge into n5=1I (blocked by AGV-01)  passes=1  st_star=9.0  fallback=False
+[A3] AGV-13: conflict at edge into n6=2G (blocked by AGV-01)  passes=1  st_star=9.0  fallback=False
+[A3] AGV-13: conflict at node n10=2G (blocked by AGV-06)  passes=1  st_star=16.16  fallback=False
+[A3] AGV-13: conflict at node n17=1C (blocked by AGV-06)  passes=1  st_star=1.84  fallback=False
+[A3] AGV-13: conflict at node n20=2G (blocked by AGV-03)  passes=1  st_star=20.61  fallback=False
+[A3] AGV-13: conflict at node n28=2E (blocked by AGV-01)  passes=20  st_star=1370.46  fallback=False
+[A3] AGV-13: conflict at edge into n31=1C (blocked by AGV-07)  passes=17  st_star=2296.06  fallback=False
+[A2] AGV-13 (priority 13) planned  end=4518.8  nodes=33  jobs=6
+[A3] AGV-14: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-14: conflict at edge into n7=3F (blocked by AGV-01)  passes=3  st_star=453.61  fallback=False
+[A3] AGV-14: conflict at edge into n9=3C (blocked by AGV-01)  passes=3  st_star=635.84  fallback=False
+[A3] AGV-14: conflict at node n24=3B (blocked by AGV-07)  passes=31  st_star=3602.67  fallback=False
+[A3] AGV-14: conflict at edge into n29=1I (blocked by AGV-11)  passes=6  st_star=896.84  fallback=False
+[A2] AGV-14 (priority 14) planned  end=6404.4  nodes=35  jobs=4
+[A3] AGV-15: conflict at edge into n6=2G (blocked by AGV-01)  passes=1  st_star=34.0  fallback=False
+[A3] AGV-15: conflict at edge into n25=3B (blocked by AGV-01)  passes=1  st_star=52.0  fallback=False
+[A3] AGV-15: conflict at edge into n32=1C (blocked by AGV-01)  passes=58  st_star=6114.42  fallback=False
+[A2] AGV-15 (priority 15) planned  end=6981.6  nodes=34  jobs=5
+[A3] AGV-16: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-16: conflict at edge into n7=3F (blocked by AGV-01)  passes=3  st_star=453.61  fallback=False
+[A3] AGV-16: conflict at edge into n10=2C (blocked by AGV-01)  passes=4  st_star=442.61  fallback=False
+[A3] AGV-16: conflict at edge into n26=3B (blocked by AGV-07)  passes=39  st_star=5347.19  fallback=False
+[A2] AGV-16 (priority 16) planned  end=7260.9  nodes=38  jobs=5
+[A3] AGV-17: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-17: conflict at edge into n17=1I (blocked by AGV-01)  passes=9  st_star=956.23  fallback=False
+[A3] AGV-17: conflict at edge into n27=3F (blocked by AGV-02)  passes=27  st_star=3710.28  fallback=False
+[A3] AGV-17: conflict at edge into n39=1C (blocked by AGV-14)  passes=9  st_star=1492.91  fallback=False
+[A2] AGV-17 (priority 17) planned  end=7187.5  nodes=41  jobs=5
+[A3] AGV-18: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-18: conflict at node n5=2I (blocked by AGV-01)  passes=1  st_star=31.0  fallback=False
+[A3] AGV-18: conflict at edge into n6=2C (blocked by AGV-01)  passes=1  st_star=4.0  fallback=False
+[A3] AGV-18: conflict at node n8=2C (blocked by AGV-01)  passes=1  st_star=123.77  fallback=False
+[A3] AGV-18: conflict at node n9=2D (blocked by AGV-06)  passes=1  st_star=5.61  fallback=False
+[A3] AGV-18: conflict at edge into n10=2E (blocked by AGV-06)  passes=2  st_star=289.23  fallback=False
+[A3] AGV-18: conflict at edge into n13=1I (blocked by AGV-03)  passes=5  st_star=412.61  fallback=False
+[A3] AGV-18: conflict at edge into n16=2G (blocked by AGV-02)  passes=2  st_star=223.23  fallback=False
+[A3] AGV-18: conflict at node n20=3B (blocked by AGV-07)  passes=1  st_star=13.39  fallback=False
+[A3] AGV-18: conflict at edge into n21=3C (blocked by AGV-07)  passes=8  st_star=679.76  fallback=False
+[A3] AGV-18: conflict at edge into n30=1C (blocked by AGV-04)  passes=23  st_star=2881.9  fallback=False
+[A2] AGV-18 (priority 18) planned  end=5490.6  nodes=34  jobs=4
+[A3] AGV-19: conflict at node n8=2C (blocked by AGV-01)  passes=1  st_star=19.39  fallback=False
+[A3] AGV-19: conflict at edge into n9=3F (blocked by AGV-01)  passes=2  st_star=364.61  fallback=False
+[A3] AGV-19: conflict at node n13=3C (blocked by AGV-01)  passes=1  st_star=8.0  fallback=False
+[A3] AGV-19: conflict at edge into n14=3B (blocked by AGV-01)  passes=5  st_star=805.23  fallback=False
+[A3] AGV-19: conflict at edge into n23=2I (blocked by AGV-07)  passes=47  st_star=5564.42  fallback=False
+[A2] AGV-19 (priority 19) planned  end=7655.3  nodes=39  jobs=5
+[A3] AGV-20: conflict at edge into n2=1B (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-20: conflict at edge into n6=2G (blocked by AGV-01)  passes=1  st_star=25.0  fallback=False
+[A3] AGV-20: conflict at edge into n21=1I (blocked by AGV-03)  passes=20  st_star=2087.53  fallback=False
+[A3] AGV-20: conflict at edge into n35=2D (blocked by AGV-05)  passes=54  st_star=4959.96  fallback=False
+[A2] AGV-20 (priority 20) planned  end=8099.3  nodes=39  jobs=5
