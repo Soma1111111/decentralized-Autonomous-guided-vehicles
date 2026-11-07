@@ -1,57 +1,135 @@
 # Reproducibility
 
-Run the commands below from `agv_code/agv_code/` with Python 3.11 or 3.12.
-Install the dependencies:
+## Supported environment
+
+Use Python 3.11 or 3.12 and run commands from `agv_code/agv_code/`. The full
+`run_all.sh` run recorded here used Python 3.12.3 with:
+
+- NetworkX 3.7
+- NumPy 2.5.4
+- Matplotlib 3.11.2
+- Pillow 13.0.0
+
+The versions above are pinned in `agv_code/agv_code/requirements.txt`.
+
+Recorded machine: Windows 11 host (build 26300, AMD64) running WSL2, Linux
+kernel `6.18.54.1-microsoft-standard-WSL2`, 8 logical CPUs, Intel CPU signature
+`Family 6 Model 142 Stepping 12`. Runtime measurements can vary with the machine
+and system load; seeded schedule inputs are fixed by the commands below.
+
+## Install and regenerate experiment outputs
+
+From `agv_code/agv_code/`, install the pinned packages:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-The requirements are `networkx`, `matplotlib`, `numpy`, and `pillow`.
-
-## Reproduce `results/`
+Regenerate the single-seed demo in `results/`:
 
 ```bash
 python agv_multifloor_demo.py --seed 7
 ```
 
-This writes the multi-floor demo outputs to `results/` (100 jobs and 20 AGVs
-by default).
-
-## Reproduce `results_hybrid/`
+Regenerate the strict-track comparison and fleet sweep in `results_hybrid/`:
 
 ```bash
 python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20
 ```
 
-This writes the centralized-versus-hybrid comparison outputs to
-`results_hybrid/`.
+Regenerate the per-seed Gantt figures under `results_hybrid/gantts/`:
 
-## Verify plans
+```bash
+python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20 --gantts-only --outdir results_hybrid
+```
 
-Run the randomized scenarios and independent `verify()` checker with:
+Regenerate the paper-style same-direction-following comparison in
+`results_same_direction/`:
+
+```bash
+python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20 --track-rule same-direction --outdir results_same_direction
+```
+
+Regenerate the hybrid leg example, job-scale sweep, and sensitivity sweep:
+
+```bash
+python agv_hybrid_example.py --seed 7 --agv AGV-02
+python sweep_job_scale.py
+python sensitivity.py
+python lobby_capacity_sweep.py
+```
+
+The lobby-capacity sweep runs B and C for K = 1, 2, 4, and unlimited on both
+three- and five-floor layouts, with seeds 1–10, 100 jobs, and 20 AGVs. It writes
+`results_lobby_capacity/capacity_sweep.csv` and `summary.txt`.
+
+Print the three-seed assignment-baseline comparison:
+
+```bash
+python agv_baselines.py
+```
+
+The demo's optional replay GIF is generated with:
+
+```bash
+python agv_multifloor_demo.py --seed 7 --gif
+```
+
+## Verification
+
+The randomized stress test runs 300 scenarios and checks each plan with
+`agv_core.verify()`:
 
 ```bash
 python agv_stress_test.py
 ```
 
-The documented run covers 300 scenarios and reports `TOTAL violations: 0`
-when every plan passes verification.
+Run the focused verifier and experiment tests with:
 
-## Commit scope and archive note
+```bash
+python -m unittest test_verify test_b2_c_equivalence test_sensitivity test_lobby_capacity
+```
 
-This commit fixes the original demo bugs listed in
-`agv_code/agv_code/README.md` under `What was wrong in the original`:
+## One-command reproduction
 
-- Algorithm 3 stopped after 10 iterations even if conflicts remained.
-- The parking station was incorrectly subject to node-conflict checks.
-- Service time was added at every node instead of only at pickup and delivery.
-- Algorithm 3 did not implement the paper's `f(lt, rt, W)` and `st*`/`mt*`
-  rules or extend the parking-station window.
-- Travel-time scaling, separate pickup/delivery service parameters, and other
-  configuration values were hard-coded or incorrect.
+After installing the pinned packages above, run this from the repository root
+to regenerate the outputs (including the optional GIF) and run baselines, the
+300-scenario stress test, and unit tests:
 
-The root `agv_code.zip` is a stale subset of the working tree: it omits the
-hybrid files (`agv_hybrid.py`, `agv_compare.py`, `agv_hybrid_example.py`, and
-`agv_stress_test.py`) and `results_hybrid/`. Use `agv_code/agv_code/` as the
-source of truth.
+```bash
+bash run_all.sh
+```
+
+`agv_code.zip` remains as a historical snapshot, but it is incomplete: it omits
+the hybrid planner and related outputs. Use the working tree under
+`agv_code/agv_code/` as the source of truth.
+
+## Statistical comparison and light-load experiments
+
+Run from `agv_code/agv_code/` after installing the pinned requirements. This
+executes 30 paired seeds for A/B/B2/C at 100 jobs, at 10/20/30 jobs, and at
+10 jobs at 1800- and 3600-second horizons, and 100 jobs with an 1800-second
+horizon. It writes all
+per-seed metrics and verification flags to `results_statistics/experiment_raw.csv`,
+then regenerates bootstrap confidence intervals, paired Wilcoxon tests, and
+booktabs LaTeX tables.
+
+```bash
+python agv_statistical_experiments.py --outdir results_statistics
+```
+
+To regenerate just the analysis and LaTeX tables from saved raw data:
+
+```bash
+python generate_latex_tables.py --raw results_statistics/experiment_raw.csv --outdir results_statistics
+```
+
+## Original demo corrections
+
+The corrected implementation addresses the original demo bugs listed in
+`agv_code/agv_code/README.md` under “What was wrong in the original”: Algorithm 3
+could stop before conflicts were resolved; the parking node was incorrectly
+included in node-conflict checks; service time was applied at pass-through
+nodes; the sliding-window `f(lt, rt, W)` and `st*`/`mt*` behavior and parking
+window extension were missing; and speed scaling, service-time parameters, and
+other configuration values were hard-coded or incorrect.

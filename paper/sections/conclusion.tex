@@ -1,0 +1,56 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper presented a hybrid architecture for prioritized multi-AGV
+scheduling in a multi-floor smart-manufacturing layout. The work began with
+an implementation of the prioritized-planning baseline of Guo et al.
+(ICARCV 2024) \cite{guo2024}, correcting the original demonstration's documented issues in
+conflict resolution, parking-node handling, service-time placement, and
+parameterization. The corrected baseline assigns jobs in earliest-pickup
+order using a fitness score, constructs shortest-path routes, and schedules
+AGVs by fixed priority while eliminating conflicts through sliding-window
+delays.
+
+The main architectural contribution divides planning between a central
+server and one server per floor. The central server assigns jobs, separates
+routes into floor legs, and books shared lift trips. Floor servers construct
+conflict-free schedules for their own legs using local node and track
+reservations. Lift-lobby waiting points let an AGV wait near the floor-level
+conflict or lift that is delaying it. An independent checker validates each
+complete plan for route endpoints, node and bidirectional-track conflicts,
+edge travel times, dwell windows, and exactly-once job assignment. On the
+tested seeds, the hybrid planner in priority order reproduces the centralized
+planner with lobbies, providing a check that the route decomposition
+preserves that reference schedule under that processing order.
+
+In the saved comparison of 100 jobs and 20 AGVs over ten seeds, the default
+FCFS hybrid configuration reduced mean last-delivery makespan by 65\%, total
+tardiness by 72\%, and load imbalance by 80\% relative to the paper-style
+centralized configuration. The busiest-server CPU time fell by 91\%, and the
+maximum number of reservation windows held by one server fell by 69\%. These
+results demonstrate the potential value of lobby waiting and floor-level
+decomposition for the modeled three-floor factory. They are empirical
+results for the tested layout and settings, not a general guarantee of
+optimality or of the same improvement at larger scales \cite{projectRepo}.
+
+The reduction in tardiness is substantial, but the mean total tardiness for
+the hybrid remains approximately 90,105~s across 100 jobs per seed. This
+indicates that conflict resolution and decomposition alone do not ensure
+that assigned deliveries meet their desired times. The current job assignment
+is greedy and priority-dependent, and delay accumulated by shared routes,
+lift use, and safety separation can still move deliveries well past their
+targets. Reducing this residual tardiness will require changes to assignment,
+sequencing, and resource coordination in addition to distributing the
+planning workload.
+
+\paragraph{Future work.}
+Future work will extend the static, known-job setting to dynamic job arrivals
+and investigate battery limits and charging decisions. The lift model can
+be generalized to multiple lifts per floor, with lift capacity and service
+policies represented explicitly. A further architectural step is to remove
+the central lift-booking server and investigate fully decentralized lift
+coordination. Broader comparisons should include auction-based assignment,
+deep reinforcement learning (DRL), and conflict-based search (CBS), using
+common instances, objectives, and verification rules. The design should also
+be validated on physical multi-floor hardware.
+

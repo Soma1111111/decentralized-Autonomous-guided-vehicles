@@ -35,9 +35,10 @@ MODELLING CHOICES (where the paper is silent or where we are stricter)
 * eta / eta' are spent ONLY at the pickup / delivery node (pass-through nodes have lt = rt).
 * The parking station pi is exempt from node conflicts (assumption 3 of the paper) and is the
   place where an AGV waits when Algorithm 3 pushes its plan to the right.
-* A track (a pair of opposite edges) can hold one AGV at a time (assumption 4).  We check the
-  new edge window against the windows of BOTH directions of the track (the paper's Table I
-  names the reverse edge; checking both also forbids following on the same track).
+* By default, a track (a pair of opposite edges) can hold one AGV at a time: the strict rule
+  checks both travel directions and forbids following on the same track. Params.track_rule=
+  "same-direction" selects the paper-style reverse-edge-only rule and allows following.
+  Lifts remain single-capacity under both rules.
 * Algorithm 3 is started at node n_p.  For an *edge* conflict on e(n_{p-1}, n_p) the same sweep is
   used: it tests node n_p, then edge e(n_{p-1}, n_p), then node n_{p-1}, ... which only adds one
   extra (harmless) term to the paper's  edge -> node -> edge ... sequence.
@@ -65,6 +66,7 @@ class Params:
     delta: float = 10.0      # safety separation time
     lam: float = 1.0         # weight lambda in the fitness function
     k_max: int = 100000      # maximum number of passes of Algorithm 3
+    track_rule: str = "strict"  # strict | same-direction (allow same-direction following)
 
 
 @dataclass
@@ -107,8 +109,11 @@ class Plan:
 class Layout:
     """Graph G = {N, E}, one parking station pi, Dijkstra tables r_nn' and delta_nn'."""
 
-    def __init__(self, G: nx.Graph, parking: str, speed: float = 1.0):
+    def __init__(self, G: nx.Graph, parking: str, speed: float = 1.0, lobby_capacity=None):
         self.G, self.pi, self.speed = G, parking, speed
+        if lobby_capacity not in (None, 1, 2, 4):
+            raise ValueError("lobby_capacity must be 1, 2, 4, or None (unlimited)")
+        self.lobby_capacity = lobby_capacity
         # nodes exempt from node conflicts, where an AGV may wait (paper: only pi).  The hybrid
         # architecture (agv_hybrid.py) adds the lift lobbies here.
         self.exempt = {parking}
@@ -165,16 +170,20 @@ def _append_path(a: AGV, path, lu_time):
     return len(a.R) - 1
 
 
-def algorithm_1(L: Layout, jobs, agvs, prm: Params, log: Log):
+def algorithm_1(L: Layout, jobs, agvs, prm: Params, log: Log, rotate_priority_rounds=False):
     """Jobs are taken in order of desired pickup time t_j; each goes to the AGV with minimum F_ji."""
     for a in agvs:
         a.vt, a.s, a.R, a.dwell, a.events, a.jobs = 0.0, L.pi, [L.pi], [0.0], [], []
     estimate = {}
-    for job in sorted(jobs, key=lambda x: (x.t, x.j)):                 # earliest pickup first
+    ordered_jobs = sorted(jobs, key=lambda x: (x.t, x.j))
+    fleet_size = max(1, len(agvs))
+    for job_index, job in enumerate(ordered_jobs):
+        round_index = job_index // fleet_size if rotate_priority_rounds else 0
         cand = []
         for a in agvs:
             c = fitness(L, a, job, prm)
-            cand.append((c["F"], a.priority, a, c))
+            tie_priority = ((a.priority - 1 + round_index) % fleet_size) + 1
+            cand.append((c["F"], tie_priority, a, c))
         cand.sort(key=lambda x: (x[0], x[1]))                          # tie -> higher priority AGV
         F, _, a, c = cand[0]
         i1 = _append_path(a, L.r_nn[(a.s, job.p)], prm.eta)            # R_i <- R_i U r_{s_i p_j}
@@ -189,6 +198,11 @@ def algorithm_1(L: Layout, jobs, agvs, prm: Params, log: Log):
                 runner_up=f"{cand[1][2].i}:{cand[1][0]:.1f}" if len(cand) > 1 else "-")
     for a in agvs:                                                     # R_i <- R_i U r_{s_i pi}
         _append_path(a, L.r_nn[(a.s, L.pi)], 0.0)
+    if rotate_priority_rounds and ordered_jobs:
+        # Carry the last round's cyclic priority order into Algorithm 2/3.
+        offset = ((len(ordered_jobs) - 1) // fleet_size) % fleet_size
+        for a in agvs:
+            a.priority = ((a.priority - 1 + offset) % fleet_size) + 1
     return estimate
 
 
@@ -215,13 +229,51 @@ def f(lt, rt, W, delta):
     return st, (INF if nxt == INF else nxt - delta - rt)
 
 
-def algorithm_3(R, P, p, W, Wtrack, delta, pi, k_max, t_free=None, trace=None):
+def capacity_slide(lt, rt, windows, capacity):
+    """Smallest right shift making [lt, rt) fit a finite-capacity lobby."""
+    if capacity is None or rt <= lt + EPS:
+        return 0.0
+    start, width = lt, rt - lt
+    for _ in range(100000):
+        end = start + width
+        points = {start, end}
+        for a, b, *_ in windows:
+            if b > start + EPS and a < end - EPS:
+                points.add(max(start, a))
+                points.add(min(end, b))
+        ordered = sorted(points)
+        blocking_end = None
+        for a, b in zip(ordered, ordered[1:]):
+            if b <= a + EPS:
+                continue
+            mid = (a + b) / 2
+            active = [w for w in windows if w[0] <= mid < w[1]]
+            if len(active) >= capacity:
+                blocking_end = min(w[1] for w in active)
+                break
+        if blocking_end is None:
+            return start - lt
+        start = max(start + EPS, blocking_end)
+    raise RuntimeError("lobby capacity search exceeded its iteration limit")
+
+
+class LobbyEntryCapacityError(RuntimeError):
+    """A full entry lobby requires moving the arrival time upstream."""
+
+    def __init__(self, delay):
+        self.delay = delay
+        super().__init__(f"entry lobby is at capacity; shift arrival upstream by {delay:.3f} s")
+
+
+def algorithm_3(R, P, p, W, Wtrack, delta, pi, k_max, t_free=None, trace=None,
+                Wcap=None, lobby_capacity=None, initial_st=0.0):
     """Make the windows of n_p (and everything before it, back to the previous parking station)
     conflict-free by sliding them right.  P is modified in place.  Returns (st_star, passes, fallback).
     pi may be one node or a set of exempt nodes (parking station + lift lobbies in the hybrid case)."""
     buf = {pi} if isinstance(pi, str) else pi
     q = max(m for m in range(p) if R[m] in buf)        # nearest previous parking station / lobby
-    st_star, fallback, passes = 0.0, False, 0
+    Wcap = Wcap or {}
+    st_star, fallback, passes = initial_st, False, 0
     for k in range(1, k_max + 1):
         passes, mt_star, broke, m = k, INF, False, p
         while m > q:
@@ -235,6 +287,10 @@ def algorithm_3(R, P, p, W, Wtrack, delta, pi, k_max, t_free=None, trace=None):
                 if st_star > mt_star + EPS:
                     broke = True
                     break
+            if n in Wcap and lobby_capacity is not None:
+                st = capacity_slide(P[m][0] + st_star, P[m][1] + st_star,
+                                    Wcap.get(n, ()), lobby_capacity)
+                st_star += st
             st, mt = f(P[m - 1][1] + st_star, P[m][0] + st_star, Wtrack(R[m - 1], R[m]), delta)
             mt_star = min(st_star + mt, mt_star)                     # edge window e(n_{m-1}, n_m)
             if trace is not None:
@@ -249,6 +305,19 @@ def algorithm_3(R, P, p, W, Wtrack, delta, pi, k_max, t_free=None, trace=None):
     else:                                                  # k_max exhausted -> worst case of the paper:
         fallback = True                                    # wait at pi until every higher-priority AGV is done
         st_star = max(st_star, (t_free if t_free is not None else 0.0) + delta - P[q][1])
+    q_node = R[q]
+    if q_node in Wcap and lobby_capacity is not None:
+        extra = capacity_slide(P[q][0], P[q][1] + st_star, Wcap.get(q_node, ()), lobby_capacity)
+        if extra > EPS:
+            if q == 0:
+                raise LobbyEntryCapacityError(extra)
+            shifted, recursive_passes, recursive_fallback = algorithm_3(
+                R, P, q, W, Wtrack, delta, pi, k_max, t_free, trace,
+                Wcap, lobby_capacity, st_star)
+            for m in range(q + 1, p + 1):
+                P[m][0] += shifted
+                P[m][1] += shifted
+            return shifted, recursive_passes, recursive_fallback
     for m in range(q + 1, p + 1):                          # slide windows n_{q+1} ... n_p by st*
         P[m][0] += st_star
         P[m][1] += st_star
@@ -267,36 +336,44 @@ def _overlap(lt, rt, windows, delta):
 
 
 def plan_route(L: Layout, agv_id, R, dwell, t0, W, Wtrack, prm: Params, log: Log, calls,
-               t_free=0.0, keep_trace=True):
+               t_free=0.0, keep_trace=True, Wcap=None):
     """Lines 5-23 of Algorithm 2 for ONE route R starting at time t0: build P_i node by node and call
     Algorithm 3 whenever a window conflicts with W / W'.  R[0] must be an exempt node (pi or a lobby)."""
     P = []
+    Wcap = Wcap or {}
     for m, n in enumerate(R):
         lt = t0 if m == 0 else P[m - 1][1] + L.delta_edge(R[m - 1], n)
         P.append([lt, lt + dwell[m]])                          # rt_m = lt_m (+ eta or eta' at L/U nodes)
-        for attempt in range(3):
+        attempts = prm.k_max if L.lobby_capacity is not None else 3
+        for attempt in range(attempts):
             e_hit = _overlap(P[m - 1][1], P[m][0], Wtrack(R[m - 1], n), prm.delta) if m > 0 else None
             n_hit = _overlap(P[m][0], P[m][1], W.get(n, ()), prm.delta) if n not in L.exempt else None
-            if e_hit is None and n_hit is None:
+            cap_hit = (n in Wcap and L.lobby_capacity is not None and
+                       capacity_slide(P[m][0], P[m][1], Wcap[n], L.lobby_capacity) > EPS)
+            if e_hit is None and n_hit is None and not cap_hit:
                 break
             tr = [] if keep_trace else None
             st_star, passes, fb = algorithm_3(R, P, m, W, Wtrack, prm.delta, L.exempt,
-                                              prm.k_max, t_free, tr)
+                                              prm.k_max, t_free, tr, Wcap, L.lobby_capacity)
             rec = dict(agv=agv_id, m=m + 1, node=n, kind="edge" if e_hit is not None else "node",
-                       blocker=(e_hit or n_hit)[2], st_star=st_star, passes=passes,
+                       blocker=(e_hit or n_hit)[2] if (e_hit or n_hit) else "lobby-capacity",
+                       st_star=st_star, passes=passes,
                        fallback=fb, trace=tr)
             calls.append(rec)
+            blocker = (e_hit or n_hit)[2] if (e_hit or n_hit) else "lobby capacity"
             log.add("A3", f"{agv_id}: conflict at {'edge into' if e_hit else 'node'} n{m + 1}={n} "
-                    f"(blocked by {(e_hit or n_hit)[2]})", passes=passes,
+                    f"(blocked by {blocker})", passes=passes,
                     st_star=round(st_star, 2), fallback=fb)
         else:
             raise RuntimeError("Algorithm 3 did not remove the conflict (should be impossible)")
     return P
 
 
-def freeze(L: Layout, agv_id, R, P, W, Wp):
+def freeze(L: Layout, agv_id, R, P, W, Wp, Wcap=None):
     """Line 24 of Algorithm 2: add the windows of a planned route to W and W'."""
     for m, n in enumerate(R):
+        if Wcap is not None and n in Wcap:
+            Wcap[n].append((P[m][0], P[m][1], agv_id))
         if n not in L.exempt:
             W[n].append((P[m][0], P[m][1], agv_id))
         if m > 0:
@@ -306,14 +383,20 @@ def freeze(L: Layout, agv_id, R, P, W, Wp):
 def algorithm_2(L: Layout, agvs, prm: Params, log: Log, keep_trace=True):
     W = defaultdict(list)       # W_n   : node -> [(lt, rt, agv)]
     Wp = defaultdict(list)      # W'_e  : directed edge (u, v) -> [(rt_{m-1}, lt_m, agv)]
-    Wtrack = lambda u, v: Wp[(u, v)] + Wp[(v, u)]
+    Wcap = {n: [] for n in L.lobbies}
+    def Wtrack(u, v):
+        # Lift capacity remains one AGV at a time under either floor-track policy.
+        if L.is_lift(u, v) or prm.track_rule == "strict":
+            return Wp[(u, v)] + Wp[(v, u)]
+        return Wp[(v, u)]
     plans, calls = {}, []
     t_free = 0.0
     for a in sorted(agvs, key=lambda x: x.priority):           # V_1 first
         R = a.R
-        P = plan_route(L, a.i, R, a.dwell, 0.0, W, Wtrack, prm, log, calls, t_free, keep_trace)
+        P = plan_route(L, a.i, R, a.dwell, 0.0, W, Wtrack, prm, log, calls, t_free,
+                       keep_trace, Wcap)
         plans[a.i] = Plan(a.i, list(R), P, list(a.dwell), list(a.events))
-        freeze(L, a.i, R, P, W, Wp)
+        freeze(L, a.i, R, P, W, Wp, Wcap)
         t_free = max(t_free, P[-1][1])
         log.add("A2", f"{a.i} (priority {a.priority}) planned", end=round(P[-1][1], 1),
                 nodes=len(R), jobs=len(a.jobs))
@@ -324,33 +407,75 @@ def algorithm_2(L: Layout, agvs, prm: Params, log: Log, keep_trace=True):
 # independent verification (does NOT reuse f / Algorithm 3)
 # ----------------------------------------------------------------------------------------------
 def verify(L: Layout, plans, agvs, jobs, prm: Params):
-#     Every AGV starts at π at time 0 and ends at π.
-# No node conflict: two different AGVs on the same node within δ. Parking and lobbies are exempt.
-# No track conflict: two AGVs on one bidirectional track within δ, in either direction.
-# No pause on an edge: each edge window is exactly the travel time. This is assumption 5.
-# Each node window is exactly the dwell time (η or η′ at pickup/delivery, 0 elsewhere). Only π may be longer.
-# Every job is served exactly once.
-    """Return a list of violations (empty list = every assumption of the paper holds)."""
-    bad, d = [], prm.delta
-    node_w, track_w = defaultdict(list), defaultdict(list)
+    """Independently check route, job service, node/track safety, and lift capacity."""
+    bad, d, tol = [], prm.delta, 1e-6
+    node_w, track_w, lift_w, lobby_w = defaultdict(list), defaultdict(list), defaultdict(list), defaultdict(list)
+    job_by_id = {j.j: j for j in jobs}
+    assignment, event_rows = defaultdict(list), defaultdict(list)
+
     for a in agvs:
-        pl = plans[a.i]
-        if pl.R[0] != L.pi or pl.R[-1] != L.pi or abs(pl.P[0][0]) > 1e-6:
+        for jid in a.jobs:
+            assignment[jid].append(a.i)
+        pl = plans.get(a.i)
+        if pl is None:
+            bad.append(f"{a.i}: missing plan")
+            continue
+        if len(pl.R) != len(pl.P) or len(pl.R) != len(pl.dwell):
+            bad.append(f"{a.i}: route, windows, and dwell lengths differ")
+            continue
+        if not pl.R or pl.R[0] != L.pi or pl.R[-1] != L.pi or abs(pl.P[0][0]) > tol:
             bad.append(f"{a.i}: must start at time 0 at pi and end at pi")
+        if pl.R != a.R:
+            bad.append(f"{a.i}: plan route is discontinuous from assigned route (including floor-leg joints)")
+        at = defaultdict(list)
+        for event_order, event in enumerate(pl.events):
+            if len(event) != 3:
+                bad.append(f"{a.i}: malformed job event {event!r}")
+                continue
+            idx, kind, jid = event
+            if not isinstance(idx, int) or not 0 <= idx < len(pl.R) or kind not in ("pickup", "delivery"):
+                bad.append(f"{a.i}: invalid event {event!r}")
+                continue
+            event_rows[jid].append((a.i, idx, kind, event_order))
+            at[idx].append((event_order, kind, jid))
+
         for m, n in enumerate(pl.R):
             lt, rt = pl.P[m]
-            if n not in L.exempt and abs((rt - lt) - pl.dwell[m]) > 1e-6:
-                bad.append(f"{a.i}: node window n{m + 1}={n} length {rt - lt:.3f} != dwell {pl.dwell[m]}")
-            if n in L.exempt and rt - lt < pl.dwell[m] - 1e-6:
+            if not L.G.has_node(n):
+                bad.append(f"{a.i}: route contains unknown node {n}")
+                continue
+            if rt < lt - tol:
+                bad.append(f"{a.i}: negative node window at n{m + 1}={n}")
+            required = sum(prm.eta if kind == "pickup" else prm.eta_p for _, kind, _ in at[m])
+            if pl.dwell[m] < required - tol:
+                bad.append(f"{a.i}: dwell at {n} is shorter than job service time")
+            if n not in L.exempt and rt - lt < pl.dwell[m] - tol:
+                bad.append(f"{a.i}: node window n{m + 1}={n} is shorter than dwell {pl.dwell[m]}")
+            if n in L.exempt and rt - lt < pl.dwell[m] - tol:
                 bad.append(f"{a.i}: parking/lobby window too short")
             if n not in L.exempt:
                 node_w[n].append((lt, rt, a.i))
-            if m > 0:
-                e0, e1 = pl.edge_window(m)
-                if abs((e1 - e0) - L.delta_edge(pl.R[m - 1], n)) > 1e-6:
-                    bad.append(f"{a.i}: AGV pauses on edge e(n{m},n{m + 1})")
-                track_w[frozenset((pl.R[m - 1], n))].append((e0, e1, a.i))
-    for kind, table in (("node", node_w), ("track", track_w)):
+            if n in L.lobbies and rt > lt + tol:
+                lobby_w[n].append((lt, rt, a.i))
+            if m == 0:
+                continue
+            u = pl.R[m - 1]
+            if not L.G.has_edge(u, n):
+                bad.append(f"{a.i}: route discontinuity at {u}->{n} (including floor-leg joint)")
+                continue
+            e0, e1 = pl.edge_window(m)
+            travel = L.delta_edge(u, n)
+            if abs((e1 - e0) - travel) > tol:
+                bad.append(f"{a.i}: AGV pauses on edge e(n{m},n{m + 1})")
+            if L.is_lift(u, n):
+                if abs((pl.P[m][0] - pl.P[m - 1][1]) - travel) > tol:
+                    bad.append(f"{a.i}: hybrid lift-leg joint is not time-contiguous at {u}->{n}")
+                lift_w[frozenset((u, n))].append((e0, e1, a.i))
+            else:
+                key = frozenset((u, n)) if prm.track_rule == "strict" else (u, n)
+                track_w[key].append((e0, e1, a.i))
+
+    def conflicts(kind, table):
         for key, ws in table.items():
             ws.sort()
             for x in range(len(ws)):
@@ -358,11 +483,82 @@ def verify(L: Layout, plans, agvs, jobs, prm: Params):
                     if ws[y][0] >= ws[x][1] + d - EPS:
                         break
                     if ws[x][2] != ws[y][2] and ws[y][0] < ws[x][1] + d - EPS and ws[y][1] > ws[x][0] - d + EPS:
-                        bad.append(f"{kind} conflict {sorted(key) if kind == 'track' else key}: "
-                                   f"{ws[x][2]} {ws[x][:2]} vs {ws[y][2]} {ws[y][:2]}")
-    served = sorted(j for a in agvs for j in a.jobs)
-    if served != sorted(j.j for j in jobs):
-        bad.append("some job is not served exactly once")
+                        label = sorted(key) if isinstance(key, frozenset) else key
+                        bad.append(f"{kind} conflict {label}: {ws[x][2]} {ws[x][:2]} vs {ws[y][2]} {ws[y][:2]}")
+
+    conflicts("node", node_w)
+    if prm.track_rule == "strict":
+        conflicts("track", track_w)
+    elif prm.track_rule == "same-direction":
+        # Same-direction following is allowed; check only opposing traffic.
+        directed = defaultdict(list)
+        for (u, v), ws in track_w.items():
+            directed[(u, v)].extend(ws)
+        checked = set()
+        for u, v in directed:
+            key = frozenset((u, v))
+            if key in checked:
+                continue
+            checked.add(key)
+            for x in directed[(u, v)]:
+                for y in directed.get((v, u), ()):
+                    if x[2] != y[2] and x[0] < y[1] + d - EPS and x[1] > y[0] - d + EPS:
+                        bad.append(f"track conflict {sorted(key)}: {x[2]} {x[:2]} vs {y[2]} {y[:2]}")
+    else:
+        bad.append(f"unknown track rule {prm.track_rule!r}")
+    # Lift capacity is checked separately from the ordinary track rule: following on a lift
+    # is never allowed, and opposite-direction travel is never allowed either.
+    conflicts("lift capacity", lift_w)
+    if L.lobby_capacity is not None:
+        for lobby, windows in lobby_w.items():
+            events = sorted((t, delta) for lt, rt, _ in windows
+                            for t, delta in ((lt, 1), (rt, -1)))
+            active = 0
+            for t, delta in events:
+                active += delta
+                if active > L.lobby_capacity:
+                    bad.append(f"lobby capacity exceeded at {lobby}: {active} > {L.lobby_capacity} near {t:.3f}")
+                    break
+
+    for jid, job in job_by_id.items():
+        assigned, rows = assignment.get(jid, []), event_rows.get(jid, [])
+        if len(assigned) != 1:
+            bad.append(f"{jid}: job must be assigned exactly once")
+        pickup = [r for r in rows if r[2] == "pickup"]
+        delivery = [r for r in rows if r[2] == "delivery"]
+        for kind, station, matches in (("pickup", job.p, pickup), ("delivery", job.p_prime, delivery)):
+            if len(matches) != 1:
+                bad.append(f"{jid}: must have exactly one {kind} event")
+            for aid, idx, _, _ in matches:
+                if aid not in assigned:
+                    bad.append(f"{jid}: {kind} event is not on the assigned AGV")
+                pl = plans.get(aid)
+                if pl and idx < len(pl.R) and pl.R[idx] != station:
+                    bad.append(f"{jid}: {kind} is not at its station {station}")
+        if len(pickup) == len(delivery) == 1:
+            ap, ip, _, _ = pickup[0]
+            ad, idel, _, _ = delivery[0]
+            if ap != ad or ip > idel or (ip == idel and pickup[0][3] >= delivery[0][3]):
+                bad.append(f"{jid}: pickup must precede delivery on the same AGV")
+            elif plans.get(ap):
+                # For events at the same node, use the recorded event order and service durations.
+                def completion(row):
+                    aid, idx, kind, order = row
+                    t = plans[aid].P[idx][1] - plans[aid].dwell[idx]
+                    local = sorted((r for r in event_rows[jid] if r[0] == aid and r[1] == idx),
+                                   key=lambda r: r[3])
+                    for event in local:
+                        t += prm.eta if event[2] == "pickup" else prm.eta_p
+                        if event[3] == order:
+                            return t
+                    return t
+                if completion(pickup[0]) > completion(delivery[0]) + tol:
+                    bad.append(f"{jid}: pickup completion must precede delivery completion")
+
+    for jid in sorted(set(assignment) - set(job_by_id)):
+        bad.append(f"{jid}: assignment references unknown job")
+    for jid in sorted(set(event_rows) - set(job_by_id)):
+        bad.append(f"{jid}: event references unknown job")
     return bad
 
 
@@ -379,7 +575,9 @@ def plan_segments(L: Layout, pl: Plan):
         if m > 0:
             e0, e1 = pl.edge_window(m)
             segs.append(("lift" if L.is_lift(pl.R[m - 1], n) else "travel", e0, e1, f"{pl.R[m - 1]}->{n}"))
-        t = lt
+        t = rt - pl.dwell[m]
+        if t > lt + 1e-9 and m < len(pl.R) - 1:
+            segs.append(("wait", lt, t, f"wait at {n}"))
         for kind, jid in ev_at.get(m, []):
             dur = pl.dwell[m] / max(1, len(ev_at[m]))
             segs.append((kind, t, t + dur, f"{jid}@{n}"))
@@ -398,7 +596,7 @@ def final_job_times(plans, agvs, prm: Params):
         for idx, kind, jid in pl.events:
             at[idx].append((kind, jid))
         for idx, evs in at.items():
-            t = pl.P[idx][0]
+            t = pl.P[idx][1] - pl.dwell[idx]
             for kind, jid in evs:
                 t += pl.dwell[idx] / len(evs)
                 out.setdefault(jid, {"agv": a.i})["pickup_done" if kind == "pickup" else "delivery_done"] = t
@@ -440,6 +638,8 @@ def run_pipeline(L: Layout, jobs, agvs, prm: Params, log: Log):
     plans, calls = algorithm_2(L, agvs, prm, log)
     t2 = time.perf_counter()
     violations = verify(L, plans, agvs, jobs, prm)
+    if L.lobby_capacity is not None and violations:
+        raise RuntimeError(f"capacity-constrained centralized plan failed verification: {violations[0]}")
     return dict(estimate=estimate, plans=plans, calls=calls, violations=violations,
                 t_alg1=t1 - t0, t_alg2=t2 - t1)
 

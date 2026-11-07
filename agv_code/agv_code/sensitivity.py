@@ -4,7 +4,7 @@ Run from this directory with:
     python sensitivity.py
 
 The default experiment evaluates 3 service times x 3 safety gaps x 3 lift
-lengths x 3 seeds x 2 planner configurations, using 50 jobs and 10 AGVs.
+lengths x 3 seeds x 4 planner configurations, using 50 jobs and 10 AGVs.
 Results are written to results_sensitivity/sensitivity.csv.
 """
 from __future__ import annotations
@@ -147,7 +147,7 @@ def count_central_windows(L: Layout, plans) -> int:
 
 def run_case(config: str, seed: int, n_jobs: int, n_agvs: int,
              eta: float, delta: float, lift_len: float) -> dict:
-    """Run one centralized (A) or hybrid (C) scenario and return its CSV row."""
+    """Run one A/B/B2/C scenario and return its sensitivity CSV row."""
     L = build_five_floors(lift_length=lift_len)
     prm = Params(eta=eta, eta_p=eta, delta=delta, lam=1.0)
     jobs = make_jobs(L, prm, n_jobs, seed)
@@ -161,13 +161,24 @@ def run_case(config: str, seed: int, n_jobs: int, n_agvs: int,
         result = run_pipeline(L, jobs, agvs, prm, log)
         cpu_ms = 1000.0 * (result["t_alg1"] + result["t_alg2"])
         windows = count_central_windows(L, result["plans"])
-    elif config == "C":
-        # C uses lift lobbies and floor-local planning in FCFS order.
-        result = run_hybrid(L, jobs, agvs, prm, log, order="fcfs")
-        cpu_ms = 1000.0 * max(s["cpu"] for s in result["servers"].values())
-        windows = max(s["windows"] for s in result["servers"].values())
+    elif config == "B":
+        # B is centralized with lobbies and strict AGV-priority routing.
+        result = run_pipeline(L, jobs, agvs, prm, log)
+        cpu_ms = 1000.0 * (result["t_alg1"] + result["t_alg2"])
+        windows = count_central_windows(L, result["plans"])
+    elif config in ("B2", "C"):
+        # B2 and C use the same FCFS route-leg order; B2 holds all floor
+        # reservations in one planner, while C has one planner per floor.
+        result = run_hybrid(L, jobs, agvs, prm, log, order="fcfs",
+                            single_server=(config == "B2"))
+        if config == "B2":
+            cpu_ms = 1000.0 * sum(s["cpu"] for s in result["servers"].values())
+            windows = sum(s["windows"] for s in result["servers"].values())
+        else:
+            cpu_ms = 1000.0 * max(s["cpu"] for s in result["servers"].values())
+            windows = max(s["windows"] for s in result["servers"].values())
     else:
-        raise ValueError("config must be 'A' (centralized) or 'C' (hybrid)")
+        raise ValueError("config must be one of A, B, B2, C")
     _wall_seconds = time.perf_counter() - started
 
     m = metrics(L, result["plans"], agvs, jobs, result["estimate"],
@@ -198,7 +209,7 @@ def run_sweep(outdir: str = DEFAULT_OUTDIR) -> str:
         for delta in DELTA_VALUES:
             for lift_len in LIFT_LENGTH_VALUES:
                 for seed in SEEDS:
-                    for config in ("A", "C"):
+                    for config in ("A", "B", "B2", "C"):
                         row = run_case(config, seed, N_JOBS, N_AGVS,
                                        eta, delta, lift_len)
                         rows.append(row)

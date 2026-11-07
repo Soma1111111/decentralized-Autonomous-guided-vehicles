@@ -48,7 +48,7 @@ class SensitivityExperimentTests(unittest.TestCase):
 
     def test_both_planners_return_verified_csv_rows(self):
         expected = set(sensitivity.CSV_FIELDS)
-        for config in ("A", "C"):
+        for config in ("A", "B", "B2", "C"):
             row = sensitivity.run_case(config, seed=3, n_jobs=4, n_agvs=2,
                                        eta=8.0, delta=5.0, lift_len=20.0)
             self.assertEqual(set(row), expected)
@@ -74,7 +74,7 @@ class SensitivityExperimentTests(unittest.TestCase):
             with open(path, newline="", encoding="utf-8") as stream:
                 reader = csv.DictReader(stream)
                 self.assertEqual(tuple(reader.fieldnames), sensitivity.CSV_FIELDS)
-                self.assertEqual(len(list(reader)), 2)
+                self.assertEqual(len(list(reader)), 4)
 
 
 if __name__ == "__main__":

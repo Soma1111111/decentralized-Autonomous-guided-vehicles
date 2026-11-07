@@ -9,6 +9,8 @@ are followed by agv_core.algorithm_2 (which invokes Algorithm 3).
 """
 from __future__ import annotations
 
+import csv
+import os
 import random
 import statistics
 import time
@@ -142,6 +144,7 @@ def main():
     names = {"A": "Centralized", "B": "Centralized+lobbies",
              "C": "Hybrid", "FCFS": "FCFS assignment", "Random": "Random assignment"}
     values = {name: [] for name in names}
+    raw_rows = []
 
     for seed in seeds:
         # Use run_one for A/B/C so these exactly match agv_compare's layouts,
@@ -149,8 +152,13 @@ def main():
         for cfg in ("A", "B", "C"):
             _, detail = run_one(cfg, seed, n_jobs, n_agvs, prm)
             m = detail["m"]
-            values[cfg].append((m["makespan_last_delivery"],
-                                m["tardiness_final"], m["load_imbalance"]))
+            metrics_row = (m["makespan_last_delivery"],
+                           m["tardiness_final"], m["load_imbalance"])
+            values[cfg].append(metrics_row)
+            raw_rows.append(dict(config=cfg, seed=seed, jobs=n_jobs,
+                                 agvs=n_agvs, makespan=metrics_row[0],
+                                 tardiness=metrics_row[1], imbalance=metrics_row[2],
+                                 ok=True))
 
         L = layout("A")
         jobs = make_jobs(L, prm, n_jobs, seed)
@@ -162,8 +170,13 @@ def main():
                                    f"{result['violations'][:3]}")
             m = metrics(L, result["plans"], agvs, jobs, result["estimate"],
                         result["calls"], prm)
-            values[label].append((m["makespan_last_delivery"],
-                                  m["tardiness_final"], m["load_imbalance"]))
+            metrics_row = (m["makespan_last_delivery"],
+                           m["tardiness_final"], m["load_imbalance"])
+            values[label].append(metrics_row)
+            raw_rows.append(dict(config=label, seed=seed, jobs=n_jobs,
+                                 agvs=n_agvs, makespan=metrics_row[0],
+                                 tardiness=metrics_row[1], imbalance=metrics_row[2],
+                                 ok=True))
 
         print(f"seed {seed}: all five configurations verified")
 
@@ -173,6 +186,17 @@ def main():
     for key, label in names.items():
         means = [statistics.mean(row[idx] for row in values[key]) for idx in range(3)]
         print(f"{label:<22}{means[0]:16.1f}{means[1]:17.1f}{means[2]:17.1f}")
+
+    outdir = "results_baselines"
+    os.makedirs(outdir, exist_ok=True)
+    with open(os.path.join(outdir, "assignment_baselines.csv"), "w",
+              newline="", encoding="utf-8") as stream:
+        fields = ("config", "seed", "jobs", "agvs", "makespan", "tardiness",
+                  "imbalance", "ok")
+        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(raw_rows)
+    print(f"wrote verified per-seed rows to {outdir}/assignment_baselines.csv")
 
 
 if __name__ == "__main__":

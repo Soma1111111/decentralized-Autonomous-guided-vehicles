@@ -1,0 +1,166 @@
+\section{System Architecture and Methods}
+\label{sec:methods}
+
+The method combines the prioritized assignment and route-window procedures of
+the centralized baseline \cite{guo2024} with a hierarchical floor decomposition.
+The central component assigns jobs, splits routes at lifts, arbitrates lift
+use, and merges the resulting schedules. A floor-specific planner constructs
+conflict-free timings for its local route legs.
+
+\subsection{Architecture classification}
+
+The architecture is hierarchical and decomposed, with floor-local planning
+components; it is not fully decentralized. Job assignment, lift booking,
+route-leg dispatch, final-plan merging, and verification remain centrally
+orchestrated. Floor planners maintain local node and track reservation sets
+$W_n$ and $W'_e$, and resolve conflicts on their own route legs. The central
+lift calendar coordinates the cross-floor resource.
+
+Figure~\ref{fig:architecture-flow} summarizes the information flow. The
+central-to-floor exchanges are internal planner requests and reservation
+responses in the evaluated implementation. The AGVs do not negotiate jobs or
+lift slots directly.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.94\linewidth}{\centering
+Jobs and fleet state $\longrightarrow$ Central planner\\
+\emph{Algorithm 1 assignment; route split; lift booking; dispatch}\\
+$\longleftrightarrow$ Floor planners $f\in F$\\
+\emph{Local route-leg planning with $W_n$ and $W'_e$}\\
+$\longrightarrow$ Central merge and independent verification\\
+$\longrightarrow$ Complete schedules for AGV execution}}
+\caption{Central coordination and floor-local route planning.}
+\label{fig:architecture-flow}
+\end{figure}
+
+\subsection{Algorithm 1: prioritized job assignment}
+
+Jobs are processed in increasing desired pickup time, with job identifier as
+the tie-breaker. For each candidate AGV $i$, the planner evaluates
+$F_{ji}=ct_{ji}+\lambda(et_{ji}+dt_{ji})$ using predicted completion time,
+pickup earliness, and delivery tardiness. It assigns the job to the AGV with
+minimum fitness; ties use fixed AGV priority. The selected AGV's route is
+extended through shortest paths to pickup and delivery, with loading and
+unloading dwell times $\eta$ and $\eta'$, and is ultimately extended back to
+parking $\pi$.
+
+\begin{algorithm}[t]
+\caption{Prioritized job assignment}
+\label{alg:assignment}
+\begin{algorithmic}[1]
+\REQUIRE Jobs $J$, AGVs $V$, fitness weight $\lambda$, service times $\eta,\eta'$
+\ENSURE Assignment $x_{ji}$ and complete routes $R_i$
+\FOR{each $j\in J$ in order $(t_j,j)$}
+  \FOR{each $i\in V$}
+    \STATE Compute $ct_{ji},et_{ji},dt_{ji}$ from AGV state $(s_i,vt_i)$.
+    \STATE $F_{ji}\gets ct_{ji}+\lambda(et_{ji}+dt_{ji})$.
+  \ENDFOR
+  \STATE Choose $i^*\gets\arg\min_i(F_{ji},\rho_i)$; set $x_{ji^*}\gets1$.
+  \STATE Append shortest paths $s_{i^*}\to p_j\to p'_j$ with dwell $\eta,\eta'$.
+  \STATE Update AGV state to $(p'_j,ct_{ji^*})$.
+\ENDFOR
+\FOR{each $i\in V$}
+  \STATE Append a shortest path from the final assigned station to $\pi$.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Algorithm 2: prioritized conflict-free routing}
+
+Algorithm~\ref{alg:routing} processes AGVs in ascending fixed priority,
+$V_1\rightarrow V_{|V|}$. For each route, it constructs node occupancy
+windows $[lt_m,rt_m]$ and edge traversal windows. If a window conflicts with a
+frozen reservation, Algorithm~\ref{alg:sliding} delays the affected route
+segment. The resulting node and track windows are then added to the frozen
+sets $W_n$ and $W'_e$. In the paper-style configuration, only parking $\pi$
+is an exempt waiting node; the lobby configurations also exempt lift-lobby
+nodes.
+
+\begin{algorithm}[t]
+\caption{Prioritized conflict-free routing}
+\label{alg:routing}
+\begin{algorithmic}[1]
+\REQUIRE Routes $R_i$, dwell times, priority order $V_1,\ldots,V_{|V|}$
+\ENSURE Timed plans and frozen reservations $W_n,W'_e$
+\STATE Initialize empty node and edge reservation sets $W_n,W'_e$.
+\FOR{each AGV $i$ in priority order}
+  \STATE Construct node and edge windows along $R_i$.
+  \FOR{each candidate window conflicting with $W_n$ or $W'_e$}
+    \STATE Apply Algorithm~\ref{alg:sliding} to delay the route segment.
+  \ENDFOR
+  \STATE Freeze ordinary node windows in $W_n$ and track windows in $W'_e$.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Algorithm 3: sliding-window conflict elimination}
+
+For a candidate interval $[lt,rt]$ and fixed windows $W$, the interval
+function $f(lt,rt,W)$ returns the smallest right shift $st$ that clears the
+candidate with safety separation $\delta$, together with the available
+shift bound $mt$ before the next blocking window. For a conflict at route
+visit $p$, the algorithm sweeps backward to the nearest preceding exempt
+node $q$, accumulating the route-segment shift $st^*$ and maintaining the
+bound $mt^*$. It repeats the sweep up to $k_{\max}$ passes. On exhaustion,
+the fallback delays departure at the exempt node until the blocking traffic
+is free. The shifted windows from $q+1$ through $p$ move by $st^*$, and the
+window at $q$ is extended by that delay.
+
+\begin{algorithm}[t]
+\caption{Sliding-window conflict elimination}
+\label{alg:sliding}
+\begin{algorithmic}[1]
+\REQUIRE Conflict visit $p$, reservations $W$, route $R$, limit $k_{\max}$
+\ENSURE Conflict-free shifted windows and delay $st^*$
+\STATE Find the nearest preceding exempt visit $q$.
+\FOR{$k=1$ to $k_{\max}$}
+  \STATE Set $st^*\gets0$ and $mt^*\gets\infty$.
+  \FOR{visits $m=p,p-1,\ldots,q+1$}
+    \STATE Evaluate $f(lt_m+st^*,rt_m+st^*,W)$; update $mt^*$ and $st^*$.
+    \IF{$st^*>mt^*$} \STATE Stop this backward sweep. \ENDIF
+  \ENDFOR
+  \IF{the sweep completes within $mt^*$} \STATE \textbf{break} \ENDIF
+\ENDFOR
+\IF{no feasible sweep completed}
+  \STATE Apply the fallback delay at $q$ until blocking reservations clear.
+\ENDIF
+\STATE Shift windows $q+1,\ldots,p$ and extend the window at $q$ by $st^*$.
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Hybrid central-plus-floor-server extension}
+
+The hybrid planner cuts each complete route at lift edges into floor-local
+legs. Each floor planner schedules a leg using local $W_n$ and $W'_e$; when
+needed, the AGV waits at its entry lobby or at $\pi$. The central planner
+reserves the lift track at the earliest available time after the AGV is
+ready, respecting the safety separation. It then releases the next floor leg
+at the arrival lobby and merges floor and lift windows into the complete
+plan before verification.
+
+Legs are dispatched using either priority ordering or first-come-first-served
+(FCFS). FCFS orders legs by release time, AGV priority, then leg index. The
+priority order processes the legs of higher-priority AGVs first and is used
+as a decomposition check. In the tested seeds, priority-order hybrid plans
+match the centralized-with-lobbies plans. For the principal performance
+comparison, configuration C uses FCFS order.
+
+\begin{algorithm}[t]
+\caption{Hybrid floor-leg planning and lift booking}
+\label{alg:hybrid}
+\begin{algorithmic}[1]
+\REQUIRE Assigned routes, floor planners, central lift calendar
+\ENSURE Merged complete AGV plans
+\STATE Split each route into maximal floor-local legs at every lift.
+\STATE Insert each initial leg into the dispatch queue using the chosen order.
+\WHILE{the queue is nonempty}
+  \STATE Remove the next leg and schedule it with its floor planner.
+  \IF{the route continues on another floor}
+    \STATE Reserve the intervening lift trip centrally.
+    \STATE Release the next leg at the arrival lobby after lift travel.
+  \ENDIF
+\ENDWHILE
+\STATE Merge floor-leg and lift windows; independently verify each plan.
+\end{algorithmic}
+\end{algorithm}

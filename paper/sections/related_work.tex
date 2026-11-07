@@ -1,0 +1,96 @@
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Centralized prioritized planning and conflict search}
+
+Guo et al.'s ICARCV 2024 method is the baseline for this study. It formulates
+large-scale multiple-AGV scheduling as prioritized assignment and route
+planning, resolving conflicts against previously planned higher-priority
+vehicles \cite{guo2024}. The sequential approach avoids joint search over all
+vehicle paths, but its result depends on assignment and priority order.
+Prioritized wait adjustment instead starts from individual paths and shifts
+waiting using safe intervals; its preliminary evaluation reports 50--250
+agents and trades solution quality for runtime \cite{andreychuk2018}.
+
+Conflict-based search (CBS) offers a coupled alternative. Continuous-time CBS
+methods model nonuniform action durations and geometric collisions
+\cite{andreychuk2022}. He et al. extend CBS to multi-floor MAPF with
+single-agent elevator occupancy and elevator reset intervals, explicitly
+including lift conflicts in search \cite{he2026}. These methods provide
+stronger conflict reasoning, while our experiments focus on job assignment,
+prioritized route windows, and lift arbitration in a decomposed planner.
+
+\subsection{Distributed multi-robot and AGV coordination}
+
+Distributed manufacturing schedulers assign decisions to resource agents.
+Zhou et al. use collaborative reinforcement-learning schedulers for
+heterogeneous smart-factory units and consider rush orders and machine
+failures \cite{zhou2021}. Maoudj et al. formulate a capacitated multi-AGV
+scheduling problem with conflicting products and compare a decentralized
+multi-agent approach with a mixed-integer model \cite{maoudj2023}. Draganjac
+et al. present decentralized traffic management based on local coordination
+for free-ranging industrial vehicles \cite{draganjac2020}. These works
+address decentralized decisions or online manufacturing dynamics; they do
+not evaluate the same combination of a central lift calendar and floor-local
+route-leg reservations used here.
+
+\subsection{Hierarchical and zone-based planning}
+
+Spatial decomposition reduces the planning scope by assigning agents to
+regions or layers. The spare-zone method of Zhao et al. uses a hierarchical
+allocation layer and local coordination to resolve collisions and deadlocks
+for vehicles following fixed paths \cite{zhao2021}. Pratissoli et al. use a
+centralized, decoupled, multilayer traffic manager with topological sectors,
+traffic-aware route planning, and time-expanded coordination in an industrial
+setting \cite{pratissoli2024}. HMAPP combines high-level region sequences
+with regional conflict-based searches \cite{hmapp2021}; hierarchical
+large-scale multirobot replanning similarly combines global congestion-aware
+routing and parallel low-level planning \cite{pan2024}. Verma et al.'s
+dynamic resource reservation method allows multiple reservations at shared
+resource points and can be implemented centrally or with local controllers
+\cite{verma2024}. These approaches motivate layered coordination and local
+waiting or conflict-resolution areas. The present implementation instead
+partitions local route windows by floor while retaining central job
+assignment and lift booking.
+
+\subsection{Learning-based and optimization-based AGV scheduling}
+
+Scheduling quality and traffic efficiency have also been addressed with
+optimization, learning, and large-neighborhood methods. Wang et al. use a
+neural network to predict travel time in a multi-state AGV scheduling method
+for flexible manufacturing \cite{wang2022}. Lu et al. combine workstation
+assignment rules with a space-time scheduling model and cooperative
+optimization for conflict-free AGV routes \cite{lu2023}. Hu et al. combine
+reservation timetables, task allocation, and variable-neighborhood search
+for multi-load AGVs; their experiments include fleets from 3 to 200 vehicles
+\cite{hu2022}. MAPF-LNS2 repairs collisions by repeatedly replanning subsets
+of agents and reports results up to 8,000 agents on a congested warehouse
+benchmark under a one-hour limit \cite{mapflns2022}. These approaches target
+search quality, assignment, or scale, but the cited formulations do not
+evaluate our specific central-lift and floor-server split.
+
+\subsection{Multi-floor warehouses and lifts}
+
+Elevator-aware warehouse routing is studied directly by Ma et al. for a
+double-warehouse system connected by elevators \cite{ma2014}. Werner analyzes
+MAPF in high-rack warehouses where agents remain on their assigned levels
+and elevators transport goods vertically; the method constructs waiting
+zones for elevator use \cite{werner2025}. He et al.'s CBS-E formulation
+models elevator capacity and reset-time conflicts \cite{he2026}. These
+papers demonstrate that lift state and waiting near elevator shafts matter
+to multi-floor routing. Our evaluated contribution combines this resource
+with prioritized job assignment, floor-local route-leg planning, and
+central lift booking. The claim is limited to this implemented combination
+and the experiments in this paper; we make no claim of priority over all
+related systems.
+
+\subsection{Contributions}
+
+This work reimplements the ICARCV 2024 prioritized-planning baseline with
+corrections to the original demonstration, then evaluates a hierarchical
+central-plus-floor-server extension. The central component assigns jobs and
+books lifts, floor planners resolve local route conflicts, and lift-lobby
+waiting points support delays near floor transitions. An independent checker
+validates completed schedules. Results compare centralized, FCFS, and hybrid
+variants over seeded job sets, fleet sizes, job scales, and parameter settings
+for the tested factory layouts \cite{projectRepo}.

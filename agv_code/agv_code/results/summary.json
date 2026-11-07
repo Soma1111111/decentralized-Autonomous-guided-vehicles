@@ -15,8 +15,8 @@
   "verification_ok": true,
   "violations": [],
   "computation_time_s": {
-    "algorithm_1": 0.005,
-    "algorithm_2_and_3": 0.097
+    "algorithm_1": 0.01,
+    "algorithm_2_and_3": 0.154
   },
   "makespan_last_delivery": 7883.72,
   "fleet_back_at_parking": 8099.33,

@@ -1,4 +1,5 @@
-numpy
-matplotlib
-networkx
-pillow
+networkx==3.7
+numpy==2.5.4
+matplotlib==3.11.2
+Pillow==13.0.0
+scipy==1.15.2

@@ -1,0 +1,37 @@
+LOBBY CAPACITY SWEEP (10 seeds, 100 jobs, 20 AGVs)
+Means include only verified plans. Failed means the planner did not produce a verified plan;
+it does not prove that the underlying scheduling instance is physically infeasible.
+Finite-capacity C uses FCFS tour admission with one AGV active at a time;
+other AGVs wait at pi, eliminating lobby wait-for cycles.
+
+3-floor
+K           Config    Verified      Failed      Makespan       Tardiness     Imbalance
+1           B                0          10           n/a             n/a           n/a
+1           C               10           0      19,153.1       911,565.3      18,292.6
+2           B                2           8       4,108.9       146,026.1       3,260.2
+2           C               10           0      19,153.1       911,565.3      18,292.6
+4           B               10           0       3,764.2       124,813.4       2,907.1
+4           C               10           0      19,153.1       911,565.3      18,292.6
+unlimited   B               10           0       3,705.9       122,278.8       2,832.3
+unlimited   C               10           0       2,768.9        90,104.5       1,441.2
+
+5-floor
+K           Config    Verified      Failed      Makespan       Tardiness     Imbalance
+1           B                0          10           n/a             n/a           n/a
+1           C               10           0      26,701.3     1,294,641.3      25,480.3
+2           B                0          10           n/a             n/a           n/a
+2           C               10           0      26,701.3     1,294,641.3      25,480.3
+4           B                9           1       4,059.7       134,817.4       2,937.0
+4           C               10           0      26,701.3     1,294,641.3      25,480.3
+unlimited   B               10           0       4,014.8       133,751.7       2,863.0
+unlimited   C               10           0       3,174.2       110,421.4       1,666.1
+
+C vs B (percentage reduction; only seeds feasible in both configurations):
+  3-floor K=1: no paired feasible seeds
+  3-floor K=2 (2 paired seeds): makespan -380.4%, tardiness -535.6%, imbalance -478.4%
+  3-floor K=4 (10 paired seeds): makespan -408.8%, tardiness -630.3%, imbalance -529.2%
+  3-floor K=unlimited (10 paired seeds): makespan +25.3%, tardiness +26.3%, imbalance +49.1%
+  5-floor K=1: no paired feasible seeds
+  5-floor K=2: no paired feasible seeds
+  5-floor K=4 (9 paired seeds): makespan -559.0%, tardiness -858.5%, imbalance -769.5%
+  5-floor K=unlimited (10 paired seeds): makespan +20.9%, tardiness +17.4%, imbalance +41.8%

@@ -1,0 +1,44 @@
+CENTRALIZED vs HYBRID  -  100 jobs, 20 AGVs, seeds 1..10 (10 job sets)
+track rule: same-direction
+all plans verified by agv_core.verify(); B == C priority order and B2 == C FCFS on every seed
+
+  A  Centralized (paper)
+  B  Centralized + lobbies
+  B2  Centralized FCFS legs
+  C  Hybrid: central + floor servers
+  WA  Prioritized wait adjustment
+
+metric (mean over seeds)                                 A             B            B2             C            WA    C vs A
+Last delivery (makespan) (s)                       7,877.7       3,703.4       2,650.8       2,650.8       5,999.9      -66%
+Total tardiness (s)                              314,433.9     117,045.2      83,566.2      83,566.2     226,879.9      -73%
+Load imbalance (max - min usage) (s)               7,050.7       2,822.9       1,366.0       1,366.0       5,144.8      -81%
+Total waiting (parking + lobbies) (s)             64,366.5      26,689.4      25,809.8      25,809.8      49,584.5      -60%
+Longest wait of one AGV (s)                        7,048.6       2,831.5       1,798.1       1,798.1       5,133.9      -74%
+Planning compute time, busiest server (ms)           109.2          17.4          26.9           9.2         165.6      -92%
+Planning compute time, all servers (ms)              109.2          17.4          26.9          24.5         165.6      -78%
+Time windows held by one server                    2,030.7       1,733.5       1,733.5         634.5       2,075.8      -69%
+Central <-> floor messages                             0.0           0.0         337.2         337.2           0.0         -
+Algorithm 3 calls                                    103.4         150.8         134.3         134.3           0.0      +30%
+
+Key schedule metrics (mean +/- sample standard deviation over seeds):
+metric                                    A                        B                       B2                        C                       WA
+makespan (s)              7,877.7 +/- 723.8        3,703.4 +/- 280.8        2,650.8 +/- 234.7        2,650.8 +/- 234.7        5,999.9 +/- 526.5
+tardiness (s)        314,433.9 +/- 38,312.0   117,045.2 +/- 12,235.4    83,566.2 +/- 10,246.3    83,566.2 +/- 10,246.3   226,879.9 +/- 22,351.3
+imbalance (s)             7,050.7 +/- 661.2        2,822.9 +/- 296.4        1,366.0 +/- 246.1        1,366.0 +/- 246.1        5,144.8 +/- 488.2
+
+Ablation interpretation:
+  A -> B adds lobby waiting points; this contrast estimates the lobby effect.
+  B -> B2 changes whole-route priority planning to FCFS route-leg processing in one global planner.
+  B2 -> C changes only the reservation-state split across floor servers; B2/C schedules match
+  on every seed, so the floor split changes compute/state distribution but not these schedule metrics.
+  makespan: A=7,877.7, B=3,703.4, B2=2,650.8, C=2,650.8
+  tardiness: A=314,433.9, B=117,045.2, B2=83,566.2, C=83,566.2
+  imbalance: A=7,050.7, B=2,822.9, B2=1,366.0, C=1,366.0
+
+per server, seed 7:   compute (ms)   windows held
+  A  central           108.7          1,989
+  B2  central            23.2          1,697
+  C  central             9.7            146
+  C  floor1              4.1            478
+  C  floor2              6.7            619
+  C  floor3              4.4            454

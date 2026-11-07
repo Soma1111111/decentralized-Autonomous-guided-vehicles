@@ -1,0 +1,62 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx,array}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{cite}
+\usepackage{url}
+
+\title{Hierarchical Hybrid Planning for Multi-AGV Scheduling in Multi-Floor Factories}
+
+\author{\IEEEauthorblockN{Author Name(s)}
+\IEEEauthorblockA{Department or Organization\\
+City, Country\\
+email address}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Multi-floor manufacturing requires automated guided vehicles (AGVs) to share
+both floor routes and lift resources. We reimplement the prioritized
+multi-AGV scheduling baseline of Guo et al. and evaluate a hierarchical
+extension in which a central planner assigns jobs and books lifts while
+floor-level planners schedule local route legs using lift lobbies as waiting
+points. In the tested three-floor layout, the hybrid configuration reduces
+mean makespan by 65\%, total tardiness by 72\%, and load imbalance by 80\%
+relative to the paper-style centralized configuration over ten job sets of
+100 jobs and 20 AGVs. A centralized FCFS-leg ablation produces the same
+schedules as the hybrid on the tested seeds, so the measured schedule gains
+are associated with lobby waiting and FCFS leg ordering; floor decomposition
+changes where reservation state and computation are held. Five-floor
+sensitivity and finite-lobby experiments show that outcomes depend on layout
+and capacity-handling choices, with some centralized finite-capacity runs
+failing verification. All reported successful plans pass an independent
+checker. These simulation results apply to the tested layouts, seeds, and
+parameters; they do not establish a general scalability or optimality claim.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Automated guided vehicles, multi-agent path finding, prioritized planning,
+multi-floor logistics, lift coordination, hierarchical scheduling.
+\end{IEEEkeywords}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/problem_model}
+\input{sections/methods}
+\input{sections/experimental_setup}
+\input{sections/results}
+\input{sections/fairness}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+\appendices
+\input{sections/reproducibility}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

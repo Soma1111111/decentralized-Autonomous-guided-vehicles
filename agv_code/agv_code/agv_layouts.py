@@ -44,7 +44,8 @@ def build_single_floor() -> Layout:
     return Layout(G, "A", speed=1.0)
 
 
-def build_three_floors(speed: float = 1.0, lift_lengths=None, lobbies: bool = False) -> Layout:
+def build_three_floors(speed: float = 1.0, lift_lengths=None, lobbies: bool = False,
+                       lobby_capacity=None) -> Layout:
     """lobbies=True inserts a lobby node at both ends of every lift: landing - lobby ~~lift~~ lobby - landing.
     The lobbies are ordinary nodes until they are added to Layout.exempt (see agv_compare.py)."""
     lift_lengths = lift_lengths or LIFT_LENGTHS
@@ -84,4 +85,42 @@ def build_three_floors(speed: float = 1.0, lift_lengths=None, lobbies: bool = Fa
         G.add_edge(u, v, length=float(length), kind="lift")
     n_lobby = sum(1 for _, d in G.nodes(data=True) if d.get("lobby"))
     assert G.number_of_nodes() == 27 + n_lobby and nx.is_connected(G)
-    return Layout(G, PARKING_THREE_FLOORS, speed=speed)
+    return Layout(G, PARKING_THREE_FLOORS, speed=speed, lobby_capacity=lobby_capacity)
+
+
+def _insert_lobbies(G):
+    """Replace each lift edge by landing-lobby, lift, lobby-landing edges."""
+    for u, v, data in list(G.edges(data=True)):
+        if data.get("kind") != "lift":
+            continue
+        length = data["length"]
+        G.remove_edge(u, v)
+        lu, lv = f"{u}~", f"{v}~"
+        for node, lobby in ((u, lu), (v, lv)):
+            x, y = G.nodes[node]["pos"]
+            G.add_node(lobby, pos=(x + 4, y + 4), floor=G.nodes[node]["floor"], lobby=True)
+            G.add_edge(node, lobby, length=LOBBY_LENGTH, kind="floor")
+        G.add_edge(lu, lv, length=length, kind="lift")
+
+
+def build_five_floors(speed: float = 1.0, lift_length: float = 40.0,
+                      lobbies: bool = False, lobby_capacity=None) -> Layout:
+    """Five 3x3-style floors with two lifts between each adjacent pair of floors."""
+    base = build_three_floors(speed=speed)
+    G = base.G.copy()
+    template_edges = [(u[1:], v[1:], dict(d)) for u, v, d in G.edges(data=True)
+                      if u.startswith("3") and v.startswith("3") and d.get("kind") == "floor"]
+    template_nodes = [(n[1:], d) for n, d in G.nodes(data=True) if n.startswith("3")]
+    for floor in (4, 5):
+        G.graph.setdefault("floor_names", {})[floor] = f"Floor {floor} - comb with two loops"
+        for suffix, data in template_nodes:
+            x, y = data["pos"]
+            G.add_node(f"{floor}{suffix}", pos=(x, y - 100 * (floor - 3)), floor=floor)
+        for u, v, data in template_edges:
+            G.add_edge(f"{floor}{u}", f"{floor}{v}", **data)
+    lifts = [("3A", "4A"), ("3F", "4G"), ("4A", "5A"), ("4F", "5G")]
+    for u, v in lifts:
+        G.add_edge(u, v, length=float(lift_length), kind="lift")
+    if lobbies:
+        _insert_lobbies(G)
+    return Layout(G, PARKING_THREE_FLOORS, speed=speed, lobby_capacity=lobby_capacity)

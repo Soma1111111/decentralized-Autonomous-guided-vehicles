@@ -1,0 +1,59 @@
+\section{Reproducibility and Implementation Map}
+\label{app:reproducibility}
+
+The experiment outputs and implementation are available in the project
+repository \cite{projectRepo}. The following map identifies the source
+locations for the algorithms described in the paper; line numbers refer to
+the repository version used to prepare this manuscript.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Implementation map for the evaluated methods.}
+\label{tab:implementation-map}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}X}
+\toprule
+Component & Source location & Relevant implementation \\
+\midrule
+Assignment and metrics & \texttt{agv\_code/agv\_code/agv\_core.py}, lines 154--211 and 606--649 & Fitness, route construction, Algorithm 1, reported metrics, and centralized pipeline. \\
+Conflict scheduling & \texttt{agv\_code/agv\_code/agv\_core.py}, lines 212--231, 268--408 & Interval function, Algorithm 3, route planning, reservation freezing, and Algorithm 2. \\
+Independent checking & \texttt{agv\_code/agv\_code/agv\_core.py}, lines 409--567 & Route continuity, service events, node/track/lift/lobby constraints, and verification. \\
+Hybrid planning & \texttt{agv\_code/agv\_code/agv\_hybrid.py}, lines 52--157 and 162--297 & Route splitting, floor-leg planning, lift booking, finite-capacity admission, dispatch, and plan merging. \\
+Layouts and comparison & \texttt{agv\_code/agv\_code/agv\_layouts.py}, lines 47--90 and 106--137; \texttt{agv\_code/agv\_code/agv\_compare.py}, lines 46--105 and 214--end & Three- and five-floor graphs, configuration runner, seeded comparison, and figures. \\
+Additional experiments & \texttt{agv\_code/agv\_code/sweep\_job\_scale.py}; \texttt{sensitivity.py}; \texttt{agv\_baselines.py}; \texttt{agv\_wait\_adjust.py}; \texttt{agv\_fairness\_experiment.py}; \texttt{lobby\_capacity\_sweep.py} & Job scale, parameter grid, assignment baselines, safe-interval planner, fairness variants, and lobby-capacity sweep. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+The regenerated tables use the CSV outputs under the experiment directories:
+\texttt{results\_hybrid/comparison.csv} and \texttt{sweep\_agvs.csv};
+\texttt{results\_scale/sweep\_jobs.csv};
+\texttt{results\_sensitivity/sensitivity.csv};
+\texttt{results\_baselines/assignment\_baselines.csv};
+\texttt{results\_wait\_adjustment/comparison.csv};
+\texttt{results\_lobby\_capacity/capacity\_sweep.csv}; and the per-seed
+CSVs in \texttt{results\_fairness/}. Figures included with the paper are
+copies of the generated comparison and fairness plots.
+
+From the repository root, install the project dependencies and run the
+experiments from the implementation directory:
+\begin{verbatim}
+cd agv_code/agv_code
+pip install -r requirements.txt
+python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20
+python sweep_job_scale.py
+python sensitivity.py
+python agv_baselines.py
+python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20 --sweep '' --outdir results_wait_adjustment
+python lobby_capacity_sweep.py
+python agv_fairness_experiment.py
+\end{verbatim}
+
+Compile from the \texttt{paper/} directory with a LaTeX installation that
+includes IEEEtran and BibTeX:
+\begin{verbatim}
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
+\end{verbatim}

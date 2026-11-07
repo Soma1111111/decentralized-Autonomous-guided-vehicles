@@ -20,7 +20,7 @@ from agv_core import Params
 JOB_COUNTS = (50, 100, 200, 400)
 SEEDS = (1, 2, 3, 4, 5)
 N_AGVS = 20
-CONFIGS = ("A", "C")
+CONFIGS = ("A", "B", "B2", "C", "WA")
 FIELDS = (
     "config", "seed", "jobs", "agvs", "makespan", "tardiness", "imbalance",
     "alg3_calls", "cpu_ms", "windows_per_server", "ok",
@@ -76,7 +76,7 @@ def make_summary(rows, csv_path="results_scale/sweep_jobs.csv"):
         return statistics.mean(selected)
 
     lines = [
-        "JOB-SCALE SWEEP: centralized A vs hybrid C",
+        "JOB-SCALE SWEEP: A/B/B2/C vs prioritized wait adjustment (WA)",
         f"20 AGVs; {len(SEEDS)} seeds (1-5); jobs {', '.join(map(str, JOB_COUNTS))};",
         "eta=eta'=16 s, delta=10 s, lambda=1, lift length=40 m.",
         f"All plans verified: {all(r['ok'] for r in rows)}; CSV: {csv_path}",
@@ -115,6 +115,13 @@ def make_summary(rows, csv_path="results_scale/sweep_jobs.csv"):
                 f"{improvements[metric][jobs]:11.1f}%" for metric in metrics
             )
         )
+
+    lines += ["", "WA reduction relative to C (%; positive favors WA):",
+              f"{'jobs':>6} " + " ".join(f"{metric:>12}" for metric in metrics)]
+    for jobs in JOB_COUNTS:
+        values = [100.0 * (mean("C", jobs, metric) - mean("WA", jobs, metric))
+                  / mean("C", jobs, metric) for metric in metrics]
+        lines.append(f"{jobs:6d} " + " ".join(f"{value:11.1f}%" for value in values))
 
     first, last = JOB_COUNTS[0], JOB_COUNTS[-1]
     changes = {metric: improvements[metric][last] - improvements[metric][first]

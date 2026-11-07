@@ -3,7 +3,7 @@ layout      : 3 floors x 9 nodes = 27 nodes, 38 edges, 4 lifts of [40.0] m, park
 fleet/jobs  : 20 AGVs (V_1..V_20), 100 random jobs (seed 7); 71 of them cross floors
 parameters  : eta = eta' = 16 s, delta = 10 s, lambda = 1, speed = 1 m/s
 verified    : OK - no node/track conflict, no pause on an edge, every job served once
-compute time: Algorithm 1 0.005 s, Algorithms 2+3 0.097 s
+compute time: Algorithm 1 0.010 s, Algorithms 2+3 0.154 s
 makespan    : last delivery at 7884 s; fleet back at parking at 8099 s
 load imbalance (max - min usage time): 7268 s
 earliness/tardiness: final plan 0 + 365303 s   (Algorithm 1 estimate 117 + 3814 s)
