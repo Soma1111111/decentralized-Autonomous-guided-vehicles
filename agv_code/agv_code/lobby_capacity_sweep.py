@@ -1,7 +1,7 @@
 """Capacity sweep for centralized+lobby (B) and hybrid (C) planners.
 
 Run from this directory: python lobby_capacity_sweep.py
-Writes results_lobby_capacity/capacity_sweep.csv and summary.txt.
+Writes results_lobby_capacity_100j_20a_s1-10/capacity_sweep.csv and summary.txt (JOBS, AGVS, SEEDS below).
 """
 from __future__ import annotations
 
@@ -18,12 +18,15 @@ from agv_multifloor_demo import make_jobs
 
 CAPACITIES = ((1, "1"), (2, "2"), (4, "4"), (None, "unlimited"))
 BUILDERS = (("3-floor", build_three_floors), ("5-floor", build_five_floors))
+JOBS, AGVS, SEEDS = 100, 20, tuple(range(1, 11))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--outdir", default="results_lobby_capacity")
+    parser.add_argument("--outdir", default=None, help="default: results_lobby_capacity_100j_20a_s1-10")
     args = parser.parse_args()
+    if args.outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        args.outdir = f"results_lobby_capacity_{JOBS}j_{AGVS}a_s{SEEDS[0]}-{SEEDS[-1]}"
     os.makedirs(args.outdir, exist_ok=True)
     prm = Params(eta=16.0, eta_p=16.0, delta=10.0, lam=1.0)
     rows = []

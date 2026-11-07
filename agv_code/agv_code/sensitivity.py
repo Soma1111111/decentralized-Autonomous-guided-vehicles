@@ -5,7 +5,7 @@ Run from this directory with:
 
 The default experiment evaluates 3 service times x 3 safety gaps x 3 lift
 lengths x 3 seeds x 4 planner configurations, using 50 jobs and 10 AGVs.
-Results are written to results_sensitivity/sensitivity.csv.
+Results are written to results_sensitivity_50j_10a_s1-3/sensitivity.csv.
 """
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ LIFT_LENGTH_VALUES = (20.0, 40.0, 80.0)
 SEEDS = (1, 2, 3)
 N_JOBS = 50
 N_AGVS = 10
-DEFAULT_OUTDIR = "results_sensitivity"
+DEFAULT_OUTDIR = "results_sensitivity_50j_10a_s1-3"
 
 CSV_FIELDS = (
     "config", "seed", "jobs", "agvs", "eta", "delta", "lift_len",

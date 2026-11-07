@@ -26,7 +26,12 @@ Table~\ref{tab:mean-results} reports the ten-seed means. The percentage
 column is C relative to A. In this tested three-floor setup, C reduces
 makespan by 65\%, tardiness by
 72\%, and imbalance by 80\%. Its busiest-server CPU mean is 8.6~ms versus
-99.6~ms for A (91\% lower); total CPU across C's servers is 22.0~ms. B2 and C
+102.4~ms for A (92\% lower); total CPU across C's servers is 24.2~ms.
+Planning CPU is wall-clock dependent: across five repeated runs of this
+experiment (seeds 1--10, outputs in \texttt{results\_cpu\_repeat\_r1}--%
+\texttt{r5}), the busiest-server reduction stays between 91\% and 93\%
+(medians 139.4~ms for A and 10.5~ms for C; full ranges are recorded in
+\texttt{results\_manifest.json}). B2 and C
 have equal scheduling outcomes, so the B2-to-C contrast isolates the floor
 server split's measured computation/state distribution rather than a
 schedule-quality change.
@@ -45,8 +50,8 @@ Total tardiness (s) & 316,893.6 & 122,278.8 & 90,104.5 & 90,104.5 & $-72\%$ \\
 Load imbalance (s) & 7,149.9 & 2,832.3 & 1,441.2 & 1,441.2 & $-80\%$ \\
 Total waiting (s) & 64,689.7 & 27,647.7 & 27,104.5 & 27,104.5 & $-58\%$ \\
 Longest AGV wait (s) & 7,133.4 & 2,830.8 & 1,887.7 & 1,887.7 & $-74\%$ \\
-Busiest-server CPU (ms) & 99.6 & 17.7 & 19.8 & 8.6 & $-91\%$ \\
-Total server CPU (ms) & 99.6 & 17.7 & 19.8 & 22.0 & $-78\%$ \\
+Busiest-server CPU (ms) & 102.4 & 22.9 & 23.1 & 8.6 & $-92\%$ \\
+Total server CPU (ms) & 102.4 & 22.9 & 23.1 & 24.2 & $-76\%$ \\
 Windows on busiest server & 2,030.7 & 1,733.5 & 1,733.5 & 634.5 & $-69\%$ \\
 Central--floor messages & 0.0 & 0.0 & 337.2 & 337.2 & --- \\
 Algorithm 3 calls & 106.6 & 165.1 & 168.6 & 168.6 & $+58\%$ \\
@@ -247,10 +252,10 @@ Layout & Capacity $K$ & B verified; mean & C verified; mean \\
 \subsection{Per-server state and computation}
 
 For seed 7, the centralized planner reports 1,989 windows and
-109.2~ms CPU on A's central server. C holds 146 windows and uses 6.5~ms on
+86.4~ms CPU on A's central server. C holds 146 windows and uses 7.6~ms on
 its central server; its floor servers hold 478, 619, and 454 windows and use
-3.2, 6.1, and 5.6~ms, respectively. The largest C server therefore holds
-619 windows and uses 6.1~ms in this seed. These seed-specific values are
+3.6, 7.5, and 5.4~ms, respectively. The largest C server therefore holds
+619 windows and uses 7.5~ms in this seed. These seed-specific values are
 distinct from the ten-seed means in Table~\ref{tab:mean-results}. The server
 state and CPU comparison appears in Figure~\ref{fig:per-server}.
 

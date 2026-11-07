@@ -168,7 +168,9 @@ def _plot(wait_rows, path):
     plt.close(fig)
 
 
-def run(outdir="results_fairness", n_jobs=100, cap=CAP_SECONDS):
+def run(outdir=None, n_jobs=100, cap=CAP_SECONDS):
+    if outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        outdir = f"results_fairness_{n_jobs}j_cap{cap:g}"
     os.makedirs(outdir, exist_ok=True)
     prm = Params(eta=16.0, eta_p=16.0, delta=10.0, lam=1.0)
     wait_rows, seed_fairness, variant_rows = [], [], []
@@ -231,10 +233,12 @@ def run(outdir="results_fairness", n_jobs=100, cap=CAP_SECONDS):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--outdir", default="results_fairness")
+    parser.add_argument("--outdir", default=None, help="default: results_fairness_<jobs>j_cap<wait cap>")
     parser.add_argument("--jobs", type=int, default=100)
     parser.add_argument("--wait-cap", type=float, default=CAP_SECONDS)
     args = parser.parse_args()
+    if args.outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        args.outdir = f"results_fairness_{args.jobs}j_cap{args.wait_cap:g}"
     run(args.outdir, args.jobs, args.wait_cap)
 
 

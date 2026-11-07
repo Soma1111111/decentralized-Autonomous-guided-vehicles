@@ -31,17 +31,25 @@ Regenerate the single-seed demo in `results/`:
 python agv_multifloor_demo.py --seed 7
 ```
 
-Regenerate the strict-track comparison and fleet sweep in `results_hybrid/`:
+Regenerate the strict-track comparison and fleet sweep. Output folders encode
+their settings, so runs with different settings never overwrite each other
+(the main experiment lands in `results_hybrid_100j_20a_s1-10_strict/`):
 
 ```bash
 python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20
 ```
 
-Regenerate the per-seed Gantt figures under `results_hybrid/gantts/`:
+Regenerate the per-seed Gantt figures (the canonical 100-job per-seed Gantts
+live in `results_hybrid/gantts/` from an earlier verified run):
 
 ```bash
-python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20 --gantts-only --outdir results_hybrid
+python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20 --gantts-only
 ```
+
+Every result folder is documented in `results_manifest.json`: the command,
+git commit hash, seeds, jobs, AGVs, track rule, date, Python and package
+versions, and CPU model. `test_results_manifest.py` fails if a folder's
+contents disagree with its manifest entry or with its own folder name.
 
 Regenerate the paper-style same-direction-following comparison in
 `results_same_direction/`:
@@ -115,14 +123,27 @@ then regenerates bootstrap confidence intervals, paired Wilcoxon tests, and
 booktabs LaTeX tables.
 
 ```bash
-python agv_statistical_experiments.py --outdir results_statistics
+python agv_statistical_experiments.py --outdir results_statistics_20a_s1-30_7regimes
 ```
 
 To regenerate just the analysis and LaTeX tables from saved raw data:
 
 ```bash
-python generate_latex_tables.py --raw results_statistics/experiment_raw.csv --outdir results_statistics
+python generate_latex_tables.py --raw results_statistics_20a_s1-30_7regimes/experiment_raw.csv --outdir results_statistics_20a_s1-30_7regimes
 ```
+
+## CPU-timing repeats
+
+Planning CPU is wall-clock dependent, so the busiest-server reduction was
+checked with five repeated runs of the main experiment:
+
+```bash
+python agv_compare.py --sweep '' --outdir results_cpu_repeat_r1   # ... r2..r5
+```
+
+Per-repeat C-vs-A busiest-server reductions: −93%, −91%, −92%, −91%, −93%
+(medians 139.4 ms for A, 10.5 ms for C). Machine details for these runs are
+recorded in `results_manifest.json`.
 
 ## Original demo corrections
 

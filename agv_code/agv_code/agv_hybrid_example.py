@@ -11,7 +11,7 @@ For every leg (= part of a route on one floor) the table shows
     reaches lobby    time the AGV reaches the departure lift lobby (or pi at the end)
     waits for lift   lift booked by another AGV (central server, book_lift), spent in the departure lobby
     leaves floor     departure time of the lift
-The table of all AGVs is also written to results_hybrid/legs_seed<seed>.csv.
+The table of all AGVs is also written to results_hybrid_100j_20a_s<seed>/legs_seed<seed>.csv.
 """
 import argparse
 import csv
@@ -43,7 +43,9 @@ def print_rows(rows):
               f"{r['waits_for_lift']:>9.1f} {r['leaves_floor']:>8.1f}  {r['path']}")
 
 
-def seed_example(seed, agv_id, outdir="results_hybrid"):
+def seed_example(seed, agv_id, outdir=None):
+    if outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        outdir = f"results_hybrid_100j_20a_s{seed}"
     _, d = run_one("C", seed, 100, 20, PRM)
     L, res = d["L"], d["res"]
     assert not res["violations"]

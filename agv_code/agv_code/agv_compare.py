@@ -13,7 +13,7 @@ assignment (so every difference comes from the routing architecture):
 Checks: C in priority order == B; B2 in FCFS order == C in FCFS order.
 
 Run:
-    python agv_compare.py                          # 10 seeds, 100 jobs, 20 AGVs, AGV sweep 4..20 -> ./results_hybrid
+    python agv_compare.py                          # 10 seeds, 100 jobs, 20 AGVs, AGV sweep 4..20 -> ./results_hybrid_100j_20a_s1-10_strict
     python agv_compare.py --seeds 1-30 --jobs 200
 """
 import argparse
@@ -218,13 +218,14 @@ def main():
     ap.add_argument("--agvs", type=int, default=20)
     ap.add_argument("--sweep", default="4,8,12,16,20", help="fleet sizes for the AGV sweep ('' to skip)")
     ap.add_argument("--gantt-seed", type=int, default=7)
-    ap.add_argument("--outdir", default="results_hybrid")
+    ap.add_argument("--outdir", default=None, help="default: results_hybrid_<jobs>j_<agvs>a_s<seeds>_<track rule>")
     ap.add_argument("--track-rule", choices=("strict", "same-direction"), default="strict",
                     help="strict forbids following on either direction; same-direction allows it")
     ap.add_argument("--gantts-only", action="store_true",
                     help="only write an A/B/B2/C Gantt figure for every seed to <outdir>/gantts/")
     a = ap.parse_args()
-
+    if a.outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        a.outdir = f"results_hybrid_{a.jobs}j_{a.agvs}a_s{a.seeds.replace(',', '_')}_{a.track_rule}"
     import matplotlib
     matplotlib.use("Agg")
     os.makedirs(a.outdir, exist_ok=True)

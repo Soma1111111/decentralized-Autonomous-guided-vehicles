@@ -1,4 +1,8 @@
-"""Regenerate bootstrap summaries, paired Wilcoxon tests, and booktabs LaTeX."""
+"""Regenerate bootstrap summaries, paired Wilcoxon tests, and booktabs LaTeX.
+
+Defaults follow the statistics folder name encoded by
+agv_statistical_experiments.default_outdir().
+"""
 from __future__ import annotations
 
 import argparse
@@ -9,7 +13,7 @@ import zlib
 import numpy as np
 from scipy.stats import wilcoxon
 
-from agv_statistical_experiments import CONFIGS, METRICS
+from agv_statistical_experiments import CONFIGS, METRICS, default_outdir
 
 
 LABELS = {
@@ -133,7 +137,11 @@ def _latex(summary, paired, regimes):
     return "\n".join(out)
 
 
-def generate(raw_path="results_statistics/experiment_raw.csv", outdir="results_statistics"):
+def generate(raw_path=None, outdir=None):
+    if raw_path is None:  # folder name encodes the settings so runs cannot overwrite each other
+        raw_path = os.path.join(default_outdir(), "experiment_raw.csv")
+    if outdir is None:
+        outdir = os.path.dirname(raw_path)
     rows = _read_rows(raw_path)
     if not rows or any(r.get("ok", "True").lower() != "true" for r in rows):
         raise ValueError("raw data is empty or contains a non-verified plan")
@@ -150,9 +158,11 @@ def generate(raw_path="results_statistics/experiment_raw.csv", outdir="results_s
 
 
 def main():
+    from agv_statistical_experiments import default_outdir
+    stat_dir = default_outdir()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--raw", default="results_statistics/experiment_raw.csv")
-    parser.add_argument("--outdir", default="results_statistics")
+    parser.add_argument("--raw", default=f"{stat_dir}/experiment_raw.csv")
+    parser.add_argument("--outdir", default=stat_dir)
     args = parser.parse_args()
     generate(args.raw, args.outdir)
 

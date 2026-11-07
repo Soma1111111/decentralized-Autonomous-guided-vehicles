@@ -27,7 +27,9 @@ FIELDS = (
 )
 
 
-def run_sweep(outdir="results_scale"):
+def run_sweep(outdir=None):
+    if outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        outdir = f"results_scale_{min(JOB_COUNTS)}-{max(JOB_COUNTS)}j_{N_AGVS}a_s{SEEDS[0]}-{SEEDS[-1]}"
     os.makedirs(outdir, exist_ok=True)
     csv_path = os.path.join(outdir, "sweep_jobs.csv")
     prm = Params(eta=16.0, eta_p=16.0, delta=10.0, lam=1.0)
@@ -145,7 +147,7 @@ def make_summary(rows, csv_path="results_scale/sweep_jobs.csv"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--outdir", default="results_scale")
+    parser.add_argument("--outdir", default=None, help="default: results_scale_<jobs>_<agvs>a_s<seeds>")
     args = parser.parse_args()
     run_sweep(args.outdir)
 

@@ -187,7 +187,7 @@ def main():
         means = [statistics.mean(row[idx] for row in values[key]) for idx in range(3)]
         print(f"{label:<22}{means[0]:16.1f}{means[1]:17.1f}{means[2]:17.1f}")
 
-    outdir = "results_baselines"
+    outdir = f"results_baselines_{n_jobs}j_{n_agvs}a_s{seeds[0]}-{seeds[-1]}"
     os.makedirs(outdir, exist_ok=True)
     with open(os.path.join(outdir, "assignment_baselines.csv"), "w",
               newline="", encoding="utf-8") as stream:

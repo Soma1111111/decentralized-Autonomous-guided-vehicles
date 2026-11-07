@@ -40,10 +40,12 @@ def main():
     ap.add_argument("--jobs", type=int, default=100)
     ap.add_argument("--agvs", type=int, default=20)
     ap.add_argument("--lift-length", type=float, help="override the special inter-floor distance of ALL lifts (m)")
-    ap.add_argument("--outdir", default="results")
+    ap.add_argument("--outdir", default=None, help="default: results_demo_<jobs>j_<agvs>a_s<seed>")
     ap.add_argument("--gif", action="store_true", help="also write a replay GIF (slower)")
     ap.add_argument("--viewer", action="store_true", help="open the interactive viewer")
     a = ap.parse_args()
+    if a.outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        a.outdir = f"results_demo_{a.jobs}j_{a.agvs}a_s{a.seed}"
 
     import matplotlib
     if not a.viewer:

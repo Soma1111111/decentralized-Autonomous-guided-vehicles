@@ -27,7 +27,13 @@ METRICS = (
 )
 
 
-def run(outdir="results_statistics"):
+def default_outdir():
+    return f"results_statistics_20a_s{SEEDS[0]}-{SEEDS[-1]}_{len(REGIMES)}regimes"
+
+
+def run(outdir=None):
+    if outdir is None:  # folder name encodes the settings so runs cannot overwrite each other
+        outdir = default_outdir()
     os.makedirs(outdir, exist_ok=True)
     raw_path = os.path.join(outdir, "experiment_raw.csv")
     prm = Params(eta=16.0, eta_p=16.0, delta=10.0, lam=1.0)
@@ -55,7 +61,7 @@ def run(outdir="results_statistics"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--outdir", default="results_statistics")
+    parser.add_argument("--outdir", default=None, help="default: settings-encoded, see agv_statistical_experiments.default_outdir")
     args = parser.parse_args()
     raw_path = run(args.outdir)
     from generate_latex_tables import generate

@@ -26,13 +26,16 @@ Additional experiments & \texttt{agv\_code/agv\_code/sweep\_job\_scale.py}; \tex
 \end{table*}
 
 The regenerated tables use the CSV outputs under the experiment directories:
-\texttt{results\_hybrid/comparison.csv} and \texttt{sweep\_agvs.csv};
+\texttt{results\_hybrid\_100j\_20a\_s1-10\_strict/comparison.csv} and
+\texttt{sweep\_agvs.csv};
 \texttt{results\_scale/sweep\_jobs.csv};
 \texttt{results\_sensitivity/sensitivity.csv};
 \texttt{results\_baselines/assignment\_baselines.csv};
 \texttt{results\_wait\_adjustment/comparison.csv};
 \texttt{results\_lobby\_capacity/capacity\_sweep.csv}; and the per-seed
-CSVs in \texttt{results\_fairness/}. Figures included with the paper are
+CSVs in \texttt{results\_fairness/}. Every result folder is listed with the
+command, settings, and environment that produced it in
+\texttt{results\_manifest.json}. Figures included with the paper are
 copies of the generated comparison and fairness plots.
 
 From the repository root, install the project dependencies and run the
@@ -48,6 +51,11 @@ python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20 --sweep '' --outdir resu
 python lobby_capacity_sweep.py
 python agv_fairness_experiment.py
 \end{verbatim}
+Default output folders encode their settings (for example,
+\texttt{results\_hybrid\_100j\_20a\_s1-10\_strict/}), so runs with different
+settings cannot overwrite each other; the CPU-repeat runs in Table~1 used
+\texttt{--sweep ''} with \texttt{--outdir results\_cpu\_repeat\_r1} to
+\texttt{r5}.
 
 Compile from the \texttt{paper/} directory with a LaTeX installation that
 includes IEEEtran and BibTeX:
