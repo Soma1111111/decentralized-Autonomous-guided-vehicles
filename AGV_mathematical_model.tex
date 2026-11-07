@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\title{Mathematical Model of the Implemented Multi-AGV Scheduling Problem}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Sets and graph}
+
+Let $G=(N,E)$ be the undirected factory graph. Each undirected edge represents a
+bidirectional track. Let $F$ be the set of floors, and let $N_f\subseteq N$
+denote the nodes on floor $f\in F$. Let $L\subseteq E$ be the set of lift links
+between floors. The parking node is $\pi\in N$.
+
+Let $J$ be the set of jobs and $V$ the set of AGVs. Each job $j\in J$ is served
+by exactly one AGV. Let $M_i$ index the successive node visits on AGV $i$'s
+route, including repeated visits to the same physical node.
+
+\section{Parameters}
+
+For every job $j\in J$, its pickup and delivery nodes are
+\[
+  p_j\in N,\qquad p'_j\in N,\qquad p_j\ne p'_j,
+\]
+and $t_j,t'_j$ are its desired pickup and delivery times. The service-time
+parameters are $\eta$ (loading) and $\eta'$ (unloading). The safety separation
+is $\delta>0$, and AGV speed is $v>0$. Each edge $e\in E$ has length $\ell_e$;
+for lift edges $e\in L$, $\ell_e$ is the configured lift length. Travel time
+along an edge is
+\[
+  \tau_{uv}=\frac{\ell_{\{u,v\}}}{v},\qquad \{u,v\}\in E.
+\]
+Let $d(u,w)$ be the shortest-path travel time between nodes $u,w$, computed
+from these edge times. The code uses a fixed weight $\lambda\ge 0$ in its
+assignment fitness and a maximum of $k_{\max}$ passes in Algorithm 3.
+
+Jobs are considered in the release order
+\[
+  j_1,\ldots,j_{|J|}
+  =\operatorname{sort}_{j\in J}(t_j,j),
+\]
+that is, increasing desired pickup time, with job identifier as the tie-breaker.
+AGV $i$ has a fixed priority rank $\rho_i$, where smaller values mean higher
+priority.
+
+\section{Decision and schedule variables}
+
+The assignment variable is
+\[
+  x_{ji}\in\{0,1\},
+\]
+where $x_{ji}=1$ means AGV $i$ is assigned job $j$. Each job is assigned once:
+\[
+  \sum_{i\in V}x_{ji}=1\qquad \forall j\in J.
+\]
+
+For each AGV $i$, let
+\[
+  R_i=(n_{i,0},n_{i,1},\ldots,n_{i,q_i})
+\]
+be its ordered route, with $n_{i,0}=n_{i,q_i}=\pi$. The implemented planner
+constructs $R_i$ by concatenating shortest paths from the AGV's current node
+to each assigned job's pickup and delivery nodes, then back to $\pi$.
+
+For visit $m\in M_i$, let $lt_{im}$ and $rt_{im}$ be the start and end of its
+node-occupancy window. Its dwell time is $dwell_{im}$, equal to $\eta$ at a
+pickup, $\eta'$ at a delivery, and zero at a pass-through visit. The edge
+occupancy window for consecutive visits $m-1,m$ is
+\[
+  [rt_{i,m-1},lt_{im}],
+\]
+with duration fixed to the edge travel time:
+\[
+  lt_{im}-rt_{i,m-1}=\tau_{n_{i,m-1},n_{i,m}}.
+\]
+Thus, the AGV does not stop while traversing an edge. At ordinary nodes,
+\[
+  rt_{im}-lt_{im}=dwell_{im}.
+\]
+The parking node is exempt from node-conflict checks and may have an extended
+window to represent waiting.
+
+\section{Algorithm 1 assignment quantities}
+
+When job $j$ is considered, let $s_i$ and $vt_i$ be AGV $i$'s current node and
+available time. The code computes
+\begin{align*}
+  ct_{ji}
+  &=vt_i+d(s_i,p_j)+\eta+d(p_j,p'_j)+\eta',\\
+  et_{ji}
+  &=\max\!\left(0,\ t_j-\bigl(vt_i+d(s_i,p_j)+\eta\bigr)\right),\\
+  dt_{ji}
+  &=\max(0,\ ct_{ji}-t'_j),\\
+  F_{ji}
+  &=ct_{ji}+\lambda(et_{ji}+dt_{ji}).
+\end{align*}
+The job is assigned to the AGV minimizing $F_{ji}$; ties are broken by AGV
+priority. After assignment, $vt_i$ and $s_i$ are updated to $ct_{ji}$ and
+$p'_j$, respectively.
+
+\section{Conflict separation and start delays}
+
+Let $W_n$ be the fixed occupancy windows of higher-priority AGVs at ordinary
+node $n$. Let $W'_{uv}$ be the fixed edge windows on directed traversal
+$u\to v$. In the implementation, a physical track is exclusive in both
+directions: edge conflicts are checked against windows for both $u\to v$ and
+$v\to u$.
+
+For two different AGVs $i\ne h$, overlapping use of an ordinary node or the
+same bidirectional track must be separated by at least $\delta$. For occupancy
+intervals $[a,b]$ and $[c,d]$, the required separation is
+\[
+  c\ge b+\delta
+  \quad\text{or}\quad
+  a\ge d+\delta.
+\]
+The parking node $\pi$ is exempt from node separation. Algorithm 3 resolves a
+conflict by shifting a prefix of the current route to the right. It computes
+the cumulative start delay $st^*$ by sweeping backward from the conflict visit
+to the nearest previous exempt node, using the window function
+$f(lt,rt,W)$. After the sweep, the affected node and edge windows are shifted
+by $st^*$, and the previous parking window is extended by the same amount. The
+sweep is limited to $k_{\max}$ passes; if exhausted, the implementation applies
+its fallback delay.
+
+\section{Interpretation and assumptions}
+
+This is the scheduling procedure implemented by \texttt{agv\_core.py} over the
+layouts in \texttt{agv\_layouts.py}, rather than a single globally optimized
+mixed-integer program. It first assigns jobs greedily in pickup-release order
+using $F_{ji}$, fixes shortest-path routes, then schedules AGVs in priority
+order and resolves conflicts through Algorithm 3. It assumes known job times,
+fixed AGV priorities, constant speed, fixed edge travel times, service time
+only at pickup and delivery, no stops on edges, and exclusive use of each
+bidirectional track. The implemented centralized model allows waiting only at
+$\pi$; lift-lobby waiting points are an additional hybrid-layout feature.
+
+\section{Hard feasibility constraints}
+
+The following conditions express the hard checks performed by the independent
+\texttt{verify()} routine. Let $P_{im}=[lt_{im},rt_{im}]$ be the window for
+visit $m$ of AGV $i$, and let $\mathcal{B}$ be the set of exempt waiting nodes.
+For the centralized layout, $\mathcal{B}=\{\pi\}$; in the hybrid layout it
+also contains lift lobbies. Write $\varepsilon$ for the verifier's numerical
+tolerance.
+
+\paragraph{Route endpoints and initial time.}
+Every AGV starts at the parking node at time zero and finishes at that node:
+\[
+  n_{i,0}=\pi,\qquad n_{i,q_i}=\pi,\qquad |lt_{i,0}|\le\varepsilon
+  \qquad (i\in V).
+\]
+
+\paragraph{Node conflict avoidance.}
+For each ordinary node $n\in N\setminus\mathcal{B}$, distinct AGVs may not
+occupy it within the safety separation. For every pair of visits $(i,m)$ and
+$(h,r)$ to $n$, where $i\ne h$, the windows must satisfy
+\[
+  rt_{im}+\delta\le lt_{hr}
+  \quad\lor\quad
+  rt_{hr}+\delta\le lt_{im}.
+\]
+No node-conflict constraint is imposed on $n\in\mathcal{B}$: parking and
+lobbies are exempt and may hold multiple waiting AGVs.
+
+\paragraph{Track conflict avoidance in both directions.}
+For each physical track $e=\{u,v\}\in E$, define the traversal window for a
+visit transition $m-1\to m$ by
+\[
+  Q_{im}=[a_{im},b_{im}]
+  =[rt_{i,m-1},lt_{im}],
+  \qquad \{n_{i,m-1},n_{i,m}\}=e.
+\]
+For every pair of traversals of the same physical track by distinct AGVs,
+including traversals in opposite directions, require
+\[
+  b_{im}+\delta\le a_{hr}
+  \quad\lor\quad
+  b_{hr}+\delta\le a_{im}.
+\]
+This is the verifier's bidirectional-track rule: use of $u\to v$ conflicts
+with both $u\to v$ and $v\to u$ use by another AGV.
+
+\paragraph{No pause on an edge.}
+Every edge window has exactly the edge's non-stop travel duration:
+\[
+  lt_{im}-rt_{i,m-1}
+  =\tau_{n_{i,m-1},n_{i,m}}
+  =\frac{\ell_{\{n_{i,m-1},n_{i,m}\}}}{v}
+  \qquad (m=1,\ldots,q_i).
+\]
+
+\paragraph{Dwell times.}
+Let $\mathcal{P}_{im}$ and $\mathcal{D}_{im}$ indicate that visit $(i,m)$
+performs a pickup or delivery, respectively. With at most one service event
+per visit, define
+\[
+  d_{im}=\eta\,\mathcal{P}_{im}+\eta'\,\mathcal{D}_{im}.
+\]
+At every non-exempt node, the occupancy window equals the required service
+dwell (and is zero at pass-through visits):
+\[
+  rt_{im}-lt_{im}=d_{im}
+  \qquad(n_{i,m}\notin\mathcal{B}).
+\]
+At an exempt parking or lobby visit, the verifier only requires the window to
+be at least as long as any service dwell there:
+\[
+  rt_{im}-lt_{im}\ge d_{im}
+  \qquad(n_{i,m}\in\mathcal{B}),
+\]
+so the excess duration can represent waiting. In the implemented job routes,
+$\eta$ is used only at pickup events, $\eta'$ only at delivery events, and
+pass-through visits have zero dwell.
+
+\paragraph{Exactly-once job service.}
+Let $z_{ij}$ be the number of times job $j$ appears in AGV $i$'s assigned-job
+list. Every job must be assigned to exactly one AGV:
+\[
+  \sum_{i\in V}z_{ij}=1\qquad(j\in J),\qquad z_{ij}\in\mathbb{Z}_{\ge0}.
+\]
+Equivalently, the multiset union of all AGV job lists must equal the job set,
+with each job occurring once. In the implementation, \texttt{verify()} checks
+this condition by comparing the flattened AGV job lists with the job IDs; it
+does not independently verify that each listed job's pickup and delivery
+events occur at the corresponding stations and in the correct order.
+
+\section{Algorithm 3 start-delay conditions}
+
+For a conflict at visit $p$, Algorithm 3 chooses a nonnegative cumulative
+right-shift $st^*\ge0$ for the route segment after the nearest preceding
+exempt node $q$ through $p$. In the no-fallback case, its update is
+\[
+  lt'_{im}=lt_{im}+st^*,\qquad rt'_{im}=rt_{im}+st^*
+  \quad(q<m\le p),\qquad
+  rt'_{iq}=rt_{iq}+st^*.
+\]
+The last equality extends the waiting window at the exempt node. Edge windows
+within the shifted segment move consistently because both endpoint times are
+shifted; the connecting edge from $q$ is delayed by extending $rt_{iq}$. The
+algorithm accumulates the smallest right-shifts needed to clear the fixed
+higher-priority windows encountered in its backward sweep, while checking
+that a feasible shift does not cross the next blocking window (the $mt^*$
+bound). It repeats up to $k_{\max}$ passes. If those passes are exhausted,
+the code uses its fallback shift so the AGV waits at the previous exempt node
+until higher-priority traffic is free. The independent verifier subsequently
+checks the resulting complete plan.
+
+\section{Reported objectives}
+
+The implementation reports three performance measures. Let $C_j$ be the
+actual delivery-completion time of job $j$ in the final plan, and let $U_i$
+be AGV $i$'s usage time, defined in the code as its return time to $\pi$ when
+it serves jobs and zero otherwise. Then
+\begin{align*}
+  M &= \max_{j\in J} C_j
+      &&\text{(makespan, last delivery)},\\
+  T &= \sum_{j\in J}\max(0,C_j-t'_j)
+      &&\text{(total delivery tardiness)},\\
+  I &= \max_{i\in V}U_i-\min_{i\in V}U_i
+      &&\text{(load imbalance)}.
+\end{align*}
+One may state a scalar objective as
+\[
+  \min\; \alpha M+\beta T+\gamma I,
+  \qquad \alpha,\beta,\gamma\ge0,
+\]
+or a lexicographic objective as
+\[
+  \operatorname{lexmin}(M,T,I).
+\]
+These are possible mathematical formulations for comparing schedules; the
+code does not choose weights or optimize either combined objective. It uses
+$F_{ji}$ greedily for job assignment, then applies prioritized conflict
+resolution, and reports $M$, $T$, and $I$ as metrics.
+
+\paragraph{Enforced versus checked conditions.}
+Algorithm 2 constructs each route's node and edge windows and calls Algorithm
+3 when a new window conflicts with already frozen higher-priority windows.
+Algorithm 3 shifts the affected route prefix, extends the preceding exempt
+node's window, and thereby enforces conflict avoidance incrementally; in the
+hybrid planner, floor servers also plan legs and the central server reserves
+lift tracks. The independent \texttt{verify()} routine does not plan or repair
+the schedule. It checks the completed plans for start/end at $\pi$, node and
+bidirectional-track separation, exact edge travel durations, dwell-window
+lengths, and exactly-once job service. Thus, the full-plan conditions are
+validated by \texttt{verify()} even though the construction relies on
+Algorithm 2/3 to satisfy them.
+
+\end{document}

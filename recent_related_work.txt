@@ -1,0 +1,141 @@
+Recent Papers on MAPF, AGV Scheduling, and Multi-AGV Coordination (2020-2026)
+
+"Scale" below means a reported experiment or an explicit claim, not a general
+description such as "large-scale." NR means the available paper description
+does not state a quantitative fleet size. The multi-floor column records
+whether floors or lifts are explicitly modeled.
+
+1. Guo et al., "Prioritized Planning for Large-Scale Multiple-AGV Scheduling
+   Problem in Smart Manufacturing," ICARCV, 2024.
+   DOI: https://doi.org/10.1109/ICARCV63323.2024.10821683
+   Category: Centralized prioritized planning.
+   Assumption/mechanism: Jobs are assigned by priority/fitness; AGVs are
+   planned in order, with conflicts resolved against higher-priority plans.
+   Scale: "Large-scale" is in the title; a quantitative fleet-size claim was
+   not verified from the available publication information.
+   Multi-floor/lifts: No explicit multi-floor or lift model identified.
+
+2. Hu, Yang & Huang, "Conflict-free scheduling of large-scale multi-load AGVs
+   in material transportation network," Transportation Research Part E, 2022.
+   https://www.sciencedirect.com/science/article/pii/S1366554522000217
+   Category: Optimization-based heuristic: reservation timetables plus
+   variable-neighborhood search.
+   Assumption/mechanism: Uses adjacency grouping, shortest paths,
+   reservation-based conflict/deadlock prevention, and a mixed one-way/two-way
+   path strategy.
+   Scale: Tests report 3-200 AGVs; the authors describe performance on large,
+   dense networks.
+   Multi-floor/lifts: Not reported.
+
+3. Lu et al., "An automated guided vehicle conflict-free scheduling approach
+   considering assignment rules in a robotic mobile fulfillment system,"
+   Computers & Industrial Engineering, 2023.
+   https://www.sciencedirect.com/science/article/pii/S0360835222009202
+   Category: Centralized optimization-based scheduling.
+   Assumption/mechanism: Space-time network and stage-based conflict
+   avoidance; workstation assignment rules aim to reduce congestion.
+   Scale: Experiments show lower total completion time under proposed
+   assignment rules; no fleet-size limit stated in the abstract.
+   Multi-floor/lifts: No explicit lifts or multiple floors.
+
+4. Zhou, Tang, Zhu & Zhang, "Multi-agent reinforcement learning for online
+   scheduling in smart factories," Robotics and Computer-Integrated
+   Manufacturing, 2021.
+   https://www.sciencedirect.com/science/article/pii/S0736584521000855
+   Category: Decentralized / learning-based.
+   Assumption/mechanism: Distributed AI schedulers for heterogeneous factory
+   units learn collaboratively from real-time state and scheduling experience.
+   Scale: Evaluated in smart-factory case studies; handles rush orders and
+   machine failures. No quantitative AGV fleet scale stated.
+   Multi-floor/lifts: No explicit lift model identified.
+
+5. Wang et al., "A neural network based multi-state scheduling algorithm for
+   multi-AGV system in FMS," Journal of Manufacturing Systems, 2022.
+   https://www.sciencedirect.com/science/article/pii/S0278612522001091
+   Category: Centralized / learning-assisted heuristic.
+   Assumption/mechanism: Multi-state scheduling considers more tasks and
+   AGVs per decision; a neural network predicts travel time.
+   Scale: Reports simulations and application on an air-conditioner
+   production line; no quantitative fleet scale stated in the abstract.
+   Multi-floor/lifts: No explicit lifts or multiple floors.
+
+6. Zhao et al., "Spare zone based hierarchical motion coordination for
+   multi-AGV systems," Simulation Modelling Practice and Theory, 2021.
+   https://www.sciencedirect.com/science/article/pii/S1569190X21000228
+   Category: Hierarchical and decentralized coordination.
+   Assumption/mechanism: Vehicles have fixed paths and preallocated spare
+   zones; local adjustments resolve collisions and deadlocks.
+   Scale: Extensive simulation is reported as time-efficient; no quantitative
+   fleet scale stated in the available abstract.
+   Multi-floor/lifts: No explicit lift model identified.
+
+7. Pratissoli et al., "Hierarchical Traffic Management of Multi-AGV Systems
+   With Deadlock Prevention Applied to Industrial Environments," IEEE
+   Transactions on Automation Science and Engineering, 2024.
+   DOI: https://doi.org/10.1109/TASE.2023.3276233
+   Category: Hierarchical, centralized and decoupled.
+   Assumption/mechanism: Three layers model topological regions,
+   traffic-aware paths, then roadmap routes over time; uses time-expanded
+   graphs for deadlock prevention.
+   Scale: Industrial scenario evaluation includes 2-8 AGVs; authors present
+   the architecture as scalable, while noting coupled planning becomes
+   impractical beyond a few tens.
+   Multi-floor/lifts: No explicit lift model identified.
+
+8. Verma, Olm & Suarez, "Traffic Management of Multi-AGV Systems by Improved
+   Dynamic Resource Reservation," IEEE Access, 2024.
+   DOI: https://doi.org/10.1109/ACCESS.2024.3362293
+   Category: Centralized or semi-decentralized reservation-based coordination.
+   Assumption/mechanism: Shared resource points can hold multiple reservations
+   and serve as conflict-resolution areas; uses a fixed industrial layout.
+   Scale: Simulations vary fleet size and report improved traffic performance;
+   no particular large-fleet threshold is claimed.
+   Multi-floor/lifts: No explicit multi-floor/lift model identified.
+
+9. Li et al., "MAPF-LNS2: Fast Repairing for Multi-Agent Path Finding via
+   Large Neighborhood Search," AAAI, 2022.
+   https://ojs.aaai.org/index.php/AAAI/article/view/21266
+   Category: Centralized search / optimization-based.
+   Assumption/mechanism: Starts from colliding paths and repeatedly replans
+   selected subsets of agents to reduce conflicts.
+   Scale: Reports solving 80% of the largest-agent benchmark instances within
+   five minutes; with a one-hour limit, scales to 8,000 agents on a congested
+   warehouse map.
+   Multi-floor/lifts: Warehouse graphs, but no explicit lift constraints.
+
+10. Andreychuk et al., "Multi-agent pathfinding with continuous time,"
+    Artificial Intelligence, 2022.
+    https://www.sciencedirect.com/science/article/pii/S0004370222000029
+    Category: Centralized conflict-based search / optimization-based.
+    Assumption/mechanism: CCBS and SMT-CCBS handle continuous time, nonuniform
+    action durations, and geometric collisions; return optimal solutions for
+    their respective objectives.
+    Scale: Authors report optimal solutions for nontrivial instances,
+    including dozens of agents under a 30-second limit.
+    Multi-floor/lifts: General graphs/roadmaps; lifts are not a stated special
+    resource.
+
+11. He, Wu, Zhao & Ren, "Conflict-Based Search for Multi-Agent Path Finding
+    with Elevators," arXiv preprint, 2026.
+    https://arxiv.org/abs/2602.20512
+    Category: Centralized CBS-based optimization.
+    Assumption/mechanism: Elevators transport one agent at a time; the method
+    adds elevator-specific conflict reasoning to standard MAPF search.
+    Scale: Evaluates multi-floor instances, including five floors and varying
+    elevator travel times. Results show elevator reasoning improves success
+    over CBS, while runtime overhead grows with more floors.
+    Multi-floor/lifts: Yes; explicitly models floors, elevator capacity, and
+    elevator traversal/reset time. This is a 2026 preprint.
+
+POSITIONING
+
+The elevator paper specifically models cross-floor elevator conflicts and
+reports that added floors increase coupling and search overhead. MAPF-LNS2
+provides a useful high-scale comparison, but its warehouse experiments do
+not model lifts as a constrained resource. Your work extends Guo et al.'s
+ICARCV 2024 prioritized-planning baseline with a hybrid central-plus-floor-
+server decomposition. The central component assigns jobs, splits routes into
+floor legs, and reserves lift trips; floor servers handle conflicts within
+their own floor. Lift lobbies provide waiting locations near floor-level
+conflicts, adding a multi-floor coordination mechanism absent from the
+single-level or general-graph methods summarized above.

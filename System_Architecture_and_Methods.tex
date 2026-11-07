@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+
+\begin{document}
+
+\section{System Architecture and Methods}
+\label{sec:architecture-methods}
+
+The implementation follows a three-stage prioritized-planning pipeline and
+extends it with a hybrid central-plus-floor-server architecture. Algorithm~1
+assigns jobs and constructs each AGV's task route; Algorithm~2 schedules those
+routes in priority order; and Algorithm~3 shifts conflicted route windows to
+the right. In the hybrid version, the central server handles assignment and
+lift reservations, while floor servers plan route legs using local traffic
+reservations. Function and source-line references below identify the
+implementation in the repository.
+
+\subsection{Algorithm 1: prioritized job assignment}
+
+The assignment stage processes jobs in increasing desired pickup time
+$t_j$, breaking ties by job identifier. For each candidate AGV $i$, the
+fitness routine \texttt{fitness()} computes the predicted completion time
+$ct_{ji}$, pickup earliness $et_{ji}$, delivery tardiness $dt_{ji}$, and
+\[
+  F_{ji}=ct_{ji}+\lambda(et_{ji}+dt_{ji}).
+\]
+The AGV with the smallest $F_{ji}$ is selected; ties are resolved by fixed AGV
+priority. The assigned AGV's available time and current location are then
+updated to its predicted completion time and the job's delivery node. For
+each assigned job, the route is extended along shortest paths from the AGV's
+current location to the pickup node and then to the delivery node, with
+$\eta$ loading time at pickup and $\eta'$ unloading time at delivery. After
+all jobs are assigned, each AGV's route is extended along a shortest path
+back to the parking node $\pi$.
+
+\paragraph{Pseudocode.}
+\begin{verbatim}
+for job j in sort(J, key=(t_j, job_id)):
+    for AGV i:
+        compute F_ji, ct_ji, et_ji, dt_ji from current (s_i, vt_i)
+    choose i* = argmin_i (F_ji, priority_i)
+    append shortest path s_i* -> p_j; add pickup dwell eta
+    append shortest path p_j -> p'_j; add delivery dwell eta'
+    update s_i* = p'_j and vt_i* = ct_ji*
+for AGV i:
+    append shortest path s_i -> pi
+\end{verbatim}
+
+The implementation is in \texttt{fitness()} (\texttt{agv\_core.py},
+lines 149--157), the route-appending helper \texttt{\_append\_path()}
+(lines 159--166), and \texttt{algorithm\_1()} (lines 168--196).
+
+\subsection{Algorithm 2: prioritized conflict-free routing}
+
+Given the routes from Algorithm~1, Algorithm~2 schedules AGVs in increasing
+priority rank, i.e., $V_1$ through $V_{|V|}$ (in the reference experiment,
+$V_1$ through $V_{20}$). For each route, \texttt{plan\_route()} constructs
+node occupancy windows $[lt_m,rt_m]$ and edge traversal windows
+$[rt_{m-1},lt_m]$. When a new node or edge window conflicts with a frozen
+higher-priority reservation, it invokes Algorithm~3 to delay the affected
+route prefix. After a route is planned, \texttt{freeze()} adds its ordinary
+node windows to $W_n$ and its directed edge windows to $W'_e$. Track checks
+consider reservations for both directions of the physical track. The parking
+node is exempt from node conflicts.
+
+\paragraph{Pseudocode.}
+\begin{verbatim}
+initialize node reservations W_n and directed edge reservations W'_e
+for AGV i in ascending priority order V1, V2, ...:
+    build node/edge windows along route R_i
+    whenever a new window conflicts with W_n or W'_e:
+        call Algorithm 3 to shift the affected prefix
+    freeze ordinary node windows in W_n
+    freeze edge windows in W'_e
+\end{verbatim}
+
+This stage is implemented by \texttt{algorithm\_2()} (\texttt{agv\_core.py},
+lines 306--324), which calls \texttt{plan\_route()} (lines 269--295) and
+\texttt{freeze()} (lines 297--304).
+
+\subsection{Algorithm 3: sliding-window conflict elimination}
+
+For a candidate occupancy interval $[lt,rt]$ and a set $W$ of fixed higher-
+priority occupancy intervals, the function $f(lt,rt,W)$ returns $st$ and
+$mt$. Here, $st$ is the smallest rightward shift that clears the candidate
+window from all windows in $W$, padded by safety separation $\delta$; $mt$
+is the available shift before the next fixed window would be reached. If the
+candidate is already conflict-free, $st=0$.
+
+When a conflict occurs at route visit $p$, \texttt{algorithm\_3()} sweeps
+backward from that visit to the nearest preceding exempt node $q$ (the
+parking node $\pi$ in the centralized case). It accumulates local shifts
+along the node and edge windows, checks the running $mt^*$ bound, and repeats
+the sweep until the segment is conflict-free or $k_{\max}$ passes have been
+used. The resulting cumulative delay $st^*$ shifts the windows from $q+1$
+through $p$ and extends the window at $q$ by the same amount. Thus, in the
+centralized planner, the AGV waits at $\pi$ rather than stopping on an edge
+or at an ordinary node. If the loop reaches $k_{\max}$ without convergence,
+the fallback delays departure at the exempt node until the higher-priority
+traffic is free.
+
+\paragraph{Pseudocode.}
+\begin{verbatim}
+q = nearest exempt route node before conflict visit p
+repeat for k = 1,...,k_max:
+    st_star = 0; mt_star = infinity
+    sweep m backward from p to q+1:
+        (st, mt) = f(candidate node/edge window shifted by st_star, W)
+        update mt_star and st_star
+        stop this pass if st_star exceeds mt_star
+    if the sweep completes without violating mt_star: break
+if all k_max passes are exhausted:
+    apply fallback delay at q until higher-priority traffic is free
+shift windows q+1,...,p by st_star; extend the window at q by st_star
+\end{verbatim}
+
+The interval function $f()$ and the sliding procedure are implemented in
+\texttt{agv\_core.py}, lines 198--216 and 218--260, respectively. Conflict
+detection and calls to Algorithm~3 are in \texttt{plan\_route()} (lines
+269--295).
+
+\subsection{Hybrid central-plus-floor-server extension}
+
+The hybrid planner first runs Algorithm~1 to determine job assignments and
+complete routes. The helper \texttt{split\_legs()} then cuts each route at
+every lift edge, producing maximal route segments that remain on one floor.
+Each segment starts at the parking node or at a lift lobby and is submitted
+to the corresponding \texttt{FloorServer}. A floor server maintains its own
+local node-window set $W_n$ and edge-window set $W'_e$ and uses
+\texttt{plan\_route()} (Algorithms~2 and~3) to plan each leg. When local
+conflicts require a delay, the leg waits at its entry, which is the parking
+node or the arrival lobby. Reservations are frozen locally after the leg is
+planned.
+
+The \texttt{CentralServer} owns reservations for lift tracks.
+\texttt{book\_lift()} finds the earliest departure at or after the AGV is
+ready for which the lift is available, respecting $\delta$ separation from
+other trips on the same lift. Any lift-related delay is spent at the
+departure lobby. The central process merges the planned floor legs and lift
+windows into each complete route before independent verification.
+
+Legs are submitted through a heap. With \texttt{order="fcfs"}, the heap key is
+(release time, AGV priority, leg index), so a floor plans the earliest
+released leg first, with priority used for ties. With
+\texttt{order="priority"}, the key is (AGV priority, leg index, release
+time), so every leg of $V_1$ is processed before legs of $V_2$, and so on.
+This priority mode is used as a decomposition check: on the tested instances,
+it reproduces the centralized-with-lobbies plans.
+
+\paragraph{Pseudocode.}
+\begin{verbatim}
+run Algorithm 1 to assign jobs and construct each complete route
+for AGV i:
+    legs[i] = split_legs(route[i]) at every lift edge
+push each first leg into heap using selected order key
+while heap is not empty:
+    pop (AGV i, leg k, release time)
+    floor server plans leg with local W_n and W'_e
+    if another floor leg follows:
+        central server books the intervening lift trip
+        submit the next leg at the arrival lobby after lift travel
+merge all floor-leg and lift windows into complete AGV plans
+\end{verbatim}
+
+The hybrid functions are \texttt{split\_legs()} (\texttt{agv\_hybrid.py},
+lines 47--56), \texttt{FloorServer.plan\_leg()} (lines 65--76),
+\texttt{CentralServer.book\_lift()} (lines 89--99), and
+\texttt{run\_hybrid()} (lines 106--165), which implements heap ordering,
+leg dispatch, and merging. The floor graph, lift lengths, and optional
+landing lobbies are defined by \texttt{build\_three\_floors()} in
+\texttt{agv\_layouts.py}, lines 22--31 and 47--85.
+
+\end{document}

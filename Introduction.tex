@@ -1,0 +1,127 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{url}
+
+\begin{document}
+
+\section{Introduction}
+
+Automated guided vehicles (AGVs) are a central part of material handling in
+smart manufacturing. They move workpieces between storage, processing, and
+delivery locations, allowing production systems to respond flexibly to
+changing orders and workloads. As factories grow, however, coordinating a
+fleet becomes a joint assignment, routing, and traffic-management problem.
+Vehicles may need the same narrow aisle, workstation approach, or transport
+resource at overlapping times. A schedule must therefore assign jobs and
+produce routes and timings that avoid collisions while meeting operational
+targets such as completion time, delivery due dates, and balanced vehicle
+utilization. These requirements become more demanding in multi-floor
+facilities, where lifts connect otherwise separate floor networks. A lift is
+a shared resource with finite capacity and non-negligible travel time: a
+conflict at one lift can delay routes on several floors and propagate through
+the entire schedule.
+
+Many AGV scheduling methods centralize assignment and traffic planning. This
+provides a system-wide view, but it also concentrates computation and
+reservation state at one server. As the fleet and route set grow, that server
+must reason about an increasing number of node and track occupancy windows,
+including interactions among vehicles operating in different areas. The
+planning workload and shared state can consequently become a bottleneck.
+This challenge is especially relevant to multi-floor factories: a central
+planner must coordinate local floor traffic as well as cross-floor lift
+movements. A practical architecture should retain enough central coordination
+to prevent conflicting lift use while distributing the detailed routing and
+traffic state across the factory.
+
+Guo et al. present a prioritized planning method for large-scale multiple-AGV
+scheduling in smart manufacturing \cite{guo2024}. Their approach assigns
+transport tasks and plans AGV routes sequentially according to priority,
+resolving conflicts with respect to plans already made for higher-priority
+vehicles. This provides the centralized baseline for the present work. In
+that baseline, assignment and conflict-free routing are handled by a single
+planning process. The paper and its accompanying walkthrough material provide
+the algorithmic notation and worked examples used here
+\cite{guo2024,walkthrough}. The repository contains a copy of the paper as
+\texttt{Prioritized\_Planning\_for\_Large-Scale\_Multiple-AGV\_Scheduling\_Problem\_in\_Smart\_Manufacturing.pdf}
+and the walkthrough presentation as
+\texttt{Prioritized\_Planning\_AGV\_Walkthrough\_with\_Extension.pptx}.
+
+This paper extends that prioritized-planning baseline with a hybrid
+central-plus-edge architecture for a multi-floor factory. A central server
+performs job assignment and divides each AGV route into floor-level legs. It
+also books the lift trips, which remain shared across floors and therefore
+require system-wide coordination. Each floor has an edge server that plans
+its local route legs and resolves node and track conflicts using the
+prioritized conflict-free routing procedure. The decomposition limits each
+floor server's detailed reservation state to its own floor, while the central
+server retains responsibility for assignments and inter-floor transitions.
+To give vehicles a safe place to wait near a local conflict or a busy lift,
+the layout adds a lobby node at each lift landing. A floor server can delay a
+leg at its entry lobby, and the central server can schedule a lift departure
+after the lift resource becomes available. These lobbies provide waiting
+points near the conflict rather than requiring every delay to be absorbed at
+the factory's single parking node.
+
+The implementation is evaluated against two centralized configurations: the
+paper-style planner, and a centralized planner with the same lift lobbies as
+the hybrid system. The saved comparison uses 100 jobs and 20 AGVs over 10
+random seeds; each generated plan is checked by an independent verifier. In
+the reported mean results, the hybrid configuration reduces last-delivery
+makespan by 65\%, total tardiness by 72\%, and usage-time imbalance by 80\%
+relative to the paper-style centralized configuration. Its busiest-server
+planning CPU time is 93\% lower. These figures describe the repository's
+modeled factory, parameters, and tested seeds; they should be read as
+experimental results for this setup, not as general guarantees for all
+multi-floor factories. The comparison also includes a fleet-size sweep over
+4, 8, 12, 16, and 20 AGVs, providing a view of how the measured scheduling
+metrics vary with fleet size \cite{results}.
+
+The remainder of the paper is organized as follows. Section~2 defines the
+factory graph, job-assignment rules, route windows, conflict constraints, and
+performance measures. Section~3 describes the centralized baseline and the
+hybrid central and floor-server procedures, including lift reservations and
+lobby waiting. Section~4 presents the experimental setup, verification
+method, and results over the ten seeds and fleet-size sweep. Section~5
+discusses the results, modeling assumptions, and limitations. Section~6
+concludes the paper and identifies directions for extending the architecture.
+
+\section*{Contributions}
+\begin{itemize}
+  \item Reimplementation of the ICARCV 2024 prioritized-planning baseline,
+        including fixes to the original demo's documented bugs.
+  \item A hybrid architecture that separates central job assignment and lift
+        booking from per-floor conflict-free route planning.
+  \item Lift-lobby waiting points that allow delays to be absorbed near
+        floor-level conflicts and lift resources.
+  \item Independent verification of completed plans for node and track
+        conflicts, edge travel times, dwell windows, route endpoints, and
+        exactly-once job assignment.
+  \item Comparative results over ten random seeds and a fleet-size sweep.
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+\bibitem{guo2024}
+Y.~Guo, J.~Yao, J.~Li, R.~Su, and K.~V.~Ling,
+``Prioritized Planning for Large-Scale Multiple-AGV Scheduling Problem in
+Smart Manufacturing,'' in \emph{Proceedings of the 18th International
+Conference on Control, Automation, Robotics and Vision (ICARCV)}, 2024,
+pp.~19--24, doi:~\url{https://doi.org/10.1109/ICARCV63323.2024.10821683}.
+
+\bibitem{walkthrough}
+\emph{Prioritized Planning AGV Walkthrough with Extension}, project
+walkthrough presentation, 51 slides, repository file
+\texttt{Prioritized\_Planning\_AGV\_Walkthrough\_with\_Extension.pptx}.
+The repository also includes a local copy of the ICARCV paper PDF under the
+filename cited in the Introduction.
+
+\bibitem{results}
+Project repository, \texttt{agv\_code/agv\_code/results\_hybrid/summary.txt},
+saved comparison summary for 100 jobs, 20 AGVs, and seeds 1--10.
+
+\end{thebibliography}
+
+\end{document}

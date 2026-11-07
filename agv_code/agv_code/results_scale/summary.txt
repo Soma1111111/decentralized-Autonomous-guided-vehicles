@@ -1,0 +1,25 @@
+JOB-SCALE SWEEP: centralized A vs hybrid C
+20 AGVs; 5 seeds (1-5); jobs 50, 100, 200, 400;
+eta=eta'=16 s, delta=10 s, lambda=1, lift length=40 m.
+All plans verified: True; CSV: results_scale\sweep_jobs.csv
+
+Means over seeds:
+  jobs  config      makespan       tardiness     imbalance   Alg3 calls     CPU ms   windows/server
+    50       A       4,512.4        70,365.0       4,194.6         90.8       39.5          1,305.2
+    50       C       1,895.9        22,311.8       1,425.6        107.6        3.8            409.8
+   100       A       7,831.1       307,117.4       7,008.1        105.2      142.3          2,014.4
+   100       C       2,725.3        83,285.2       1,430.3        155.6       13.4            632.6
+   200       A      17,068.1     1,539,922.3      15,429.4        135.4      485.8          3,671.2
+   200       C       4,674.2       360,814.5       1,576.1        329.6       20.5          1,181.0
+   400       A      38,028.7     7,033,021.1      34,924.2        212.6    2,298.0          6,906.6
+   400       C       8,541.3     1,484,910.4       2,350.0        635.2       68.4          2,235.4
+
+Hybrid reduction relative to A (%; positive favors C):
+  jobs     makespan    tardiness    imbalance
+    50        58.0%        68.3%        66.0%
+   100        65.2%        72.9%        79.6%
+   200        72.6%        76.6%        89.8%
+   400        77.5%        78.9%        93.3%
+
+Interpretation:
+The hybrid advantage grows across all three outcome metrics from 50 to 400 jobs. The C-vs-A reduction changes by +19.6 percentage points for makespan, +10.6 points for tardiness, and +27.3 points for imbalance. These are five-seed means at a fixed fleet size of 20 AGVs; the job-to-AGV ratio rises from 2.5 to 20, so the trend reflects increasing workload and route contention in this modeled layout, not a general scaling guarantee.

@@ -1,0 +1,61 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs}
+
+\begin{document}
+
+\section{AGV Priority and Waiting-Time Fairness}
+\label{sec:priority-wait-fairness}
+
+Table~\ref{tab:priority-wait} reports each AGV's parking wait from
+\texttt{results/summary.json}, ordered by fixed priority rank. The Pearson
+correlation between priority rank and waiting time is $r=0.939$, indicating a
+strong positive association: lower-priority ranks generally experience
+longer waits. The relationship is not strictly monotonic; for example,
+AGV-06 waits less than AGV-05.
+
+\begin{table}[htbp]
+\centering
+\caption{Parking wait by AGV priority rank for the saved seed-7 run.}
+\label{tab:priority-wait}
+\begin{tabular}{rrr}
+\toprule
+Priority rank & AGV & Waiting at parking (s) \\
+\midrule
+1  & AGV-01 & 0.0 \\
+2  & AGV-02 & 841.2 \\
+3  & AGV-03 & 318.6 \\
+4  & AGV-04 & 1,717.7 \\
+5  & AGV-05 & 2,368.8 \\
+6  & AGV-06 & 242.8 \\
+7  & AGV-07 & 1,377.7 \\
+8  & AGV-08 & 2,931.2 \\
+9  & AGV-09 & 2,769.4 \\
+10 & AGV-10 & 3,947.7 \\
+11 & AGV-11 & 4,597.5 \\
+12 & AGV-12 & 5,153.3 \\
+13 & AGV-13 & 3,723.1 \\
+14 & AGV-14 & 5,614.0 \\
+15 & AGV-15 & 6,200.4 \\
+16 & AGV-16 & 6,268.4 \\
+17 & AGV-17 & 6,184.4 \\
+18 & AGV-18 & 4,689.5 \\
+19 & AGV-19 & 6,761.6 \\
+20 & AGV-20 & 7,097.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The schedule is priority-fair but not wait-fair: the planning rule grants
+earlier-ranked AGVs precedence, so higher-priority vehicles tend to wait less
+while lower-priority vehicles absorb much of the delay. This policy can be
+appropriate when ranks represent real differences in job urgency or service
+commitments. If ranks merely identify vehicles, the resulting imbalance and
+delivery lateness are a manufacturing fairness concern. Dynamic priorities
+or limits on accumulated waiting could reduce the chance that low-ranked
+vehicles bear a disproportionate share of delay.
+
+\end{document}
