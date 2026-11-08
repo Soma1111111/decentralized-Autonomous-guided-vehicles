@@ -11,7 +11,7 @@
   "cpu_model": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
   "hostname": "DESKTOP-6BOEL5E",
   "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
-  "manifest_generated": "2026-11-08T04:55:15"
+  "manifest_generated": "2026-11-08T05:13:53"
  },
  "results": [
   {
@@ -36,41 +36,6 @@
     "run_log.txt",
     "summary.json",
     "summary.txt"
-   ]
-  },
-  {
-   "folder": "results_baselines",
-   "command": "python agv_baselines.py",
-   "settings": {
-    "assignment_baselines": {
-     "jobs": [
-      "100"
-     ],
-     "agvs": [
-      "20"
-     ],
-     "seed": [
-      "1",
-      "2",
-      "3"
-     ],
-     "config": [
-      "A",
-      "B",
-      "C",
-      "FCFS",
-      "Random"
-     ]
-    }
-   },
-   "settings_parsed_from": [
-    "assignment_baselines"
-   ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
-   "commit_status": "committed",
-   "files": [
-    "assignment_baselines.csv"
    ]
   },
   {
@@ -101,9 +66,9 @@
    "settings_parsed_from": [
     "assignment_baselines"
    ],
-   "git_commit": "67ab36e",
-   "git_commit_date": "2026-11-08T04:55:11",
-   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
+   "commit_status": "committed",
    "files": [
     "assignment_baselines.csv"
    ]
@@ -167,8 +132,8 @@
     "comparison",
     "summary.txt"
    ],
-   "git_commit": "0eaa84f",
-   "git_commit_date": "2026-11-07 13:02:38 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
@@ -237,8 +202,8 @@
     "comparison",
     "summary.txt"
    ],
-   "git_commit": "0eaa84f",
-   "git_commit_date": "2026-11-07 13:02:38 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
@@ -307,8 +272,8 @@
     "comparison",
     "summary.txt"
    ],
-   "git_commit": "0eaa84f",
-   "git_commit_date": "2026-11-07 13:02:38 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
@@ -377,8 +342,8 @@
     "comparison",
     "summary.txt"
    ],
-   "git_commit": "0eaa84f",
-   "git_commit_date": "2026-11-07 13:02:38 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
@@ -447,8 +412,8 @@
     "comparison",
     "summary.txt"
    ],
-   "git_commit": "0eaa84f",
-   "git_commit_date": "2026-11-07 13:02:38 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
@@ -463,9 +428,9 @@
    "command": "(legacy; see the generating script's docstring)",
    "settings": {},
    "settings_parsed_from": [],
-   "git_commit": "67ab36e",
-   "git_commit_date": "2026-11-08T04:55:12",
-   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
+   "commit_status": "committed",
    "files": [
     "activity.csv",
     "assignment.csv",
@@ -580,8 +545,8 @@
     "variant_metrics",
     "variant_summary"
    ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "fairness_by_seed.csv",
@@ -590,97 +555,6 @@
     "per_agv_wait.csv",
     "variant_metrics.csv",
     "variant_summary.csv"
-   ]
-  },
-  {
-   "folder": "results_hybrid",
-   "command": "python agv_compare.py --seeds 1-3 --jobs 50 --agvs 10 (overwrote an earlier 100j/20a run in this folder; its 100j/20a data is preserved in results_verify_strict)",
-   "settings": {
-    "comparison": {
-     "jobs": [
-      "50"
-     ],
-     "agvs": [
-      "10"
-     ],
-     "seed": [
-      "1",
-      "2",
-      "3"
-     ],
-     "config": [
-      "A",
-      "B",
-      "B2",
-      "C",
-      "WA"
-     ]
-    },
-    "sweep_agvs": {
-     "jobs": [
-      "100"
-     ],
-     "agvs": [
-      "12",
-      "16",
-      "20",
-      "4",
-      "8"
-     ],
-     "seed": [
-      "1",
-      "10",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9"
-     ],
-     "config": [
-      "A",
-      "B",
-      "B2",
-      "C"
-     ]
-    },
-    "summary": {
-     "jobs": [
-      "50"
-     ],
-     "agvs": [
-      "10"
-     ],
-     "seeds": [
-      "1",
-      "2",
-      "3"
-     ],
-     "track_rule": [
-      "strict"
-     ]
-    }
-   },
-   "settings_parsed_from": [
-    "comparison",
-    "summary.txt",
-    "sweep_agvs"
-   ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
-   "commit_status": "committed",
-   "files": [
-    "comparison.csv",
-    "fig1_compare_metrics.png",
-    "fig2_gantt_A_B_C.png",
-    "fig3_fleet_size_sweep.png",
-    "fig4_per_server.png",
-    "gantts",
-    "legs_seed7.csv",
-    "summary.txt",
-    "sweep_agvs.csv"
    ]
   },
   {
@@ -774,8 +648,8 @@
     "summary.txt",
     "sweep_agvs"
    ],
-   "git_commit": "0eaa84f",
-   "git_commit_date": "2026-11-07 13:02:38 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
@@ -794,70 +668,11 @@
    "command": "(legacy; see the generating script's docstring)",
    "settings": {},
    "settings_parsed_from": [],
-   "git_commit": "67ab36e",
-   "git_commit_date": "2026-11-08T04:55:13",
-   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
-   "files": [
-    "legs_seed7.csv"
-   ]
-  },
-  {
-   "folder": "results_lobby_capacity",
-   "command": "python lobby_capacity_sweep.py",
-   "settings": {
-    "capacity_sweep": {
-     "jobs": [
-      "100"
-     ],
-     "agvs": [
-      "20"
-     ],
-     "seed": [
-      "1",
-      "10",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9"
-     ],
-     "lobby_capacity": [
-      "1",
-      "2",
-      "4",
-      "unlimited"
-     ],
-     "layout": [
-      "3-floor",
-      "5-floor"
-     ],
-     "config": [
-      "B",
-      "C"
-     ]
-    },
-    "summary": {
-     "jobs": [
-      "100"
-     ],
-     "agvs": [
-      "20"
-     ]
-    }
-   },
-   "settings_parsed_from": [
-    "capacity_sweep",
-    "summary.txt"
-   ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
-    "capacity_sweep.csv",
-    "summary.txt"
+    "legs_seed7.csv"
    ]
   },
   {
@@ -911,9 +726,9 @@
     "capacity_sweep",
     "summary.txt"
    ],
-   "git_commit": "67ab36e",
-   "git_commit_date": "2026-11-08T04:55:13",
-   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
+   "commit_status": "committed",
    "files": [
     "capacity_sweep.csv",
     "summary.txt"
@@ -1010,8 +825,8 @@
     "summary.txt",
     "sweep_agvs"
    ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
@@ -1021,47 +836,6 @@
     "fig4_per_server.png",
     "summary.txt",
     "sweep_agvs.csv"
-   ]
-  },
-  {
-   "folder": "results_scale",
-   "command": "python sweep_job_scale.py",
-   "settings": {
-    "sweep_jobs": {
-     "jobs": [
-      "100",
-      "200",
-      "400",
-      "50"
-     ],
-     "agvs": [
-      "20"
-     ],
-     "seed": [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5"
-     ],
-     "config": [
-      "A",
-      "B",
-      "B2",
-      "C",
-      "WA"
-     ]
-    }
-   },
-   "settings_parsed_from": [
-    "sweep_jobs"
-   ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
-   "commit_status": "committed",
-   "files": [
-    "summary.txt",
-    "sweep_jobs.csv"
    ]
   },
   {
@@ -1097,61 +871,12 @@
    "settings_parsed_from": [
     "sweep_jobs"
    ],
-   "git_commit": "67ab36e",
-   "git_commit_date": "2026-11-08T04:55:14",
-   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
+   "commit_status": "committed",
    "files": [
     "summary.txt",
     "sweep_jobs.csv"
-   ]
-  },
-  {
-   "folder": "results_sensitivity",
-   "command": "python sensitivity.py",
-   "settings": {
-    "sensitivity": {
-     "jobs": [
-      "50"
-     ],
-     "agvs": [
-      "10"
-     ],
-     "seed": [
-      "1",
-      "2",
-      "3"
-     ],
-     "eta": [
-      "16.0",
-      "32.0",
-      "8.0"
-     ],
-     "delta": [
-      "10.0",
-      "20.0",
-      "5.0"
-     ],
-     "lift_len": [
-      "20.0",
-      "40.0",
-      "80.0"
-     ],
-     "config": [
-      "A",
-      "B",
-      "B2",
-      "C"
-     ]
-    }
-   },
-   "settings_parsed_from": [
-    "sensitivity"
-   ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
-   "commit_status": "committed",
-   "files": [
-    "sensitivity.csv"
    ]
   },
   {
@@ -1196,9 +921,9 @@
    "settings_parsed_from": [
     "sensitivity"
    ],
-   "git_commit": "67ab36e",
-   "git_commit_date": "2026-11-08T04:55:14",
-   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
+   "commit_status": "committed",
    "files": [
     "sensitivity.csv"
    ]
@@ -1307,8 +1032,8 @@
     "metric_summary",
     "paired_wilcoxon"
    ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "experiment_raw.csv",
@@ -1548,14 +1273,13 @@
     "summary.txt",
     "sweep_agvs"
    ],
-   "git_commit": "99262c2",
-   "git_commit_date": "2026-11-07 11:13:37 +0000",
+   "git_commit": "365589b",
+   "git_commit_date": "2026-11-08 10:32:04 +0530",
    "commit_status": "committed",
    "files": [
     "comparison.csv",
     "fig1_compare_metrics.png",
     "fig2_gantt_A_B_C.png",
-    "fig3_fleet_size_sweep.png",
     "fig4_per_server.png",
     "summary.txt",
     "sweep_agvs.csv"

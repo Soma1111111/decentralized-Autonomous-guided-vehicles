@@ -194,7 +194,7 @@ macro("CpuRepeatRedMax", str(half_up(max(mags))))
 # --------------------------------------------------------------------------
 # 3) job-scale sweep
 # --------------------------------------------------------------------------
-scale_dir = folder("results_scale")
+scale_dir = folder("results_scale_50-400j_20a_s1-5")
 scale_rows = load_rows(scale_dir, "sweep_jobs.csv")
 ok_all(scale_rows, "job-scale sweep")
 SCALES = ["50", "100", "200", "400"]
@@ -206,7 +206,7 @@ scale_a = {j: stats([r for r in scale_rows if r["jobs"] == j], "A",
 # --------------------------------------------------------------------------
 # 4) five-floor sensitivity
 # --------------------------------------------------------------------------
-sens_dir = folder("results_sensitivity")
+sens_dir = folder("results_sensitivity_50j_10a_s1-3")
 sens_rows = load_rows(sens_dir, "sensitivity.csv")
 ok_all(sens_rows, "sensitivity")
 macro("SensitivityRows", str(len(sens_rows)))
@@ -216,7 +216,7 @@ if sum(r["ok"] == "True" for r in sens_rows) != len(sens_rows):
 # --------------------------------------------------------------------------
 # 5) assignment baselines
 # --------------------------------------------------------------------------
-base_dir = folder("results_baselines")
+base_dir = folder("results_baselines_100j_20a_s1-3")
 base_rows = load_rows(base_dir, "assignment_baselines.csv")
 ok_all(base_rows, "assignment baselines")
 BASE_LABELS = [("A", "A: Algorithm 1 assignment"), ("B", "B: centralized with lobbies"),
@@ -277,7 +277,7 @@ macro("GanttZoomLobbyWaitTotal", fmt(float(z["lobby_wait_total_s"])))
 # --------------------------------------------------------------------------
 # 7) finite lobby capacity
 # --------------------------------------------------------------------------
-lobby_dir = folder("results_lobby_capacity")
+lobby_dir = folder("results_lobby_capacity_100j_20a_s1-10")
 lobby_rows = load_rows(lobby_dir, "capacity_sweep.csv")
 LOBBY_K = ["1", "2", "4", "unlimited"]
 LOBBY_LAYOUTS = ["3-floor", "5-floor"]

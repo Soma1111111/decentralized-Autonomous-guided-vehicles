@@ -4,11 +4,12 @@
 \subsection{Setup}
 Table~\ref{tab:setup} summarizes the layout, job model, planner parameters, and configurations. All configurations use $\eta=\eta'=16$~s, $\delta=10$~s, $\lambda=1.0$, and $v=1$~m/s; lift links use their configured 40~m length (40~s non-stop travel). The main comparison uses 100 jobs, 20 AGVs, seeds 1--10, and the strict track rule; the fleet sweep uses 4, 8, 12, 16, and 20 AGVs over the same job-generation settings. Every generated schedule is passed to an independent verifier that checks route endpoints, node and bidirectional-track separation, edge travel durations, dwell windows, and exactly-once job service; a run is accepted only when the verifier returns no violations.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \small
 \caption{Experimental setup (layout, job model, parameters, configurations).}
 \label{tab:setup}
+\resizebox{\textwidth}{!}{
 \begin{tabular}{ll}
 \toprule
 Layout & 3 floors; 27 operational nodes (9 per floor); 38 edges; 4 lifts (40 m each); parking $\pi=$ 1A; 26 non-parking, non-lobby job stations \\
@@ -18,16 +19,16 @@ Parameters & $\eta=\eta'=16$~s; $\delta=10$~s; $\lambda=1.0$; $v=1$~m/s; lift tr
 Main experiment & 100 jobs, 20 AGVs, seeds 1--10, strict track rule \\
 Configurations & A: centralized paper-style (wait at parking only); B: centralized with lobbies; B2: centralized with lobbies and FCFS leg order; C: hybrid central + floor servers, lobbies, FCFS leg order \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{tabular}}
+\end{table*}
 
 \subsection{Main results: Gantt chart as main visual evidence}
-Figure~\ref{fig:gantt-seed7} shows the A and C plans for seed 7 (100 jobs, 20 AGVs) on a shared time axis; rows are AGVs in priority order, colors are activities (moving on floor 1/2/3, lift trip, loading $\eta$, unloading $\eta'$), and hatched bars are waiting. Panel titles give data-derived totals. What to notice: under A the rows form a staircase of waiting that descends with priority. The annotation marks \GanttLongWaitAgvA{}: it waits \GanttLongWaitA~s before its first move under A but only \GanttSameAgvWaitC~s under C, while its service time is \GanttServiceSameAgv~s in both configurations — the same AGV's workload is unchanged, the waiting almost entirely disappears. Panel titles: last delivery \GanttPanelALastDelivery{} versus \GanttPanelCLastDelivery~s, load imbalance \GanttPanelAImbalance{} versus \GanttPanelCImbalance~s, total waiting \GanttPanelAWaitTotal{} versus \GanttPanelCWaitTotal~s. Figure~\ref{fig:gantt-zoom} explains the hybrid: for \GanttZoomAgv{} (10 lift trips, floors 1--3), the route is cut into floor legs joined by lift trips, and the waiting between legs sits at lift lobbies rather than on floor nodes.
+Figure~\ref{fig:gantt-seed7} shows the A and C plans for seed 7 (100 jobs, 20 AGVs) on a shared time axis; rows are AGVs in priority order, colors are activities (moving on floor 1/2/3, lift trip, loading $\eta$, unloading $\eta'$), and hatched bars are waiting. Panel titles give data-derived totals. What to notice: under A the rows form a staircase of waiting that descends with priority. The annotation marks \GanttLongWaitAgvA{}: it waits \GanttLongWaitA~s before its first move under A but only \GanttSameAgvWaitC~s under C, while its service time is \GanttServiceSameAgv~s in both configurations — the same AGV's workload is unchanged, the waiting almost entirely disappears. Figure~\ref{fig:gantt-zoom} explains the hybrid: for \GanttZoomAgv{} (10 lift trips, floors 1--3), the route is cut into floor legs joined by lift trips, and the waiting between legs sits at lift lobbies rather than on floor nodes.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{../figures/gantt_A_C_seed7.pdf}
-\caption{How to read: each row is one AGV in priority order (V01 highest priority); colors are activities (moving on floor 1/2/3, lift trip, loading $\eta$, unloading $\eta'$); hatched bars are waiting. Panels show the seed-7 job set under A (top) and C (bottom) on a shared time axis; dashed lines mark each panel's last delivery. Under A the rows form a staircase of waiting that descends with priority. The annotation marks \GanttLongWaitAgvA{}: it waits \GanttLongWaitA~s before its first move under A but only \GanttSameAgvWaitC~s under C, while its service time is \GanttServiceSameAgv~s in both configurations. Panel titles give data-derived totals: last delivery \GanttPanelALastDelivery{} versus \GanttPanelCLastDelivery~s, load imbalance \GanttPanelAImbalance{} versus \GanttPanelCImbalance~s, total waiting \GanttPanelAWaitTotal{} versus \GanttPanelCWaitTotal~s.}
+\caption{How to read: each row is one AGV in priority order (V01 highest priority); colors are activities (moving on floor 1/2/3, lift trip, loading $\eta$, unloading $\eta'$); hatched bars are waiting. Panels show the seed-7 job set under A (top) and C (bottom) on a shared time axis; dashed vertical lines mark each panel's last delivery (the bars continue to the final return to parking). Under A the rows form a staircase of waiting that descends with priority. The annotation marks \GanttLongWaitAgvA{}: it waits \GanttLongWaitA~s before its first move under A but only \GanttSameAgvWaitC~s under C, while its service time is \GanttServiceSameAgv~s in both configurations. Panel titles give data-derived totals: last delivery \GanttPanelALastDelivery{} versus \GanttPanelCLastDelivery~s, load imbalance \GanttPanelAImbalance{} versus \GanttPanelCImbalance~s, total waiting \GanttPanelAWaitTotal{} versus \GanttPanelCWaitTotal~s.}
 \label{fig:gantt-seed7}
 \end{figure*}
 
@@ -38,29 +39,30 @@ Figure~\ref{fig:gantt-seed7} shows the A and C plans for seed 7 (100 jobs, 20 AG
 \label{fig:gantt-zoom}
 \end{figure}
 
-Table~\ref{tab:mean-results} reports the ten-seed means with sample standard deviations. C reduces makespan by \RedMakespanCAabs\%, tardiness by \RedTardinessCAabs\%, and imbalance by \RedImbalanceCAabs\% relative to A. B2 and C have identical schedule outcomes on every seed, so the B2--C contrast isolates the floor-server split's computation/state distribution (server CPU \CpuMaxC vs \CpuMaxBtwo ms at the busiest server; \MessagesC central--floor messages) rather than a schedule-quality change.
+Table~\ref{tab:mean-results} reports the ten-seed means with sample standard deviations. C reduces makespan by \RedMakespanCAabs\%, tardiness by \RedTardinessCAabs\%, and imbalance by \RedImbalanceCAabs\% relative to A. B2 and C have identical schedule outcomes on every seed, so the B2--C contrast isolates the floor-server split's computation/state distribution (server CPU \CpuMaxC~vs~\CpuMaxBtwo~ms at the busiest server; \MessagesC~central--floor messages) rather than a schedule-quality change.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \small
-\caption{Mean $\pm$ sample standard deviation over ten seeds (100 jobs, 20 AGVs). Percentages compare C with A.}
+\caption{Mean $\pm$ sample standard deviation over ten seeds (100 jobs, 20 AGVs). Percentages compare C with A. B2 and C have identical schedule outcomes on every seed, so B2 is omitted from the columns.}
 \label{tab:mean-results}
-\begin{tabular}{lrrrrr}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrr}
 \toprule
-Metric & A & B & B2 & C & C vs. A \\
+Metric & A & B & C & C vs. A \\
 \midrule
-Last-delivery makespan (s) & $\MakespanA\pm\MakespanASD$ & $\MakespanB\pm\MakespanBSD$ & $\MakespanBtwo\pm\MakespanBtwoSD$ & $\MakespanC\pm\MakespanCSD$ & $\RedMakespanCA\%$ \\
-Total tardiness (s) & $\TardinessA\pm\TardinessASD$ & $\TardinessB\pm\TardinessBSD$ & $\TardinessBtwo\pm\TardinessBtwoSD$ & $\TardinessC\pm\TardinessCSD$ & $\RedTardinessCA\%$ \\
-Load imbalance (s) & $\ImbalanceA\pm\ImbalanceASD$ & $\ImbalanceB\pm\ImbalanceBSD$ & $\ImbalanceBtwo\pm\ImbalanceBtwoSD$ & $\ImbalanceC\pm\ImbalanceCSD$ & $\RedImbalanceCA\%$ \\
-Total waiting (s) & $\WaitTotalA\pm\WaitTotalASD$ & $\WaitTotalB\pm\WaitTotalBSD$ & $\WaitTotalBtwo\pm\WaitTotalBtwoSD$ & $\WaitTotalC\pm\WaitTotalCSD$ & $\RedWaitTotalCA\%$ \\
-Longest AGV wait (s) & $\WaitMaxA\pm\WaitMaxASD$ & $\WaitMaxB\pm\WaitMaxBSD$ & $\WaitMaxBtwo\pm\WaitMaxBtwoSD$ & $\WaitMaxC\pm\WaitMaxCSD$ & $\RedWaitMaxCA\%$ \\
-Busiest-server CPU (ms) & $\CpuMaxA\pm\CpuMaxASD$ & $\CpuMaxB\pm\CpuMaxBSD$ & $\CpuMaxBtwo\pm\CpuMaxBtwoSD$ & $\CpuMaxC\pm\CpuMaxCSD$ & $\RedCpuMaxCA\%$ \\
-Windows on busiest server & $\WindowsMaxA\pm\WindowsMaxASD$ & $\WindowsMaxB\pm\WindowsMaxBSD$ & $\WindowsMaxBtwo\pm\WindowsMaxBtwoSD$ & $\WindowsMaxC\pm\WindowsMaxCSD$ & $\RedWindowsMaxCA\%$ \\
+Last-delivery makespan (s) & $\MakespanA\pm\MakespanASD$ & $\MakespanB\pm\MakespanBSD$ & $\MakespanC\pm\MakespanCSD$ & $\RedMakespanCA\%$ \\
+Total tardiness (s) & $\TardinessA\pm\TardinessASD$ & $\TardinessB\pm\TardinessBSD$ & $\TardinessC\pm\TardinessCSD$ & $\RedTardinessCA\%$ \\
+Load imbalance (s) & $\ImbalanceA\pm\ImbalanceASD$ & $\ImbalanceB\pm\ImbalanceBSD$ & $\ImbalanceC\pm\ImbalanceCSD$ & $\RedImbalanceCA\%$ \\
+Total waiting (s) & $\WaitTotalA\pm\WaitTotalASD$ & $\WaitTotalB\pm\WaitTotalBSD$ & $\WaitTotalC\pm\WaitTotalCSD$ & $\RedWaitTotalCA\%$ \\
+Longest AGV wait (s) & $\WaitMaxA\pm\WaitMaxASD$ & $\WaitMaxB\pm\WaitMaxBSD$ & $\WaitMaxC\pm\WaitMaxCSD$ & $\RedWaitMaxCA\%$ \\
+Busiest-server CPU (ms) & $\CpuMaxA\pm\CpuMaxASD$ & $\CpuMaxB\pm\CpuMaxBSD$ & $\CpuMaxC\pm\CpuMaxCSD$ & $\RedCpuMaxCA\%$ \\
+Windows on busiest server & $\WindowsMaxA\pm\WindowsMaxASD$ & $\WindowsMaxB\pm\WindowsMaxBSD$ & $\WindowsMaxC\pm\WindowsMaxCSD$ & $\RedWindowsMaxCA\%$ \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{tabular}}
+\end{table*}
 
-Planning CPU is wall-clock dependent. Across five repeated runs of the main experiment, the busiest-server reduction stays between \CpuRepeatRedMin\% and \CpuRepeatRedMax\% (medians \CpuRepeatMedianA ms for A and \CpuRepeatMedianC ms for C).
+Planning CPU is wall-clock dependent. Across five repeated runs of the main experiment, the busiest-server reduction stays between \CpuRepeatRedMin\% and \CpuRepeatRedMax\% (medians \CpuRepeatMedianA~ms for A and \CpuRepeatMedianC~ms for C).
 
 \subsection{Fleet-size sweep}
 Tardiness decreases with fleet size for A at every tested step. For B it decreases through 16 AGVs, then rises from \FleetTardBSixteen~s at 16 AGVs to \FleetTardBTwenty~s at 20. For B2 and C it decreases slightly from \FleetTardBtwoSixteen~s to \FleetTardBtwoTwenty~s over that final step. Imbalance falls for A and rises for B, B2, and C over this sweep. Tardiness does not fall monotonically in all configurations; these are observations for the tested layout and seeds, not a general trend.

@@ -127,8 +127,8 @@ print(f"zoom AGV {zoom.i}: {len(zlifts)} lift trips, {len(zlobby)} lobby waits, 
 x_max = max(max(pl.end_time for pl in det[c]["res"]["plans"].values())
             for c in ("A", "C")) * 1.01
 
-fig = plt.figure(figsize=(7.16, 5.0))
-gs = fig.add_gridspec(2, 1, hspace=0.30, left=0.085, right=0.985, top=0.90, bottom=0.17)
+fig = plt.figure(figsize=(7.0, 4.3))
+gs = fig.add_gridspec(2, 1, hspace=0.28, left=0.085, right=0.985, top=0.87, bottom=0.22)
 axes = {}
 for k, cfg in enumerate(("A", "C")):
     ax = fig.add_subplot(gs[k])
@@ -159,19 +159,19 @@ for k, cfg in enumerate(("A", "C")):
     ax.set_title(f"{cfg} — {'centralized (paper)' if cfg == 'A' else 'hybrid (central + floor servers)'}:  "
                  f"last delivery {fmt(a['makespan'])} s, load imbalance {fmt(a['imbalance'])} s, "
                  f"total waiting {fmt(a['wait_total'])} s", fontsize=8, loc="left")
-    # annotations on both panels for the SAME AGV (short arrows to its bars)
+    # annotations on both panels for the SAME AGV, placed in blank upper area
     row = next(r for r, ag in enumerate(order) if ag.i == a["agv"])
-    wx = a["wait"] / 2 if a["wait"] > 1000 else a["wait"] + 60
-    tx = a["wait"] / 2 if a["wait"] > 1000 else a["wait"] + 1000
+    y_frac = 1.0 - (row + 0.5) / len(order)          # AGV-20 row, in axes fraction (inverted axis)
+    wait_xy = (a["wait"] / 2 / x_max, y_frac)          # data -> axes fraction x
+    svc_xy = (a["first_service"] / x_max, y_frac)
     ax.annotate(f"{a['agv']}: waits {fmt(a['wait'], 0)} s before first move",
-                xy=(wx, row), xytext=(tx, row - 2.35), ha="center", fontsize=6.5,
+                xy=wait_xy, xycoords="axes fraction",
+                xytext=(0.07, 0.86), textcoords="axes fraction", ha="left", fontsize=6.5,
                 arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
                 bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
     ax.annotate(f"service (load+unload): {fmt(a['service'], 0)} s in total",
-                xy=(a["first_service"], row - 0.5),
-                xytext=(a["first_service"] - 150 if cfg == "A" else a["first_service"] + 2650,
-                        row - (2.6 if cfg == "A" else 2.35)),
-                ha="right" if cfg == "A" else "left", fontsize=6.5,
+                xy=svc_xy, xycoords="axes fraction",
+                xytext=(0.07, 0.78), textcoords="axes fraction", ha="left", fontsize=6.5,
                 arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
                 bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
 axes["C"].set_xlabel("time (s)", fontsize=8)
@@ -182,8 +182,8 @@ handles += [plt.Rectangle((0, 0), 1, 1, fc=COL["lift"], ec="#404040", lw=0.3, la
             plt.Rectangle((0, 0), 1, 1, fc=COL["pickup"], ec="#404040", lw=0.3, label="loading ($\\eta$)"),
             plt.Rectangle((0, 0), 1, 1, fc=COL["delivery"], ec="#404040", lw=0.3, label="unloading ($\\eta'$)"),
             plt.Rectangle((0, 0), 1, 1, fc=WAIT_FACE, ec=WAIT_EDGE, hatch=HATCH, label="waiting")]
-fig.legend(handles=handles, loc="lower center", ncol=7, fontsize=6.5, frameon=False,
-           bbox_to_anchor=(0.5, 0.015))
+fig.legend(handles=handles, loc="lower center", ncol=4, fontsize=6, frameon=False,
+           bbox_to_anchor=(0.5, 0.018))
 for ext in ("pdf", "png"):
     fig.savefig(os.path.join(FIG_DIR, f"gantt_A_C_seed7.{ext}"), dpi=300)
 plt.close(fig)
@@ -205,21 +205,22 @@ for k, t0, t1, info, fl in zsegs:
         ax.broken_barh([(t0, t1 - t0)], (y - 0.34, 0.68), facecolors=WAIT_FACE,
                        edgecolors=WAIT_EDGE, hatch=HATCH, linewidth=0.3)
         if info.split("at ")[1] in L.lobbies:
-            off = y + (0.42 if zlobby.index((t0, t1, info.split("at ")[1])) % 2 == 0 else 1.18)
-            ax.text((t0 + t1) / 2, off, f"{t1 - t0:.0f} s", rotation=90,
-                    ha="center", va="bottom", fontsize=4.6, color="#555555")
+            ax.text((t0 + t1) / 2, y + 0.55, f"{t1 - t0:.0f} s", rotation=90,
+                    ha="center", va="bottom", fontsize=4.2, color="#555555")
     else:
         key = "lift" if k == "lift" else (f"floor{fl}" if k == "travel" else k)
         ax.broken_barh([(t0, t1 - t0)], (y - 0.34, 0.68), facecolors=COL[key],
                        linewidth=0.2, edgecolors="#404040")
 for n, (t0, t1, info) in enumerate(zlifts):  # staggered so adjacent trips do not collide
-    ax.text((t0 + t1) / 2, 3.52 + (0.0 if n % 2 == 0 else 0.62), info.replace("->", "\u2192"),
+    ax.text((t0 + t1) / 2, 3.52 + (0.0 if n % 2 == 0 else 0.62),
+            info.replace("~", "").replace("->", "\u2192"),
             rotation=90, ha="center", va="top", fontsize=4.6, color="#7A3E5C")
 ax.set_yticks([0, 1, 2, 3])
 ax.set_yticklabels(["Floor 1", "Floor 2", "Floor 3", "Lift"], fontsize=6.5)
 ax.set_xlabel("time (s)", fontsize=7)
 ax.tick_params(axis="x", labelsize=6.5)
 ax.grid(axis="x", alpha=0.25, linewidth=0.4)
+ax.set_ylim(4.5, -0.7)
 ax.set_title(f"{zoom.i} in C (seed {SEED}): {len(zlifts)} lift trips, "
              f"{len(zlobby)} lobby waits", fontsize=7.5, loc="left")
 fig.tight_layout()

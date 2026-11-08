@@ -9,15 +9,65 @@ Figure~\ref{fig:architecture} shows the information flow. Jobs and fleet state g
 Algorithm~\ref{alg:assignment} assigns jobs in order $(t_j,j)$ to the AGV minimizing $F_{ji}$. Algorithm~\ref{alg:routing} processes AGVs in priority order $V_1\to V_{|V|}$, constructing node and edge windows; a window conflicting with frozen reservations triggers Algorithm~\ref{alg:sliding}, which delays the affected route segment. Algorithm~\ref{alg:sliding} sweeps backward from the conflict visit to the nearest preceding exempt node, accumulating the smallest right-shift that clears higher-priority windows with separation $\delta$, up to $k_{\max}$ passes; on exhaustion it delays departure at the exempt node until blocking traffic clears.
 
 \begin{algorithm}[t]
-\caption{Prioritized planning baseline (compact)}
-\label{alg:baseline-compact}
+\caption{Prioritized job assignment (Algorithm 1)}
+\label{alg:assignment}
+\small
 \begin{algorithmic}[1]
-\REQUIRE Jobs $J$, AGVs $V$ in priority order, fitness weight $\lambda$, service times $\eta,\eta'$
-\FOR{each job $j$ in order $(t_j,j)$}
-  \FOR{each AGV $i$} \STATE compute $ct_{ji},et_{ji},dt_{ji},F_{ji}=ct_{ji}+\lambda(et_{ji}+dt_{ji})$ \ENDFOR
-  \STATE Assign $j$ to $i^*=\arg\min_i(F_{ji},\rho_i)$; append shortest paths $s_{i^*}\to p_j\to p'_j$ with dwell $\eta,\eta'$; update AGV state to $(p'_j,ct_{ji^*})$.
+\REQUIRE Jobs $J$, AGVs $V$, fitness weight $\lambda$, service times $\eta,\eta'$
+\ENSURE Assignment $x_{ji}$ and complete routes $R_i$
+\FOR{each $j\in J$ in order $(t_j,j)$}
+  \FOR{each $i\in V$}
+    \STATE Compute $ct_{ji},et_{ji},dt_{ji}$ from AGV state $(s_i,vt_i)$.
+    \STATE $F_{ji}\gets ct_{ji}+\lambda(et_{ji}+dt_{ji})$.
+  \ENDFOR
+  \STATE Choose $i^*\gets\arg\min_i(F_{ji},\rho_i)$; set $x_{ji^*}\gets1$.
+  \STATE Append shortest paths $s_{i^*}\to p_j\to p'_j$ with dwell $\eta,\eta'$.
+  \STATE Update AGV state to $(p'_j,ct_{ji^*})$.
 \ENDFOR
-\FOR{each AGV $i$ in priority order} \STATE append path back to $\pi$; construct node/edge windows; if a window conflicts with frozen higher-priority reservations, delay the segment by Algorithm~\ref{alg:sliding}; freeze windows. \ENDFOR
+\FOR{each $i\in V$}
+  \STATE Append a shortest path from the final assigned station to $\pi$.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{Prioritized conflict-free routing (Algorithm 2)}
+\label{alg:routing}
+\small
+\begin{algorithmic}[1]
+\REQUIRE Routes $R_i$, dwell times, priority order $V_1,\ldots,V_{|V|}$
+\ENSURE Timed plans and frozen reservations $W_n,W'_e$
+\STATE Initialize empty node and edge reservation sets $W_n,W'_e$.
+\FOR{each AGV $i$ in priority order}
+  \STATE Construct node and edge windows along $R_i$.
+  \FOR{each candidate window conflicting with $W_n$ or $W'_e$}
+    \STATE Apply Algorithm~\ref{alg:sliding} to delay the route segment.
+  \ENDFOR
+  \STATE Freeze ordinary node windows in $W_n$ and track windows in $W'_e$.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{Sliding-window conflict elimination (Algorithm 3)}
+\label{alg:sliding}
+\small
+\begin{algorithmic}[1]
+\REQUIRE Conflict visit $p$, reservations $W$, route $R$, limit $k_{\max}$
+\ENSURE Conflict-free shifted windows and delay $st^*$
+\STATE Find the nearest preceding exempt visit $q$.
+\FOR{$k=1$ to $k_{\max}$}
+  \STATE Set $st^*\gets0$ and $mt^*\gets\infty$.
+  \FOR{visits $m=p,p-1,\ldots,q+1$}
+    \STATE Evaluate $f(lt_m+st^*,rt_m+st^*,W)$; update $mt^*$ and $st^*$.
+    \IF{$st^*>mt^*$} \STATE Stop this backward sweep. \ENDIF
+  \ENDFOR
+  \IF{the sweep completes within $mt^*$} \STATE \textbf{break} \ENDIF
+\ENDFOR
+\IF{no feasible sweep completed}
+  \STATE Apply the fallback delay at $q$ until blocking reservations clear.
+\ENDIF
+\STATE Shift windows $q+1,\ldots,p$ and extend the window at $q$ by $st^*$.
 \end{algorithmic}
 \end{algorithm}
 
@@ -29,6 +79,7 @@ Legs are dispatched either in priority order or first-come-first-served (FCFS): 
 \begin{algorithm}[t]
 \caption{Hybrid floor-leg planning and lift booking}
 \label{alg:hybrid}
+\small
 \begin{algorithmic}[1]
 \REQUIRE Assigned routes, floor planners, central lift calendar, dispatch order
 \ENSURE Merged complete AGV plans
