@@ -159,21 +159,31 @@ for k, cfg in enumerate(("A", "C")):
     ax.set_title(f"{cfg} — {'centralized (paper)' if cfg == 'A' else 'hybrid (central + floor servers)'}:  "
                  f"last delivery {fmt(a['makespan'])} s, load imbalance {fmt(a['imbalance'])} s, "
                  f"total waiting {fmt(a['wait_total'])} s", fontsize=8, loc="left")
-    # annotations on both panels for the SAME AGV, placed in blank upper area
+    # annotations for the SAME AGV in both panels
     row = next(r for r, ag in enumerate(order) if ag.i == a["agv"])
-    y_frac = 1.0 - (row + 0.5) / len(order)          # AGV-20 row, in axes fraction (inverted axis)
-    wait_xy = (a["wait"] / 2 / x_max, y_frac)          # data -> axes fraction x
-    svc_xy = (a["first_service"] / x_max, y_frac)
-    ax.annotate(f"{a['agv']}: waits {fmt(a['wait'], 0)} s before first move",
-                xy=wait_xy, xycoords="axes fraction",
-                xytext=(0.07, 0.86), textcoords="axes fraction", ha="left", fontsize=6.5,
-                arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
-                bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
-    ax.annotate(f"service (load+unload): {fmt(a['service'], 0)} s in total",
-                xy=svc_xy, xycoords="axes fraction",
-                xytext=(0.07, 0.78), textcoords="axes fraction", ha="left", fontsize=6.5,
-                arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
-                bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
+    y_row = row  # data y (inverted axis; V20 is the bottom row)
+    if cfg == "A":
+        # Panel A: one short annotation at AGV-20's first-move point (bottom row).
+        ax.annotate(f"{a['agv']}: waits {fmt(a['wait'], 0)} s before first move",
+                    xy=(a["wait"], y_row), xycoords="data",
+                    xytext=(a["wait"] - 1500, y_row - 1.7), textcoords="data",
+                    ha="center", fontsize=6.5,
+                    arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
+                    bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
+    else:
+        # Panel C: annotations in the empty right side.
+        ax.annotate(f"{a['agv']}: waits {fmt(a['wait'], 0)} s before first move",
+                    xy=(a["wait"], y_row), xycoords="data",
+                    xytext=(x_max * 0.62, 1.05), textcoords="axes fraction",
+                    ha="left", fontsize=6.5,
+                    arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
+                    bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
+        ax.annotate(f"service (load+unload): {fmt(a['service'], 0)} s in total",
+                    xy=(a["first_service"], y_row - 0.5), xycoords="data",
+                    xytext=(x_max * 0.62, 0.92), textcoords="axes fraction",
+                    ha="left", fontsize=6.5,
+                    arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
+                    bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
 axes["C"].set_xlabel("time (s)", fontsize=8)
 handles = [plt.Rectangle((0, 0), 1, 1, fc=COL[f"floor{f}"], ec="#404040", lw=0.3,
                          label=f"moving on floor {f}")
