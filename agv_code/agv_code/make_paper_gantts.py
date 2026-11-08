@@ -171,17 +171,18 @@ for k, cfg in enumerate(("A", "C")):
                     arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
                     bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
     else:
-        # Panel C: annotations in the empty right side.
+        # Panel C: annotations in the empty right side (x ~ 4000 s),
+        # arrows pointing back at V20's first move (~375 s).
         ax.annotate(f"{a['agv']}: waits {fmt(a['wait'], 0)} s before first move",
                     xy=(a["wait"], y_row), xycoords="data",
-                    xytext=(x_max * 0.62, 1.05), textcoords="axes fraction",
-                    ha="left", fontsize=6.5,
+                    xytext=(4000, y_row - 7), textcoords="data",
+                    ha="left", va="center", fontsize=6.5,
                     arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
                     bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
         ax.annotate(f"service (load+unload): {fmt(a['service'], 0)} s in total",
                     xy=(a["first_service"], y_row - 0.5), xycoords="data",
-                    xytext=(x_max * 0.62, 0.92), textcoords="axes fraction",
-                    ha="left", fontsize=6.5,
+                    xytext=(4000, y_row - 12), textcoords="data",
+                    ha="left", va="center", fontsize=6.5,
                     arrowprops=dict(arrowstyle="->", lw=0.6, color="#333333"),
                     bbox=dict(fc="white", ec="#999999", lw=0.4, pad=1.5))
 axes["C"].set_xlabel("time (s)", fontsize=8)
