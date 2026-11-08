@@ -35,6 +35,11 @@ COMMANDS = {
     "results_statistics": "python agv_statistical_experiments.py",
     "results_fairness": "python agv_fairness_experiment.py",
     "results_lobby_capacity": "python lobby_capacity_sweep.py",
+    "results_cpu_repeat_r1": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r1",
+    "results_cpu_repeat_r2": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r2",
+    "results_cpu_repeat_r3": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r3",
+    "results_cpu_repeat_r4": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r4",
+    "results_cpu_repeat_r5": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r5",
 }
 
 # columns worth recording when present in a folder's CSVs

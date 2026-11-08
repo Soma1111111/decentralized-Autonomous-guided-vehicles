@@ -1,0 +1,35 @@
+\section{Problem Model}
+\label{sec:model}
+
+The model uses the prioritized assignment and route-window notation of the ICARCV baseline \cite{guo2024}, with explicit lift and lobby elements for a multi-floor factory.
+
+\subsection{Sets and graph}
+Let $G=(N,E)$ be the undirected factory graph. Each undirected edge represents a bidirectional track. Let $F$ be the set of floors, $N_f\subseteq N$ the nodes on floor $f\in F$, and $L\subseteq E$ the set of lift links between floors. The parking node is $\pi\in N$. Let $J$ be the set of jobs and $V$ the set of AGVs; each job is served by exactly one AGV. Let $M_i$ index the successive node visits on AGV $i$'s route, including repeated visits to the same physical node.
+
+\subsection{Parameters}
+Each job $j\in J$ has pickup and delivery nodes $p_j,p'_j\in N$ ($p_j\ne p'_j$) and desired times $t_j,t'_j$. Service times are $\eta$ (loading) and $\eta'$ (unloading); safety separation is $\delta>0$; AGV speed is $v>0$. Each edge $e\in E$ has length $\ell_e$; for lift edges, $\ell_e$ is the configured lift length. Travel time along an edge is $\tau_{uv}=\ell_{\{u,v\}}/v$, and $d(u,w)$ is shortest-path travel time. Jobs are considered in increasing desired pickup time $(t_j,j)$; AGV $i$ has fixed priority rank $\rho_i$ (smaller means higher priority). Assignment uses fitness weight $\lambda\ge0$ and Algorithm 3 is limited to $k_{\max}$ passes.
+
+\subsection{Decision and schedule variables}
+The assignment variable is $x_{ji}\in\{0,1\}$, where $x_{ji}=1$ means AGV $i$ is assigned job $j$: $\sum_{i\in V}x_{ji}=1\ \forall j\in J$. For each AGV $i$, $R_i=(n_{i,0},\ldots,n_{i,q_i})$ is its ordered route with $n_{i,0}=n_{i,q_i}=\pi$, constructed by concatenating shortest paths through each assigned job's pickup and delivery nodes and back to $\pi$. For visit $m$, $lt_{im}$ and $rt_{im}$ are the start and end of its node-occupancy window; dwell equals $\eta$ at pickup, $\eta'$ at delivery, and zero at pass-through visits. The edge window for consecutive visits is $[rt_{i,m-1},lt_{im}]$ with fixed duration $\tau_{n_{i,m-1},n_{i,m}}$: the AGV does not stop while traversing an edge.
+
+\subsection{Assignment quantities}
+When job $j$ is considered, with AGV $i$'s current node $s_i$ and available time $vt_i$:
+\begin{align*}
+  ct_{ji} &= vt_i + d(s_i,p_j) + \eta + d(p_j,p'_j) + \eta',\\
+  et_{ji} &= \max\!\left(0,\ t_j-\bigl(vt_i+d(s_i,p_j)+\eta\bigr)\right),\\
+  dt_{ji} &= \max(0,\ ct_{ji}-t'_j),\\
+  F_{ji} &= ct_{ji}+\lambda(et_{ji}+dt_{ji}).
+\end{align*}
+The job is assigned to the AGV minimizing $F_{ji}$ (ties by priority); then $vt_i$ and $s_i$ are updated to $ct_{ji}$ and $p'_j$.
+
+\subsection{Conflict separation}
+Let $W_n$ be fixed occupancy windows of higher-priority AGVs at ordinary node $n$, and $W'_{uv}$ fixed edge windows on directed traversal $u\to v$ (a physical track is exclusive in both directions). Overlapping use of an ordinary node or the same bidirectional track by distinct AGVs must be separated by at least $\delta$: for intervals $[a,b]$ and $[c,d]$, require $c\ge b+\delta$ or $a\ge d+\delta$. The parking node is exempt from node separation. Algorithm 3 resolves a conflict by shifting a route prefix right by cumulative delay $st^*$ (sweep backward from the conflict visit to the nearest previous exempt node, limited to $k_{\max}$ passes), extending the preceding exempt node's window by $st^*$.
+
+\subsection{Objectives}
+Let $C_j$ be job $j$'s actual delivery-completion time and $U_i$ AGV $i$'s usage time (return time to $\pi$ when serving jobs). Then
+\begin{align*}
+  M &= \max_{j\in J} C_j &&\text{(makespan, last delivery)},\\
+  T &= \sum_{j\in J}\max(0,C_j-t'_j) &&\text{(total delivery tardiness)},\\
+  I &= \max_{i\in V}U_i-\min_{i\in V}U_i &&\text{(load imbalance)}.
+\end{align*}
+Possible objectives are $\min\;\alpha M+\beta T+\gamma I$ or lexmin$(M,T,I)$; the code does not optimize either combined objective, it reports $M,T,I$ as metrics.

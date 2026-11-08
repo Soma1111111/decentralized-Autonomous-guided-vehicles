@@ -1,0 +1,50 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx,array}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{cite}
+\usepackage{url}
+
+\input{../generated/numbers}
+
+\title{Hierarchical Hybrid Planning for Multi-AGV Scheduling in Multi-Floor Factories}
+
+\author{\IEEEauthorblockN{[AUTHORS]}\IEEEauthorblockA{[AFFILIATION]}\\
+\IEEEauthorblockA{[EMAIL]}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Multi-floor manufacturing requires automated guided vehicles (AGVs) to share both floor routes and lift resources. We extend the prioritized planning baseline of Guo et al. (ICARCV 2024) with a hybrid architecture: a central server assigns jobs, splits routes at lifts, and books lift trips, while one server per floor plans local route legs. Lift-lobby waiting points let delays be absorbed near floor-level conflicts instead of at the factory's single parking node. In the tested three-floor layout (27 nodes, 4 lifts), ten job sets of 100 jobs and 20 AGVs, the hybrid configuration reduces mean last-delivery makespan by \RedMakespanCAabs\%, total tardiness by \RedTardinessCAabs\%, and load imbalance by \RedImbalanceCAabs\% relative to the paper-style centralized configuration, with busiest-server CPU down \RedCpuMaxCAabs\%. All reported plans pass an independent verifier. These are experimental results for the tested layout and settings, not a general optimality or scalability guarantee.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Automated guided vehicles, multi-agent path finding, prioritized planning, multi-floor logistics, lift coordination, hierarchical scheduling.
+\end{IEEEkeywords}
+
+\input{sections/intro}
+\input{sections/related_work}
+\input{sections/model}
+\input{sections/method}
+\input{sections/experiments}
+\input{sections/conclusion}
+
+\appendices
+\input{sections/reproducibility}
+
+\begin{thebibliography}{9}
+\bibitem{guo2024} Y. Guo, J. Yao, J. Li, R. Su, and K. V. Ling, "Prioritized planning for large-scale multiple-AGV scheduling problem in smart manufacturing," \emph{Proc. ICARCV 2024}, pp. 19--24, 2024.
+\bibitem{andreychuk2018} A. Andreychuk and K. Yakovlev, "Multi-robot path planning in well-formed infrastructures: prioritized planning vs. prioritized wait adjustment (preliminary results)," arXiv:1807.01909, 2018.
+\bibitem{andreychuk2022} A. Andreychuk, K. Yakovlev, D. Atzmon, and R. Stern, "Multi-agent pathfinding with continuous time," \emph{Artificial Intelligence}, 2022.
+\bibitem{he2026} H. He, X. Wu, S. Zhao, and Z. Ren, "Conflict-based search for multi-agent path finding with elevators," arXiv:2602.20512, 2026.
+\bibitem{zhao2021} H. Zhao et al., "Spare-zone-based hierarchical multi-AGV path planning," \emph{Proc. ICRA}, 2021.
+\bibitem{pratissoli2024} F. Pratissoli, R. Brugioni, N. Battilani, and L. Sabattini, "Hierarchical traffic management of multi-AGV systems with deadlock prevention applied to industrial environments," \emph{IEEE Trans. Automation Science and Engineering}, vol. 21, no. 3, pp. 3155--3169, 2024.
+\bibitem{hmapp2021} H. Zhang et al., "A hierarchical approach to multi-agent path finding," \emph{Proc. SoCS}, vol. 12, no. 1, pp. 209--211, 2021.
+\bibitem{projectRepo} Soma1111111, "decentralized-Autonomous-guided-vehicles," https://github.com/Soma1111111/decentralized-Autonomous-guided-vehicles.
+\end{thebibliography}
+
+\end{document}

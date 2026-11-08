@@ -8,6 +8,8 @@
 \usepackage{cite}
 \usepackage{url}
 
+\input{../generated/numbers}
+
 \title{Hierarchical Hybrid Planning for Multi-AGV Scheduling in Multi-Floor Factories}
 
 \author{\IEEEauthorblockN{Author Name(s)}
@@ -25,7 +27,8 @@ multi-AGV scheduling baseline of Guo et al. and evaluate a hierarchical
 extension in which a central planner assigns jobs and books lifts while
 floor-level planners schedule local route legs using lift lobbies as waiting
 points. In the tested three-floor layout, the hybrid configuration reduces
-mean makespan by 65\%, total tardiness by 72\%, and load imbalance by 80\%
+mean makespan by \RedMakespanCAabs\%, total tardiness by
+\RedTardinessCAabs\%, and load imbalance by \RedImbalanceCAabs\%
 relative to the paper-style centralized configuration over ten job sets of
 100 jobs and 20 AGVs. A centralized FCFS-leg ablation produces the same
 schedules as the hybrid on the tested seeds, so the measured schedule gains
@@ -57,6 +60,6 @@ multi-floor logistics, lift coordination, hierarchical scheduling.
 \input{sections/reproducibility}
 
 \bibliographystyle{IEEEtran}
-\bibliography{references}
+\bibliography{../references}
 
 \end{document}

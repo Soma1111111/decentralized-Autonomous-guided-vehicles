@@ -21,3 +21,17 @@ dist/
 Thumbs.db
 *.swp
 *.swo
+
+# LaTeX build artifacts (keep only paper/paper_short.pdf and paper/paper_full.pdf)
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.bcf
+*.run.xml
+*.synctex.gz
+missfont.log
+paper/short/main.pdf
+paper/full/main.pdf

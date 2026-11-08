@@ -13,16 +13,7 @@ wait. The max/min ratio is infinite whenever any AGV has zero wait.
 \centering
 \caption{Waiting fairness by configuration, mean $\pm$ standard deviation over ten seeds.}
 \label{tab:fairness-configs}
-\begin{tabular}{lrrrr}
-\toprule
-Configuration & Pearson $r$ & Spearman $\rho$ & Gini & Max/min wait \\
-\midrule
-A   & $0.884\pm0.073$ & $0.886\pm0.074$ & $0.382\pm0.018$ & $\infty$ (10/10) \\
-B   & $0.961\pm0.041$ & $0.965\pm0.033$ & $0.354\pm0.016$ & $\infty$ (10/10) \\
-B2  & $0.419\pm0.267$ & $0.425\pm0.264$ & $0.143\pm0.036$ & $3.842\pm1.468$ \\
-C   & $0.419\pm0.267$ & $0.425\pm0.264$ & $0.143\pm0.036$ & $3.842\pm1.468$ \\
-\bottomrule
-\end{tabular}
+\input{../generated/table_fairness}
 \end{table}
 
 The figure plots mean total wait by fixed priority rank. A and B concentrate
@@ -31,14 +22,14 @@ statistics in this experiment, consistent with their identical FCFS leg
 ordering and schedules: the floor-server split itself did not change fairness
 here. C reduces inequality relative to A and B (lower Gini and a smaller
 priority-wait correlation), but the top-ranked AGV waits longer on average in
-C (1169.1 s) than under A or B (0 s in each). Thus the hybrid is fairer by
+C (\WaitTopC~s) than under A or B (\WaitTopA~s in each). Thus the hybrid is fairer by
 these aggregate distribution and rank-correlation measures, while shifting
 some delay onto the highest-priority vehicle; this is not an unqualified
 fairness improvement.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\linewidth]{figures/mean_wait_by_priority.png}
+\includegraphics[width=0.9\linewidth]{../figures/mean_wait_by_priority.png}
 \caption{Mean parking-plus-lobby wait by fixed AGV priority rank over seeds 1--10.}
 \label{fig:wait-rank}
 \end{figure}
@@ -55,19 +46,11 @@ independent verifier.
 \centering
 \caption{C fairness variants: mean $\pm$ standard deviation over ten seeds.}
 \label{tab:fairness-variants}
-\begin{tabular}{lrrr}
-\toprule
-Variant & Makespan (s) & Tardiness (s) & Imbalance (s) \\
-\midrule
-C (baseline) & $2768.9\pm195.8$ & $90104.5\pm11447.3$ & $1441.2\pm241.1$ \\
-C with rotating priority & $2737.6\pm169.7$ & $88009.6\pm10147.2$ & $1425.3\pm250.6$ \\
-C with 600 s wait-trigger boost & $2768.9\pm195.8$ & $90104.5\pm11447.3$ & $1441.2\pm241.1$ \\
-\bottomrule
-\end{tabular}
+\input{../generated/table_fairness_variants}
 \end{table}
 
 Rotation lowered the reported mean makespan, tardiness and imbalance slightly,
-but the Gini increased from 0.143 to 0.145; it weakened correlation with the
+but the Gini increased from \GiniC{} to \GiniCRotate{}; it weakened correlation with the
 original fixed ranks but did not reduce overall wait inequality. The wait
 trigger produced the same schedules and performance metrics as baseline C:
 under the current FCFS leg order, priority changes mostly affect ties and did

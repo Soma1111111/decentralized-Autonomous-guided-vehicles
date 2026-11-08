@@ -1,0 +1,10 @@
+\section{Related Work}
+\label{sec:related}
+
+Guo et al.'s ICARCV 2024 method is the baseline for this study: large-scale multiple-AGV scheduling as prioritized assignment and route planning, resolving conflicts against previously planned higher-priority vehicles \cite{guo2024}. The sequential approach avoids joint search over all vehicle paths, but its result depends on assignment and priority order.
+
+Prioritized wait adjustment starts from individual paths and shifts waiting using safe intervals; its preliminary evaluation reports 50--250 agents and trades solution quality for runtime \cite{andreychuk2018}. It is our competing planner (WA) in Section~\ref{sec:experiments}.
+
+Conflict-based search (CBS) offers a coupled alternative. Continuous-time CBS methods model nonuniform action durations and geometric collisions \cite{andreychuk2022}; He et al. extend CBS to multi-floor MAPF with single-agent elevator occupancy and reset intervals, explicitly including lift conflicts in search \cite{he2026}. These methods provide stronger conflict reasoning, while our experiments focus on job assignment, prioritized route windows, and lift arbitration in a decomposed planner.
+
+Hierarchical and zone-based planning motivates layered coordination: the spare-zone method of Zhao et al. uses a hierarchical allocation layer and local coordination for vehicles following fixed paths \cite{zhao2021}; Pratissoli et al. use a centralized, decoupled, multilayer traffic manager with topological sectors \cite{pratissoli2024}; HMAPP combines high-level region sequences with regional conflict-based searches \cite{hmapp2021}. The present implementation instead partitions local route windows by floor while retaining central job assignment and lift booking.

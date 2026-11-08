@@ -1,0 +1,45 @@
+# Whitelisted numerals for check_paper_numbers.py.
+# These are experiment parameters, layout constants, or structural labels that
+# legitimately appear as plain numerals in the paper text. Everything else
+# numeric must come from paper/generated/numbers.tex macros or generated tables.
+# KNOWN LIMIT: a hand-typed result equal to one of these values would not be
+# flagged; all reported metrics (7-digit tardiness, decimal means) fall outside
+# this list. Re-check the diff of sections/*.tex when touching results prose.
+#
+# experiment parameters
+0
+1
+2
+3
+4
+5
+7
+8
+9
+10
+12
+16
+20
+30
+50
+100
+200
+250
+400
+600
+# layout and model constants
+26
+27
+38
+40
+# AGV-01 label in limitations text
+01
+# citation year (ICARCV 2024)
+2024
+# \parbox width in methods.tex
+0.94
+# Python versions named in the software-environment paragraph
+3.11
+3.12
+# prior-work scale reported by a cited paper (related work)
+8,000

@@ -14,8 +14,8 @@ Total tardiness (s)                              316,893.6     122,278.8      90
 Load imbalance (max - min usage) (s)               7,149.9       2,832.3       1,441.2       1,441.2       5,144.8      -80%
 Total waiting (parking + lobbies) (s)             64,689.7      27,647.7      27,104.5      27,104.5      49,584.5      -58%
 Longest wait of one AGV (s)                        7,133.4       2,830.8       1,887.7       1,887.7       5,133.9      -74%
-Planning compute time, busiest server (ms)           129.2          28.6          34.1          10.9         175.4      -92%
-Planning compute time, all servers (ms)              129.2          28.6          34.1          28.1         175.4      -78%
+Planning compute time, busiest server (ms)            98.6          23.0          22.7           7.6         133.4      -92%
+Planning compute time, all servers (ms)               98.6          23.0          22.7          22.4         133.4      -77%
 Time windows held by one server                    2,030.7       1,733.5       1,733.5         634.5       2,075.8      -69%
 Central <-> floor messages                             0.0           0.0         337.2         337.2           0.0         -
 Algorithm 3 calls                                    106.6         165.1         168.6         168.6           0.0      +58%
@@ -36,9 +36,9 @@ Ablation interpretation:
   imbalance: A=7,149.9, B=2,832.3, B2=1,441.2, C=1,441.2
 
 per server, seed 7:   compute (ms)   windows held
-  A  central           103.1          1,989
-  B2  central            23.5          1,697
-  C  central             7.8            146
-  C  floor1              3.6            478
-  C  floor2              6.9            619
-  C  floor3              5.2            454
+  A  central            84.0          1,989
+  B2  central            22.8          1,697
+  C  central             7.5            146
+  C  floor1              3.5            478
+  C  floor2              7.1            619
+  C  floor3              4.8            454

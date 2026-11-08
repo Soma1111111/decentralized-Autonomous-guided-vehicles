@@ -14,8 +14,8 @@ Total tardiness (s)                              316,893.6     122,278.8      90
 Load imbalance (max - min usage) (s)               7,149.9       2,832.3       1,441.2       1,441.2       5,144.8      -80%
 Total waiting (parking + lobbies) (s)             64,689.7      27,647.7      27,104.5      27,104.5      49,584.5      -58%
 Longest wait of one AGV (s)                        7,133.4       2,830.8       1,887.7       1,887.7       5,133.9      -74%
-Planning compute time, busiest server (ms)           102.4          22.9          23.1           8.6         145.1      -92%
-Planning compute time, all servers (ms)              102.4          22.9          23.1          24.2         145.1      -76%
+Planning compute time, busiest server (ms)            92.5          19.9          22.9           7.6         147.2      -92%
+Planning compute time, all servers (ms)               92.5          19.9          22.9          21.9         147.2      -76%
 Time windows held by one server                    2,030.7       1,733.5       1,733.5         634.5       2,075.8      -69%
 Central <-> floor messages                             0.0           0.0         337.2         337.2           0.0         -
 Algorithm 3 calls                                    106.6         165.1         168.6         168.6           0.0      +58%
@@ -44,9 +44,9 @@ AGVs                           A                       B                      B2
 20               7,150 / 316,894         2,832 / 122,279          1,441 / 90,104          1,441 / 90,104         5,145 / 226,880
 
 per server, seed 7:   compute (ms)   windows held
-  A  central            86.4          1,989
-  B2  central            22.6          1,697
-  C  central             7.6            146
+  A  central            92.8          1,989
+  B2  central            24.4          1,697
+  C  central             7.7            146
   C  floor1              3.6            478
-  C  floor2              7.5            619
-  C  floor3              5.4            454
+  C  floor2              7.4            619
+  C  floor3              5.2            454

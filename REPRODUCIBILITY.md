@@ -39,8 +39,9 @@ their settings, so runs with different settings never overwrite each other
 python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20
 ```
 
-Regenerate the per-seed Gantt figures (the canonical 100-job per-seed Gantts
-live in `results_hybrid/gantts/` from an earlier verified run):
+Regenerate the per-seed Gantt figures (written into the settings-encoding
+folder of the same run, `results_hybrid_100j_20a_s1-10_strict/gantts/`;
+`results_hybrid/gantts/` keeps an earlier verified copy):
 
 ```bash
 python agv_compare.py --seeds 1-10 --jobs 100 --agvs 20 --gantts-only
@@ -50,6 +51,27 @@ Every result folder is documented in `results_manifest.json`: the command,
 git commit hash, seeds, jobs, AGVs, track rule, date, Python and package
 versions, and CPU model. `test_results_manifest.py` fails if a folder's
 contents disagree with its manifest entry or with its own folder name.
+
+Regenerate the paper Gantt figures (they re-derive the seed-7 plans, verify
+every plan with `agv_core.verify()`, cross-check the schedule metrics against
+`results_hybrid_100j_20a_s1-10_strict/comparison.csv`, and write the figure
+annotation numbers to `gantt_annotations_seed7.csv`):
+
+```bash
+python make_paper_gantts.py      # vector PDF + PNG into paper/figures/
+```
+
+Regenerate every number in the paper and check that none is hard-coded:
+
+```bash
+python make_paper_numbers.py     # writes paper/generated/numbers.tex + table bodies
+python check_paper_numbers.py    # non-zero exit if results numerals are typed by hand
+```
+
+`run_all.sh` runs both after the experiments. Result numerals in
+`paper/sections/*.tex` and the abstract come from `\newcommand` macros or
+generated table bodies in `paper/generated/`; parameters and layout constants
+are listed in `paper/generated/whitelist.txt`.
 
 Regenerate the paper-style same-direction-following comparison in
 `results_same_direction/`:

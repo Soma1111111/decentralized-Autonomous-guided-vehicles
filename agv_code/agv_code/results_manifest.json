@@ -11,7 +11,7 @@
   "cpu_model": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
   "hostname": "DESKTOP-6BOEL5E",
   "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
-  "manifest_generated": "2026-11-07T13:11:24"
+  "manifest_generated": "2026-11-08T04:55:15"
  },
  "results": [
   {
@@ -74,8 +74,43 @@
    ]
   },
   {
-   "folder": "results_cpu_repeat_r1",
+   "folder": "results_baselines_100j_20a_s1-3",
    "command": "(legacy; see the generating script's docstring)",
+   "settings": {
+    "assignment_baselines": {
+     "jobs": [
+      "100"
+     ],
+     "agvs": [
+      "20"
+     ],
+     "seed": [
+      "1",
+      "2",
+      "3"
+     ],
+     "config": [
+      "A",
+      "B",
+      "C",
+      "FCFS",
+      "Random"
+     ]
+    }
+   },
+   "settings_parsed_from": [
+    "assignment_baselines"
+   ],
+   "git_commit": "67ab36e",
+   "git_commit_date": "2026-11-08T04:55:11",
+   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "files": [
+    "assignment_baselines.csv"
+   ]
+  },
+  {
+   "folder": "results_cpu_repeat_r1",
+   "command": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r1",
    "settings": {
     "comparison": {
      "jobs": [
@@ -145,7 +180,7 @@
   },
   {
    "folder": "results_cpu_repeat_r2",
-   "command": "(legacy; see the generating script's docstring)",
+   "command": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r2",
    "settings": {
     "comparison": {
      "jobs": [
@@ -215,7 +250,7 @@
   },
   {
    "folder": "results_cpu_repeat_r3",
-   "command": "(legacy; see the generating script's docstring)",
+   "command": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r3",
    "settings": {
     "comparison": {
      "jobs": [
@@ -285,7 +320,7 @@
   },
   {
    "folder": "results_cpu_repeat_r4",
-   "command": "(legacy; see the generating script's docstring)",
+   "command": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r4",
    "settings": {
     "comparison": {
      "jobs": [
@@ -355,7 +390,7 @@
   },
   {
    "folder": "results_cpu_repeat_r5",
-   "command": "(legacy; see the generating script's docstring)",
+   "command": "python agv_compare.py --sweep '' --outdir results_cpu_repeat_r5",
    "settings": {
     "comparison": {
      "jobs": [
@@ -420,6 +455,30 @@
     "fig1_compare_metrics.png",
     "fig2_gantt_A_B_C.png",
     "fig4_per_server.png",
+    "summary.txt"
+   ]
+  },
+  {
+   "folder": "results_demo_100j_20a_s7",
+   "command": "(legacy; see the generating script's docstring)",
+   "settings": {},
+   "settings_parsed_from": [],
+   "git_commit": "67ab36e",
+   "git_commit_date": "2026-11-08T04:55:12",
+   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "files": [
+    "activity.csv",
+    "assignment.csv",
+    "fig1_floors_traffic.png",
+    "fig2_schedule_gantt.png",
+    "fig3_load_per_agv.png",
+    "fig4_algorithm3_and_estimate.png",
+    "jobs.csv",
+    "plan_windows.csv",
+    "replay.gif",
+    "routes.txt",
+    "run_log.txt",
+    "summary.json",
     "summary.txt"
    ]
   },
@@ -724,8 +783,22 @@
     "fig2_gantt_A_B_C.png",
     "fig3_fleet_size_sweep.png",
     "fig4_per_server.png",
+    "gantt_annotations_seed7.csv",
+    "gantts",
     "summary.txt",
     "sweep_agvs.csv"
+   ]
+  },
+  {
+   "folder": "results_hybrid_100j_20a_s7",
+   "command": "(legacy; see the generating script's docstring)",
+   "settings": {},
+   "settings_parsed_from": [],
+   "git_commit": "67ab36e",
+   "git_commit_date": "2026-11-08T04:55:13",
+   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "files": [
+    "legs_seed7.csv"
    ]
   },
   {
@@ -788,6 +861,65 @@
    ]
   },
   {
+   "folder": "results_lobby_capacity_100j_20a_s1-10",
+   "command": "(legacy; see the generating script's docstring)",
+   "settings": {
+    "capacity_sweep": {
+     "jobs": [
+      "100"
+     ],
+     "agvs": [
+      "20"
+     ],
+     "seed": [
+      "1",
+      "10",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+     ],
+     "lobby_capacity": [
+      "1",
+      "2",
+      "4",
+      "unlimited"
+     ],
+     "layout": [
+      "3-floor",
+      "5-floor"
+     ],
+     "config": [
+      "B",
+      "C"
+     ]
+    },
+    "summary": {
+     "jobs": [
+      "100"
+     ],
+     "agvs": [
+      "20"
+     ]
+    }
+   },
+   "settings_parsed_from": [
+    "capacity_sweep",
+    "summary.txt"
+   ],
+   "git_commit": "67ab36e",
+   "git_commit_date": "2026-11-08T04:55:13",
+   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "files": [
+    "capacity_sweep.csv",
+    "summary.txt"
+   ]
+  },
+  {
    "folder": "results_same_direction",
    "command": "python agv_compare.py --track-rule same-direction (legacy folder name)",
    "settings": {
@@ -814,7 +946,8 @@
       "A",
       "B",
       "B2",
-      "C"
+      "C",
+      "WA"
      ]
     },
     "sweep_agvs": {
@@ -844,7 +977,8 @@
       "A",
       "B",
       "B2",
-      "C"
+      "C",
+      "WA"
      ]
     },
     "summary": {
@@ -931,6 +1065,47 @@
    ]
   },
   {
+   "folder": "results_scale_50-400j_20a_s1-5",
+   "command": "(legacy; see the generating script's docstring)",
+   "settings": {
+    "sweep_jobs": {
+     "jobs": [
+      "100",
+      "200",
+      "400",
+      "50"
+     ],
+     "agvs": [
+      "20"
+     ],
+     "seed": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "config": [
+      "A",
+      "B",
+      "B2",
+      "C",
+      "WA"
+     ]
+    }
+   },
+   "settings_parsed_from": [
+    "sweep_jobs"
+   ],
+   "git_commit": "67ab36e",
+   "git_commit_date": "2026-11-08T04:55:14",
+   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
+   "files": [
+    "summary.txt",
+    "sweep_jobs.csv"
+   ]
+  },
+  {
    "folder": "results_sensitivity",
    "command": "python sensitivity.py",
    "settings": {
@@ -975,6 +1150,55 @@
    "git_commit": "99262c2",
    "git_commit_date": "2026-11-07 11:13:37 +0000",
    "commit_status": "committed",
+   "files": [
+    "sensitivity.csv"
+   ]
+  },
+  {
+   "folder": "results_sensitivity_50j_10a_s1-3",
+   "command": "(legacy; see the generating script's docstring)",
+   "settings": {
+    "sensitivity": {
+     "jobs": [
+      "50"
+     ],
+     "agvs": [
+      "10"
+     ],
+     "seed": [
+      "1",
+      "2",
+      "3"
+     ],
+     "eta": [
+      "16.0",
+      "32.0",
+      "8.0"
+     ],
+     "delta": [
+      "10.0",
+      "20.0",
+      "5.0"
+     ],
+     "lift_len": [
+      "20.0",
+      "40.0",
+      "80.0"
+     ],
+     "config": [
+      "A",
+      "B",
+      "B2",
+      "C"
+     ]
+    }
+   },
+   "settings_parsed_from": [
+    "sensitivity"
+   ],
+   "git_commit": "67ab36e",
+   "git_commit_date": "2026-11-08T04:55:14",
+   "commit_status": "uncommitted at manifest build (worktree HEAD recorded)",
    "files": [
     "sensitivity.csv"
    ]
@@ -1264,6 +1488,37 @@
       "WA"
      ]
     },
+    "sweep_agvs": {
+     "jobs": [
+      "100"
+     ],
+     "agvs": [
+      "12",
+      "16",
+      "20",
+      "4",
+      "8"
+     ],
+     "seed": [
+      "1",
+      "10",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+     ],
+     "config": [
+      "A",
+      "B",
+      "B2",
+      "C",
+      "WA"
+     ]
+    },
     "summary": {
      "jobs": [
       "100"
@@ -1290,7 +1545,8 @@
    },
    "settings_parsed_from": [
     "comparison",
-    "summary.txt"
+    "summary.txt",
+    "sweep_agvs"
    ],
    "git_commit": "99262c2",
    "git_commit_date": "2026-11-07 11:13:37 +0000",
@@ -1299,8 +1555,10 @@
     "comparison.csv",
     "fig1_compare_metrics.png",
     "fig2_gantt_A_B_C.png",
+    "fig3_fleet_size_sweep.png",
     "fig4_per_server.png",
-    "summary.txt"
+    "summary.txt",
+    "sweep_agvs.csv"
    ]
   }
  ]

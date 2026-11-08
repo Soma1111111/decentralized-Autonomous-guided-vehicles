@@ -1,0 +1,230 @@
+check_paper_numbers: 228 problem(s)
+
+main.tex:28: hard-coded numeral '65' in: mean makespan by 65\%, total tardiness by 72\%, and load imbalance by 80\%
+main.tex:28: hard-coded numeral '72' in: mean makespan by 65\%, total tardiness by 72\%, and load imbalance by 80\%
+main.tex:28: hard-coded numeral '80' in: mean makespan by 65\%, total tardiness by 72\%, and load imbalance by 80\%
+sections/conclusion.tex:27: hard-coded numeral '65' in: FCFS hybrid configuration reduced mean last-delivery makespan by 65\%, total
+sections/conclusion.tex:28: hard-coded numeral '72' in: tardiness by 72\%, and load imbalance by 80\% relative to the paper-style
+sections/conclusion.tex:28: hard-coded numeral '80' in: tardiness by 72\%, and load imbalance by 80\% relative to the paper-style
+sections/conclusion.tex:29: hard-coded numeral '92' in: centralized configuration. The busiest-server CPU time fell by 92\%, and the
+sections/conclusion.tex:30: hard-coded numeral '69' in: maximum number of reservation windows held by one server fell by 69\%. These
+sections/conclusion.tex:37: hard-coded numeral '90,105' in: the hybrid remains approximately 90,105~s across 100 jobs per seed. This
+sections/fairness.tex:34: hard-coded numeral '1169.1' in: C (1169.1 s) than under A or B (0 s in each). Thus the hybrid is fairer by
+sections/fairness.tex:34: hard-coded numeral '0' in: C (1169.1 s) than under A or B (0 s in each). Thus the hybrid is fairer by
+sections/fairness.tex:70: hard-coded numeral '0.143' in: but the Gini increased from 0.143 to 0.145; it weakened correlation with the
+sections/fairness.tex:70: hard-coded numeral '0.145' in: but the Gini increased from 0.143 to 0.145; it weakened correlation with the
+sections/introduction.tex:59: hard-coded numeral '65' in: makespan by 65\%, total tardiness by 72\%, and usage-time imbalance by 80\%
+sections/introduction.tex:59: hard-coded numeral '72' in: makespan by 65\%, total tardiness by 72\%, and usage-time imbalance by 80\%
+sections/introduction.tex:59: hard-coded numeral '80' in: makespan by 65\%, total tardiness by 72\%, and usage-time imbalance by 80\%
+sections/results.tex:27: hard-coded numeral '65' in: makespan by 65\%, tardiness by
+sections/results.tex:28: hard-coded numeral '72' in: 72\%, and imbalance by 80\%. Its busiest-server CPU mean is 8.6~ms versus
+sections/results.tex:28: hard-coded numeral '80' in: 72\%, and imbalance by 80\%. Its busiest-server CPU mean is 8.6~ms versus
+sections/results.tex:28: hard-coded numeral '8.6' in: 72\%, and imbalance by 80\%. Its busiest-server CPU mean is 8.6~ms versus
+sections/results.tex:29: hard-coded numeral '102.4' in: 102.4~ms for A (92\% lower); total CPU across C's servers is 24.2~ms.
+sections/results.tex:29: hard-coded numeral '92' in: 102.4~ms for A (92\% lower); total CPU across C's servers is 24.2~ms.
+sections/results.tex:29: hard-coded numeral '24.2' in: 102.4~ms for A (92\% lower); total CPU across C's servers is 24.2~ms.
+sections/results.tex:32: hard-coded numeral '91' in: \texttt{r5}), the busiest-server reduction stays between 91\% and 93\%
+sections/results.tex:32: hard-coded numeral '93' in: \texttt{r5}), the busiest-server reduction stays between 91\% and 93\%
+sections/results.tex:33: hard-coded numeral '139.4' in: (medians 139.4~ms for A and 10.5~ms for C; full ranges are recorded in
+sections/results.tex:33: hard-coded numeral '10.5' in: (medians 139.4~ms for A and 10.5~ms for C; full ranges are recorded in
+sections/results.tex:48: hard-coded numeral '7,972.4' in: Last-delivery makespan (s) & 7,972.4 & 3,705.9 & 2,768.9 & 2,768.9 & $-65\%$ \\
+sections/results.tex:48: hard-coded numeral '3,705.9' in: Last-delivery makespan (s) & 7,972.4 & 3,705.9 & 2,768.9 & 2,768.9 & $-65\%$ \\
+sections/results.tex:48: hard-coded numeral '2,768.9' in: Last-delivery makespan (s) & 7,972.4 & 3,705.9 & 2,768.9 & 2,768.9 & $-65\%$ \\
+sections/results.tex:48: hard-coded numeral '2,768.9' in: Last-delivery makespan (s) & 7,972.4 & 3,705.9 & 2,768.9 & 2,768.9 & $-65\%$ \\
+sections/results.tex:49: hard-coded numeral '316,893.6' in: Total tardiness (s) & 316,893.6 & 122,278.8 & 90,104.5 & 90,104.5 & $-72\%$ \\
+sections/results.tex:49: hard-coded numeral '122,278.8' in: Total tardiness (s) & 316,893.6 & 122,278.8 & 90,104.5 & 90,104.5 & $-72\%$ \\
+sections/results.tex:49: hard-coded numeral '90,104.5' in: Total tardiness (s) & 316,893.6 & 122,278.8 & 90,104.5 & 90,104.5 & $-72\%$ \\
+sections/results.tex:49: hard-coded numeral '90,104.5' in: Total tardiness (s) & 316,893.6 & 122,278.8 & 90,104.5 & 90,104.5 & $-72\%$ \\
+sections/results.tex:50: hard-coded numeral '7,149.9' in: Load imbalance (s) & 7,149.9 & 2,832.3 & 1,441.2 & 1,441.2 & $-80\%$ \\
+sections/results.tex:50: hard-coded numeral '2,832.3' in: Load imbalance (s) & 7,149.9 & 2,832.3 & 1,441.2 & 1,441.2 & $-80\%$ \\
+sections/results.tex:50: hard-coded numeral '1,441.2' in: Load imbalance (s) & 7,149.9 & 2,832.3 & 1,441.2 & 1,441.2 & $-80\%$ \\
+sections/results.tex:50: hard-coded numeral '1,441.2' in: Load imbalance (s) & 7,149.9 & 2,832.3 & 1,441.2 & 1,441.2 & $-80\%$ \\
+sections/results.tex:51: hard-coded numeral '64,689.7' in: Total waiting (s) & 64,689.7 & 27,647.7 & 27,104.5 & 27,104.5 & $-58\%$ \\
+sections/results.tex:51: hard-coded numeral '27,647.7' in: Total waiting (s) & 64,689.7 & 27,647.7 & 27,104.5 & 27,104.5 & $-58\%$ \\
+sections/results.tex:51: hard-coded numeral '27,104.5' in: Total waiting (s) & 64,689.7 & 27,647.7 & 27,104.5 & 27,104.5 & $-58\%$ \\
+sections/results.tex:51: hard-coded numeral '27,104.5' in: Total waiting (s) & 64,689.7 & 27,647.7 & 27,104.5 & 27,104.5 & $-58\%$ \\
+sections/results.tex:52: hard-coded numeral '7,133.4' in: Longest AGV wait (s) & 7,133.4 & 2,830.8 & 1,887.7 & 1,887.7 & $-74\%$ \\
+sections/results.tex:52: hard-coded numeral '2,830.8' in: Longest AGV wait (s) & 7,133.4 & 2,830.8 & 1,887.7 & 1,887.7 & $-74\%$ \\
+sections/results.tex:52: hard-coded numeral '1,887.7' in: Longest AGV wait (s) & 7,133.4 & 2,830.8 & 1,887.7 & 1,887.7 & $-74\%$ \\
+sections/results.tex:52: hard-coded numeral '1,887.7' in: Longest AGV wait (s) & 7,133.4 & 2,830.8 & 1,887.7 & 1,887.7 & $-74\%$ \\
+sections/results.tex:53: hard-coded numeral '102.4' in: Busiest-server CPU (ms) & 102.4 & 22.9 & 23.1 & 8.6 & $-92\%$ \\
+sections/results.tex:53: hard-coded numeral '22.9' in: Busiest-server CPU (ms) & 102.4 & 22.9 & 23.1 & 8.6 & $-92\%$ \\
+sections/results.tex:53: hard-coded numeral '23.1' in: Busiest-server CPU (ms) & 102.4 & 22.9 & 23.1 & 8.6 & $-92\%$ \\
+sections/results.tex:53: hard-coded numeral '8.6' in: Busiest-server CPU (ms) & 102.4 & 22.9 & 23.1 & 8.6 & $-92\%$ \\
+sections/results.tex:54: hard-coded numeral '102.4' in: Total server CPU (ms) & 102.4 & 22.9 & 23.1 & 24.2 & $-76\%$ \\
+sections/results.tex:54: hard-coded numeral '22.9' in: Total server CPU (ms) & 102.4 & 22.9 & 23.1 & 24.2 & $-76\%$ \\
+sections/results.tex:54: hard-coded numeral '23.1' in: Total server CPU (ms) & 102.4 & 22.9 & 23.1 & 24.2 & $-76\%$ \\
+sections/results.tex:54: hard-coded numeral '24.2' in: Total server CPU (ms) & 102.4 & 22.9 & 23.1 & 24.2 & $-76\%$ \\
+sections/results.tex:55: hard-coded numeral '2,030.7' in: Windows on busiest server & 2,030.7 & 1,733.5 & 1,733.5 & 634.5 & $-69\%$ \\
+sections/results.tex:55: hard-coded numeral '1,733.5' in: Windows on busiest server & 2,030.7 & 1,733.5 & 1,733.5 & 634.5 & $-69\%$ \\
+sections/results.tex:55: hard-coded numeral '1,733.5' in: Windows on busiest server & 2,030.7 & 1,733.5 & 1,733.5 & 634.5 & $-69\%$ \\
+sections/results.tex:55: hard-coded numeral '634.5' in: Windows on busiest server & 2,030.7 & 1,733.5 & 1,733.5 & 634.5 & $-69\%$ \\
+sections/results.tex:56: hard-coded numeral '0.0' in: Central--floor messages & 0.0 & 0.0 & 337.2 & 337.2 & --- \\
+sections/results.tex:56: hard-coded numeral '0.0' in: Central--floor messages & 0.0 & 0.0 & 337.2 & 337.2 & --- \\
+sections/results.tex:56: hard-coded numeral '337.2' in: Central--floor messages & 0.0 & 0.0 & 337.2 & 337.2 & --- \\
+sections/results.tex:56: hard-coded numeral '337.2' in: Central--floor messages & 0.0 & 0.0 & 337.2 & 337.2 & --- \\
+sections/results.tex:57: hard-coded numeral '106.6' in: Algorithm 3 calls & 106.6 & 165.1 & 168.6 & 168.6 & $+58\%$ \\
+sections/results.tex:57: hard-coded numeral '165.1' in: Algorithm 3 calls & 106.6 & 165.1 & 168.6 & 168.6 & $+58\%$ \\
+sections/results.tex:57: hard-coded numeral '168.6' in: Algorithm 3 calls & 106.6 & 165.1 & 168.6 & 168.6 & $+58\%$ \\
+sections/results.tex:57: hard-coded numeral '168.6' in: Algorithm 3 calls & 106.6 & 165.1 & 168.6 & 168.6 & $+58\%$ \\
+sections/results.tex:84: hard-coded numeral '117,682' in: 117,682~s at 16 AGVs to 122,279~s at 20. For B2 and C it decreases slightly
+sections/results.tex:84: hard-coded numeral '122,279' in: 117,682~s at 16 AGVs to 122,279~s at 20. For B2 and C it decreases slightly
+sections/results.tex:85: hard-coded numeral '90,343' in: from 90,343~s to 90,104~s over that final step. Thus tardiness does not fall
+sections/results.tex:85: hard-coded numeral '90,104' in: from 90,343~s to 90,104~s over that final step. Thus tardiness does not fall
+sections/results.tex:99: hard-coded numeral '9,119' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:99: hard-coded numeral '602,120' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:99: hard-coded numeral '2,043' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:99: hard-coded numeral '256,490' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:99: hard-coded numeral '518' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:99: hard-coded numeral '235,718' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:99: hard-coded numeral '518' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:99: hard-coded numeral '235,718' in: 4  & 9,119 / 602,120 & 2,043 / 256,490 & 518 / 235,718 & 518 / 235,718 \\
+sections/results.tex:100: hard-coded numeral '8,394' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:100: hard-coded numeral '453,005' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:100: hard-coded numeral '2,346' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:100: hard-coded numeral '149,864' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:100: hard-coded numeral '788' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:100: hard-coded numeral '126,223' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:100: hard-coded numeral '788' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:100: hard-coded numeral '126,223' in: 8  & 8,394 / 453,005 & 2,346 / 149,864 & 788 / 126,223 & 788 / 126,223 \\
+sections/results.tex:101: hard-coded numeral '8,249' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:101: hard-coded numeral '421,464' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:101: hard-coded numeral '2,456' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:101: hard-coded numeral '125,292' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:101: hard-coded numeral '1,145' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:101: hard-coded numeral '100,319' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:101: hard-coded numeral '1,145' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:101: hard-coded numeral '100,319' in: 12 & 8,249 / 421,464 & 2,456 / 125,292 & 1,145 / 100,319 & 1,145 / 100,319 \\
+sections/results.tex:102: hard-coded numeral '7,466' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:102: hard-coded numeral '348,159' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:102: hard-coded numeral '2,715' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:102: hard-coded numeral '117,682' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:102: hard-coded numeral '1,230' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:102: hard-coded numeral '90,343' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:102: hard-coded numeral '1,230' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:102: hard-coded numeral '90,343' in: 16 & 7,466 / 348,159 & 2,715 / 117,682 & 1,230 / 90,343 & 1,230 / 90,343 \\
+sections/results.tex:103: hard-coded numeral '7,150' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:103: hard-coded numeral '316,894' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:103: hard-coded numeral '2,832' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:103: hard-coded numeral '122,279' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:103: hard-coded numeral '1,441' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:103: hard-coded numeral '90,104' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:103: hard-coded numeral '1,441' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:103: hard-coded numeral '90,104' in: 20 & 7,150 / 316,894 & 2,832 / 122,279 & 1,441 / 90,104 & 1,441 / 90,104 \\
+sections/results.tex:134: hard-coded numeral '1,895.9' in: 50  & 1,895.9 & 22,311.8 & 1,425.6 & 58.0\% & 68.3\% & 66.0\% \\
+sections/results.tex:134: hard-coded numeral '22,311.8' in: 50  & 1,895.9 & 22,311.8 & 1,425.6 & 58.0\% & 68.3\% & 66.0\% \\
+sections/results.tex:134: hard-coded numeral '1,425.6' in: 50  & 1,895.9 & 22,311.8 & 1,425.6 & 58.0\% & 68.3\% & 66.0\% \\
+sections/results.tex:134: hard-coded numeral '58.0' in: 50  & 1,895.9 & 22,311.8 & 1,425.6 & 58.0\% & 68.3\% & 66.0\% \\
+sections/results.tex:134: hard-coded numeral '68.3' in: 50  & 1,895.9 & 22,311.8 & 1,425.6 & 58.0\% & 68.3\% & 66.0\% \\
+sections/results.tex:134: hard-coded numeral '66.0' in: 50  & 1,895.9 & 22,311.8 & 1,425.6 & 58.0\% & 68.3\% & 66.0\% \\
+sections/results.tex:135: hard-coded numeral '2,725.3' in: 100 & 2,725.3 & 83,285.2 & 1,430.3 & 65.2\% & 72.9\% & 79.6\% \\
+sections/results.tex:135: hard-coded numeral '83,285.2' in: 100 & 2,725.3 & 83,285.2 & 1,430.3 & 65.2\% & 72.9\% & 79.6\% \\
+sections/results.tex:135: hard-coded numeral '1,430.3' in: 100 & 2,725.3 & 83,285.2 & 1,430.3 & 65.2\% & 72.9\% & 79.6\% \\
+sections/results.tex:135: hard-coded numeral '65.2' in: 100 & 2,725.3 & 83,285.2 & 1,430.3 & 65.2\% & 72.9\% & 79.6\% \\
+sections/results.tex:135: hard-coded numeral '72.9' in: 100 & 2,725.3 & 83,285.2 & 1,430.3 & 65.2\% & 72.9\% & 79.6\% \\
+sections/results.tex:135: hard-coded numeral '79.6' in: 100 & 2,725.3 & 83,285.2 & 1,430.3 & 65.2\% & 72.9\% & 79.6\% \\
+sections/results.tex:136: hard-coded numeral '4,674.2' in: 200 & 4,674.2 & 360,814.5 & 1,576.1 & 72.6\% & 76.6\% & 89.8\% \\
+sections/results.tex:136: hard-coded numeral '360,814.5' in: 200 & 4,674.2 & 360,814.5 & 1,576.1 & 72.6\% & 76.6\% & 89.8\% \\
+sections/results.tex:136: hard-coded numeral '1,576.1' in: 200 & 4,674.2 & 360,814.5 & 1,576.1 & 72.6\% & 76.6\% & 89.8\% \\
+sections/results.tex:136: hard-coded numeral '72.6' in: 200 & 4,674.2 & 360,814.5 & 1,576.1 & 72.6\% & 76.6\% & 89.8\% \\
+sections/results.tex:136: hard-coded numeral '76.6' in: 200 & 4,674.2 & 360,814.5 & 1,576.1 & 72.6\% & 76.6\% & 89.8\% \\
+sections/results.tex:136: hard-coded numeral '89.8' in: 200 & 4,674.2 & 360,814.5 & 1,576.1 & 72.6\% & 76.6\% & 89.8\% \\
+sections/results.tex:137: hard-coded numeral '8,541.3' in: 400 & 8,541.3 & 1,484,910.4 & 2,350.0 & 77.5\% & 78.9\% & 93.3\% \\
+sections/results.tex:137: hard-coded numeral '1,484,910.4' in: 400 & 8,541.3 & 1,484,910.4 & 2,350.0 & 77.5\% & 78.9\% & 93.3\% \\
+sections/results.tex:137: hard-coded numeral '2,350.0' in: 400 & 8,541.3 & 1,484,910.4 & 2,350.0 & 77.5\% & 78.9\% & 93.3\% \\
+sections/results.tex:137: hard-coded numeral '77.5' in: 400 & 8,541.3 & 1,484,910.4 & 2,350.0 & 77.5\% & 78.9\% & 93.3\% \\
+sections/results.tex:137: hard-coded numeral '78.9' in: 400 & 8,541.3 & 1,484,910.4 & 2,350.0 & 77.5\% & 78.9\% & 93.3\% \\
+sections/results.tex:137: hard-coded numeral '93.3' in: 400 & 8,541.3 & 1,484,910.4 & 2,350.0 & 77.5\% & 78.9\% & 93.3\% \\
+sections/results.tex:146: hard-coded numeral '324' in: $\delta\in\{5,10,20\}$~s, and lift length in $\{20,40,80\}$~m. All 324
+sections/results.tex:164: hard-coded numeral '2,377.0' in: $\eta$ (s) & 8  & 2,377.0 & 36,979.1 & 845.3 \\
+sections/results.tex:164: hard-coded numeral '36,979.1' in: $\eta$ (s) & 8  & 2,377.0 & 36,979.1 & 845.3 \\
+sections/results.tex:164: hard-coded numeral '845.3' in: $\eta$ (s) & 8  & 2,377.0 & 36,979.1 & 845.3 \\
+sections/results.tex:165: hard-coded numeral '2,431.2' in: $\eta$ (s) & 16 & 2,431.2 & 38,716.9 & 892.2 \\
+sections/results.tex:165: hard-coded numeral '38,716.9' in: $\eta$ (s) & 16 & 2,431.2 & 38,716.9 & 892.2 \\
+sections/results.tex:165: hard-coded numeral '892.2' in: $\eta$ (s) & 16 & 2,431.2 & 38,716.9 & 892.2 \\
+sections/results.tex:166: hard-coded numeral '32' in: $\eta$ (s) & 32 & 2,668.6 & 42,874.4 & 811.6 \\
+sections/results.tex:166: hard-coded numeral '2,668.6' in: $\eta$ (s) & 32 & 2,668.6 & 42,874.4 & 811.6 \\
+sections/results.tex:166: hard-coded numeral '42,874.4' in: $\eta$ (s) & 32 & 2,668.6 & 42,874.4 & 811.6 \\
+sections/results.tex:166: hard-coded numeral '811.6' in: $\eta$ (s) & 32 & 2,668.6 & 42,874.4 & 811.6 \\
+sections/results.tex:167: hard-coded numeral '2,290.2' in: $\delta$ (s) & 5  & 2,290.2 & 34,629.3 & 754.9 \\
+sections/results.tex:167: hard-coded numeral '34,629.3' in: $\delta$ (s) & 5  & 2,290.2 & 34,629.3 & 754.9 \\
+sections/results.tex:167: hard-coded numeral '754.9' in: $\delta$ (s) & 5  & 2,290.2 & 34,629.3 & 754.9 \\
+sections/results.tex:168: hard-coded numeral '2,457.9' in: $\delta$ (s) & 10 & 2,457.9 & 38,250.9 & 833.5 \\
+sections/results.tex:168: hard-coded numeral '38,250.9' in: $\delta$ (s) & 10 & 2,457.9 & 38,250.9 & 833.5 \\
+sections/results.tex:168: hard-coded numeral '833.5' in: $\delta$ (s) & 10 & 2,457.9 & 38,250.9 & 833.5 \\
+sections/results.tex:169: hard-coded numeral '2,728.8' in: $\delta$ (s) & 20 & 2,728.8 & 45,690.1 & 960.8 \\
+sections/results.tex:169: hard-coded numeral '45,690.1' in: $\delta$ (s) & 20 & 2,728.8 & 45,690.1 & 960.8 \\
+sections/results.tex:169: hard-coded numeral '960.8' in: $\delta$ (s) & 20 & 2,728.8 & 45,690.1 & 960.8 \\
+sections/results.tex:170: hard-coded numeral '1,689.3' in: Lift length (m) & 20 & 1,689.3 & 19,697.5 & 557.1 \\
+sections/results.tex:170: hard-coded numeral '19,697.5' in: Lift length (m) & 20 & 1,689.3 & 19,697.5 & 557.1 \\
+sections/results.tex:170: hard-coded numeral '557.1' in: Lift length (m) & 20 & 1,689.3 & 19,697.5 & 557.1 \\
+sections/results.tex:171: hard-coded numeral '2,307.7' in: Lift length (m) & 40 & 2,307.7 & 33,839.1 & 797.2 \\
+sections/results.tex:171: hard-coded numeral '33,839.1' in: Lift length (m) & 40 & 2,307.7 & 33,839.1 & 797.2 \\
+sections/results.tex:171: hard-coded numeral '797.2' in: Lift length (m) & 40 & 2,307.7 & 33,839.1 & 797.2 \\
+sections/results.tex:172: hard-coded numeral '80' in: Lift length (m) & 80 & 3,479.9 & 65,033.7 & 1,194.9 \\
+sections/results.tex:172: hard-coded numeral '3,479.9' in: Lift length (m) & 80 & 3,479.9 & 65,033.7 & 1,194.9 \\
+sections/results.tex:172: hard-coded numeral '65,033.7' in: Lift length (m) & 80 & 3,479.9 & 65,033.7 & 1,194.9 \\
+sections/results.tex:172: hard-coded numeral '1,194.9' in: Lift length (m) & 80 & 3,479.9 & 65,033.7 & 1,194.9 \\
+sections/results.tex:198: hard-coded numeral '7,888.6' in: A: Algorithm 1 assignment & 7,888.6 & 316,407.8 & 7,048.3 \\
+sections/results.tex:198: hard-coded numeral '316,407.8' in: A: Algorithm 1 assignment & 7,888.6 & 316,407.8 & 7,048.3 \\
+sections/results.tex:198: hard-coded numeral '7,048.3' in: A: Algorithm 1 assignment & 7,888.6 & 316,407.8 & 7,048.3 \\
+sections/results.tex:199: hard-coded numeral '3,687.0' in: B: centralized with lobbies & 3,687.0 & 120,550.8 & 2,858.9 \\
+sections/results.tex:199: hard-coded numeral '120,550.8' in: B: centralized with lobbies & 3,687.0 & 120,550.8 & 2,858.9 \\
+sections/results.tex:199: hard-coded numeral '2,858.9' in: B: centralized with lobbies & 3,687.0 & 120,550.8 & 2,858.9 \\
+sections/results.tex:200: hard-coded numeral '2,783.2' in: C: hybrid & 2,783.2 & 84,528.3 & 1,431.9 \\
+sections/results.tex:200: hard-coded numeral '84,528.3' in: C: hybrid & 2,783.2 & 84,528.3 & 1,431.9 \\
+sections/results.tex:200: hard-coded numeral '1,431.9' in: C: hybrid & 2,783.2 & 84,528.3 & 1,431.9 \\
+sections/results.tex:201: hard-coded numeral '7,750.5' in: FCFS assignment & 7,750.5 & 304,553.0 & 6,971.3 \\
+sections/results.tex:201: hard-coded numeral '304,553.0' in: FCFS assignment & 7,750.5 & 304,553.0 & 6,971.3 \\
+sections/results.tex:201: hard-coded numeral '6,971.3' in: FCFS assignment & 7,750.5 & 304,553.0 & 6,971.3 \\
+sections/results.tex:202: hard-coded numeral '12,322.1' in: Random assignment & 12,322.1 & 493,263.8 & 11,959.8 \\
+sections/results.tex:202: hard-coded numeral '493,263.8' in: Random assignment & 12,322.1 & 493,263.8 & 11,959.8 \\
+sections/results.tex:202: hard-coded numeral '11,959.8' in: Random assignment & 12,322.1 & 493,263.8 & 11,959.8 \\
+sections/results.tex:212: hard-coded numeral '5,999.9' in: verification. Its mean makespan, tardiness, and imbalance were 5,999.9~s,
+sections/results.tex:213: hard-coded numeral '226,879.9' in: 226,879.9~s, and 5,144.8~s, respectively, compared with 2,768.9~s,
+sections/results.tex:213: hard-coded numeral '5,144.8' in: 226,879.9~s, and 5,144.8~s, respectively, compared with 2,768.9~s,
+sections/results.tex:213: hard-coded numeral '2,768.9' in: 226,879.9~s, and 5,144.8~s, respectively, compared with 2,768.9~s,
+sections/results.tex:214: hard-coded numeral '90,104.5' in: 90,104.5~s, and 1,441.2~s for C. The job-scale sweep also reports higher WA
+sections/results.tex:214: hard-coded numeral '1,441.2' in: 90,104.5~s, and 1,441.2~s for C. The job-scale sweep also reports higher WA
+sections/results.tex:240: hard-coded numeral '0' in: 3 floors & 1 & 0/10; n/a & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:240: hard-coded numeral '19,153.1' in: 3 floors & 1 & 0/10; n/a & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:240: hard-coded numeral '911,565.3' in: 3 floors & 1 & 0/10; n/a & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:241: hard-coded numeral '4,108.9' in: 3 floors & 2 & 2/10; 4,108.9 / 146,026.1 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:241: hard-coded numeral '146,026.1' in: 3 floors & 2 & 2/10; 4,108.9 / 146,026.1 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:241: hard-coded numeral '19,153.1' in: 3 floors & 2 & 2/10; 4,108.9 / 146,026.1 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:241: hard-coded numeral '911,565.3' in: 3 floors & 2 & 2/10; 4,108.9 / 146,026.1 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:242: hard-coded numeral '3,764.2' in: 3 floors & 4 & 10/10; 3,764.2 / 124,813.4 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:242: hard-coded numeral '124,813.4' in: 3 floors & 4 & 10/10; 3,764.2 / 124,813.4 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:242: hard-coded numeral '19,153.1' in: 3 floors & 4 & 10/10; 3,764.2 / 124,813.4 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:242: hard-coded numeral '911,565.3' in: 3 floors & 4 & 10/10; 3,764.2 / 124,813.4 & 10/10; 19,153.1 / 911,565.3 \\
+sections/results.tex:243: hard-coded numeral '3,705.9' in: 3 floors & Unlimited & 10/10; 3,705.9 / 122,278.8 & 10/10; 2,768.9 / 90,104.5 \\
+sections/results.tex:243: hard-coded numeral '122,278.8' in: 3 floors & Unlimited & 10/10; 3,705.9 / 122,278.8 & 10/10; 2,768.9 / 90,104.5 \\
+sections/results.tex:243: hard-coded numeral '2,768.9' in: 3 floors & Unlimited & 10/10; 3,705.9 / 122,278.8 & 10/10; 2,768.9 / 90,104.5 \\
+sections/results.tex:243: hard-coded numeral '90,104.5' in: 3 floors & Unlimited & 10/10; 3,705.9 / 122,278.8 & 10/10; 2,768.9 / 90,104.5 \\
+sections/results.tex:244: hard-coded numeral '0' in: 5 floors & 1 & 0/10; n/a & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:244: hard-coded numeral '26,701.3' in: 5 floors & 1 & 0/10; n/a & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:244: hard-coded numeral '1,294,641.3' in: 5 floors & 1 & 0/10; n/a & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:245: hard-coded numeral '0' in: 5 floors & 2 & 0/10; n/a & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:245: hard-coded numeral '26,701.3' in: 5 floors & 2 & 0/10; n/a & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:245: hard-coded numeral '1,294,641.3' in: 5 floors & 2 & 0/10; n/a & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:246: hard-coded numeral '9' in: 5 floors & 4 & 9/10; 4,059.7 / 134,817.4 & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:246: hard-coded numeral '4,059.7' in: 5 floors & 4 & 9/10; 4,059.7 / 134,817.4 & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:246: hard-coded numeral '134,817.4' in: 5 floors & 4 & 9/10; 4,059.7 / 134,817.4 & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:246: hard-coded numeral '26,701.3' in: 5 floors & 4 & 9/10; 4,059.7 / 134,817.4 & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:246: hard-coded numeral '1,294,641.3' in: 5 floors & 4 & 9/10; 4,059.7 / 134,817.4 & 10/10; 26,701.3 / 1,294,641.3 \\
+sections/results.tex:247: hard-coded numeral '4,014.8' in: 5 floors & Unlimited & 10/10; 4,014.8 / 133,751.7 & 10/10; 3,174.2 / 110,421.4 \\
+sections/results.tex:247: hard-coded numeral '133,751.7' in: 5 floors & Unlimited & 10/10; 4,014.8 / 133,751.7 & 10/10; 3,174.2 / 110,421.4 \\
+sections/results.tex:247: hard-coded numeral '3,174.2' in: 5 floors & Unlimited & 10/10; 4,014.8 / 133,751.7 & 10/10; 3,174.2 / 110,421.4 \\
+sections/results.tex:247: hard-coded numeral '110,421.4' in: 5 floors & Unlimited & 10/10; 4,014.8 / 133,751.7 & 10/10; 3,174.2 / 110,421.4 \\
+sections/results.tex:254: hard-coded numeral '1,989' in: For seed 7, the centralized planner reports 1,989 windows and
+sections/results.tex:255: hard-coded numeral '86.4' in: 86.4~ms CPU on A's central server. C holds 146 windows and uses 7.6~ms on
+sections/results.tex:255: hard-coded numeral '146' in: 86.4~ms CPU on A's central server. C holds 146 windows and uses 7.6~ms on
+sections/results.tex:255: hard-coded numeral '7.6' in: 86.4~ms CPU on A's central server. C holds 146 windows and uses 7.6~ms on
+sections/results.tex:256: hard-coded numeral '478' in: its central server; its floor servers hold 478, 619, and 454 windows and use
+sections/results.tex:256: hard-coded numeral '619' in: its central server; its floor servers hold 478, 619, and 454 windows and use
+sections/results.tex:256: hard-coded numeral '454' in: its central server; its floor servers hold 478, 619, and 454 windows and use
+sections/results.tex:257: hard-coded numeral '3.6' in: 3.6, 7.5, and 5.4~ms, respectively. The largest C server therefore holds
+sections/results.tex:257: hard-coded numeral '7.5' in: 3.6, 7.5, and 5.4~ms, respectively. The largest C server therefore holds
+sections/results.tex:257: hard-coded numeral '5.4' in: 3.6, 7.5, and 5.4~ms, respectively. The largest C server therefore holds
+sections/results.tex:258: hard-coded numeral '619' in: 619 windows and uses 7.5~ms in this seed. These seed-specific values are
+sections/results.tex:258: hard-coded numeral '7.5' in: 619 windows and uses 7.5~ms in this seed. These seed-specific values are

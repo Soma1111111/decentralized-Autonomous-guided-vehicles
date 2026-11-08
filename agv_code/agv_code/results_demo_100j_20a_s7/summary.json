@@ -1,0 +1,175 @@
+{
+  "seed": 7,
+  "jobs": 100,
+  "agvs": 20,
+  "nodes": 27,
+  "edges": 38,
+  "parking": "1A",
+  "lift_lengths_m": [
+    40.0
+  ],
+  "eta": 16.0,
+  "eta_prime": 16.0,
+  "delta": 10.0,
+  "lam": 1.0,
+  "verification_ok": true,
+  "violations": [],
+  "computation_time_s": {
+    "algorithm_1": 0.005,
+    "algorithm_2_and_3": 0.073
+  },
+  "makespan_last_delivery": 7883.72,
+  "fleet_back_at_parking": 8099.33,
+  "load_imbalance": 7268.1,
+  "earliness_final": 0.0,
+  "tardiness_final": 365303.31,
+  "earliness_estimate": 116.8,
+  "tardiness_estimate": 3813.76,
+  "alg3_calls": 92,
+  "alg3_total_shift": 72804.84,
+  "alg3_max_shift": 6114.42,
+  "alg3_fallbacks": 0,
+  "lift_crossings": 146,
+  "per_agv": {
+    "AGV-01": {
+      "priority": 1,
+      "jobs": 5,
+      "usage_s": 831.2,
+      "busy_s": 831.2,
+      "waiting_at_parking_s": 0
+    },
+    "AGV-02": {
+      "priority": 2,
+      "jobs": 5,
+      "usage_s": 1813.7,
+      "busy_s": 972.5,
+      "waiting_at_parking_s": 841.2
+    },
+    "AGV-03": {
+      "priority": 3,
+      "jobs": 4,
+      "usage_s": 1077.8,
+      "busy_s": 759.2,
+      "waiting_at_parking_s": 318.6
+    },
+    "AGV-04": {
+      "priority": 4,
+      "jobs": 4,
+      "usage_s": 2759.4,
+      "busy_s": 1041.7,
+      "waiting_at_parking_s": 1717.7
+    },
+    "AGV-05": {
+      "priority": 5,
+      "jobs": 6,
+      "usage_s": 3353.8,
+      "busy_s": 985.1,
+      "waiting_at_parking_s": 2368.8
+    },
+    "AGV-06": {
+      "priority": 6,
+      "jobs": 6,
+      "usage_s": 1187.2,
+      "busy_s": 944.5,
+      "waiting_at_parking_s": 242.8
+    },
+    "AGV-07": {
+      "priority": 7,
+      "jobs": 4,
+      "usage_s": 2287.5,
+      "busy_s": 909.8,
+      "waiting_at_parking_s": 1377.7
+    },
+    "AGV-08": {
+      "priority": 8,
+      "jobs": 7,
+      "usage_s": 3937.7,
+      "busy_s": 1006.5,
+      "waiting_at_parking_s": 2931.2
+    },
+    "AGV-09": {
+      "priority": 9,
+      "jobs": 4,
+      "usage_s": 3671.1,
+      "busy_s": 901.7,
+      "waiting_at_parking_s": 2769.4
+    },
+    "AGV-10": {
+      "priority": 10,
+      "jobs": 5,
+      "usage_s": 4820.1,
+      "busy_s": 872.5,
+      "waiting_at_parking_s": 3947.7
+    },
+    "AGV-11": {
+      "priority": 11,
+      "jobs": 7,
+      "usage_s": 5604.0,
+      "busy_s": 1006.5,
+      "waiting_at_parking_s": 4597.5
+    },
+    "AGV-12": {
+      "priority": 12,
+      "jobs": 4,
+      "usage_s": 6043.2,
+      "busy_s": 889.8,
+      "waiting_at_parking_s": 5153.3
+    },
+    "AGV-13": {
+      "priority": 13,
+      "jobs": 6,
+      "usage_s": 4518.8,
+      "busy_s": 795.7,
+      "waiting_at_parking_s": 3723.1
+    },
+    "AGV-14": {
+      "priority": 14,
+      "jobs": 4,
+      "usage_s": 6404.4,
+      "busy_s": 790.5,
+      "waiting_at_parking_s": 5614.0
+    },
+    "AGV-15": {
+      "priority": 15,
+      "jobs": 5,
+      "usage_s": 6981.6,
+      "busy_s": 781.2,
+      "waiting_at_parking_s": 6200.4
+    },
+    "AGV-16": {
+      "priority": 16,
+      "jobs": 5,
+      "usage_s": 7260.9,
+      "busy_s": 992.5,
+      "waiting_at_parking_s": 6268.4
+    },
+    "AGV-17": {
+      "priority": 17,
+      "jobs": 5,
+      "usage_s": 7187.5,
+      "busy_s": 1003.1,
+      "waiting_at_parking_s": 6184.4
+    },
+    "AGV-18": {
+      "priority": 18,
+      "jobs": 4,
+      "usage_s": 5490.6,
+      "busy_s": 801.1,
+      "waiting_at_parking_s": 4689.5
+    },
+    "AGV-19": {
+      "priority": 19,
+      "jobs": 5,
+      "usage_s": 7655.3,
+      "busy_s": 893.7,
+      "waiting_at_parking_s": 6761.6
+    },
+    "AGV-20": {
+      "priority": 20,
+      "jobs": 5,
+      "usage_s": 8099.3,
+      "busy_s": 1001.8,
+      "waiting_at_parking_s": 7097.5
+    }
+  }
+}

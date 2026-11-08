@@ -1,0 +1,33 @@
+MULTI-FLOOR DEMO - prioritized planning (Algorithms 1, 2, 3)
+layout      : 3 floors x 9 nodes = 27 nodes, 38 edges, 4 lifts of [40.0] m, parking 1A
+fleet/jobs  : 20 AGVs (V_1..V_20), 100 random jobs (seed 7); 71 of them cross floors
+parameters  : eta = eta' = 16 s, delta = 10 s, lambda = 1, speed = 1 m/s
+verified    : OK - no node/track conflict, no pause on an edge, every job served once
+compute time: Algorithm 1 0.005 s, Algorithms 2+3 0.073 s
+makespan    : last delivery at 7884 s; fleet back at parking at 8099 s
+load imbalance (max - min usage time): 7268 s
+earliness/tardiness: final plan 0 + 365303 s   (Algorithm 1 estimate 117 + 3814 s)
+Algorithm 3 : 92 calls, total shift 72805 s, max single shift 6114 s, fallbacks 0
+lift crossings in all routes: 146
+
+per AGV:   usage  busy  wait@pi  jobs
+  AGV-01 V1      831    831       0    5
+  AGV-02 V2     1814    972     841    5
+  AGV-03 V3     1078    759     319    4
+  AGV-04 V4     2759   1042    1718    4
+  AGV-05 V5     3354    985    2369    6
+  AGV-06 V6     1187    944     243    6
+  AGV-07 V7     2288    910    1378    4
+  AGV-08 V8     3938   1006    2931    7
+  AGV-09 V9     3671    902    2769    4
+  AGV-10 V10    4820    872    3948    5
+  AGV-11 V11    5604   1006    4598    7
+  AGV-12 V12    6043    890    5153    4
+  AGV-13 V13    4519    796    3723    6
+  AGV-14 V14    6404    790    5614    4
+  AGV-15 V15    6982    781    6200    5
+  AGV-16 V16    7261    992    6268    5
+  AGV-17 V17    7187   1003    6184    5
+  AGV-18 V18    5491    801    4690    4
+  AGV-19 V19    7655    894    6762    5
+  AGV-20 V20    8099   1002    7097    5

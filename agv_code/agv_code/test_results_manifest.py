@@ -53,24 +53,29 @@ def test_folder_name_tag_matches_folder_contents():
     entries = {e["folder"]: e for e in manifest["results"]}
 
     for folder in sorted(glob.glob("results_hybrid_*j_*")):
-        m = re.match(r"results_hybrid_(\d+)j_(\d+)a_s([\d,-]+)_(strict|same-direction)", folder)
+        # Track-rule suffix is optional: single-seed example folders
+        # (results_hybrid_<jobs>j_<agvs>a_s<seed>) default to strict.
+        m = re.match(r"results_hybrid_(\d+)j_(\d+)a_s([\d,-]+)(?:_(strict|same-direction))?$",
+                     folder)
         assert m, f"{folder}: agv_compare folder name does not encode its settings"
-        assert os.path.exists(os.path.join(folder, "comparison.csv")) and \
-               os.path.exists(os.path.join(folder, "summary.txt")), \
-            f"{folder}: tagged folder missing comparison.csv/summary.txt"
+        if not os.path.exists(os.path.join(folder, "comparison.csv")):
+            continue  # not an experiment result folder (e.g. single-leg example output)
+        assert os.path.exists(os.path.join(folder, "summary.txt")), \
+            f"{folder}: tagged folder missing summary.txt"
         got = parse_csv(os.path.join(folder, "comparison.csv"))
         n_jobs, n_agvs = int(m.group(1)), int(m.group(2))
         seed_str = m.group(3)
         if re.fullmatch(r"\d+-\d+", seed_str):      # "1-10" = inclusive range
             a, b = map(int, seed_str.split("-"))
             span = list(range(a, b + 1))
-        else:                                       # "1_3_7" = discrete seeds
-            span = [int(x) for x in re.split("[_]", seed_str) if x]
+        else:                                       # "7" = single seed
+            span = [int(seed_str)]
+        track_rule = m.group(4) or "strict"
         assert got["jobs"] == [str(n_jobs)], f"{folder}: name says {n_jobs} jobs, comparison.csv says {got['jobs']}"
         assert got["agvs"] == [str(n_agvs)], f"{folder}: name says {n_agvs} AGVs, comparison.csv says {got['agvs']}"
         assert sorted(int(s) for s in got["seed"]) == span, \
             f"{folder}: name says seeds {span}, comparison.csv says {sorted(got['seed'])}"
         summary = entries.get(folder, {}).get("settings", {}).get("summary", {})
         if summary:
-            assert summary.get("track_rule") == [m.group(4)], \
-                f"{folder}: name says track rule {m.group(4)}, summary.txt says {summary.get('track_rule')}"
+            assert summary.get("track_rule") == [track_rule], \
+                f"{folder}: name says track rule {track_rule}, summary.txt says {summary.get('track_rule')}"

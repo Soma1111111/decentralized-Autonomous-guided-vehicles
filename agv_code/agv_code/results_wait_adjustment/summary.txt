@@ -14,8 +14,8 @@ Total tardiness (s)                              316,893.6     122,278.8      90
 Load imbalance (max - min usage) (s)               7,149.9       2,832.3       1,441.2       1,441.2       5,144.8      -80%
 Total waiting (parking + lobbies) (s)             64,689.7      27,647.7      27,104.5      27,104.5      49,584.5      -58%
 Longest wait of one AGV (s)                        7,133.4       2,830.8       1,887.7       1,887.7       5,133.9      -74%
-Planning compute time, busiest server (ms)           113.8          22.5          29.5          10.9         165.8      -90%
-Planning compute time, all servers (ms)              113.8          22.5          29.5          28.8         165.8      -75%
+Planning compute time, busiest server (ms)            93.9          24.3          21.4           6.9         132.7      -93%
+Planning compute time, all servers (ms)               93.9          24.3          21.4          20.1         132.7      -79%
 Time windows held by one server                    2,030.7       1,733.5       1,733.5         634.5       2,075.8      -69%
 Central <-> floor messages                             0.0           0.0         337.2         337.2           0.0         -
 Algorithm 3 calls                                    106.6         165.1         168.6         168.6           0.0      +58%
@@ -35,10 +35,18 @@ Ablation interpretation:
   tardiness: A=316,893.6, B=122,278.8, B2=90,104.5, C=90,104.5
   imbalance: A=7,149.9, B=2,832.3, B2=1,441.2, C=1,441.2
 
+fleet-size sweep (mean over seeds): load imbalance (s) / total tardiness (s)
+AGVs                           A                       B                      B2                       C                      WA
+4                9,119 / 602,120         2,043 / 256,490           518 / 235,718           518 / 235,718         4,535 / 354,868
+8                8,394 / 453,005         2,346 / 149,864           788 / 126,223           788 / 126,223         4,833 / 275,192
+12               8,249 / 421,464         2,456 / 125,292         1,145 / 100,319         1,145 / 100,319         5,378 / 271,515
+16               7,466 / 348,159         2,715 / 117,682          1,230 / 90,343          1,230 / 90,343         5,260 / 245,493
+20               7,150 / 316,894         2,832 / 122,279          1,441 / 90,104          1,441 / 90,104         5,145 / 226,880
+
 per server, seed 7:   compute (ms)   windows held
-  A  central           123.3          1,989
-  B2  central            24.7          1,697
-  C  central             7.0            146
-  C  floor1              3.9            478
-  C  floor2             29.5            619
-  C  floor3              5.1            454
+  A  central            84.1          1,989
+  B2  central            21.1          1,697
+  C  central             7.9            146
+  C  floor1              3.4            478
+  C  floor2              6.5            619
+  C  floor3              4.6            454

@@ -24,17 +24,19 @@ planner with lobbies, providing a check that the route decomposition
 preserves that reference schedule under that processing order.
 
 In the saved comparison of 100 jobs and 20 AGVs over ten seeds, the default
-FCFS hybrid configuration reduced mean last-delivery makespan by 65\%, total
-tardiness by 72\%, and load imbalance by 80\% relative to the paper-style
-centralized configuration. The busiest-server CPU time fell by 92\%, and the
-maximum number of reservation windows held by one server fell by 69\%. These
+FCFS hybrid configuration reduced mean last-delivery makespan by
+\RedMakespanCAabs\%, total tardiness by \RedTardinessCAabs\%, and load
+imbalance by \RedImbalanceCAabs\% relative to the paper-style centralized
+configuration. The busiest-server CPU time fell by \RedCpuMaxCAabs\%, and the
+maximum number of reservation windows held by one server fell by
+\RedWindowsMaxCAabs\%. These
 results demonstrate the potential value of lobby waiting and floor-level
 decomposition for the modeled three-floor factory. They are empirical
 results for the tested layout and settings, not a general guarantee of
 optimality or of the same improvement at larger scales \cite{projectRepo}.
 
 The reduction in tardiness is substantial, but the mean total tardiness for
-the hybrid remains approximately 90,105~s across 100 jobs per seed. This
+the hybrid remains approximately \TardinessC~s across 100 jobs per seed. This
 indicates that conflict resolution and decomposition alone do not ensure
 that assigned deliveries meet their desired times. The current job assignment
 is greedy and priority-dependent, and delay accumulated by shared routes,

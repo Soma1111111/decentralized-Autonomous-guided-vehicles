@@ -1,0 +1,53 @@
+\section{Method}
+\label{sec:method}
+
+The method combines the prioritized assignment and route-window procedures of the centralized baseline \cite{guo2024} with a hierarchical floor decomposition. A central server assigns jobs, splits routes at lifts, books lift trips, and merges plans; one edge server per floor plans local route legs.
+
+Figure~\ref{fig:architecture} shows the information flow. Jobs and fleet state go to the central server; legs and reservations cross between central and floor servers; merged, verified schedules go to the AGVs for execution.
+
+\subsection{Algorithms 1--3 recap}
+Algorithm~\ref{alg:assignment} assigns jobs in order $(t_j,j)$ to the AGV minimizing $F_{ji}$. Algorithm~\ref{alg:routing} processes AGVs in priority order $V_1\to V_{|V|}$, constructing node and edge windows; a window conflicting with frozen reservations triggers Algorithm~\ref{alg:sliding}, which delays the affected route segment. Algorithm~\ref{alg:sliding} sweeps backward from the conflict visit to the nearest preceding exempt node, accumulating the smallest right-shift that clears higher-priority windows with separation $\delta$, up to $k_{\max}$ passes; on exhaustion it delays departure at the exempt node until blocking traffic clears.
+
+\begin{algorithm}[t]
+\caption{Prioritized planning baseline (compact)}
+\label{alg:baseline-compact}
+\begin{algorithmic}[1]
+\REQUIRE Jobs $J$, AGVs $V$ in priority order, fitness weight $\lambda$, service times $\eta,\eta'$
+\FOR{each job $j$ in order $(t_j,j)$}
+  \FOR{each AGV $i$} \STATE compute $ct_{ji},et_{ji},dt_{ji},F_{ji}=ct_{ji}+\lambda(et_{ji}+dt_{ji})$ \ENDFOR
+  \STATE Assign $j$ to $i^*=\arg\min_i(F_{ji},\rho_i)$; append shortest paths $s_{i^*}\to p_j\to p'_j$ with dwell $\eta,\eta'$; update AGV state to $(p'_j,ct_{ji^*})$.
+\ENDFOR
+\FOR{each AGV $i$ in priority order} \STATE append path back to $\pi$; construct node/edge windows; if a window conflicts with frozen higher-priority reservations, delay the segment by Algorithm~\ref{alg:sliding}; freeze windows. \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Hybrid central-plus-floor-server extension}
+The hybrid planner cuts each complete route at lift edges into floor-local legs. Each floor server schedules its legs using local node and track reservations; when needed, the AGV waits at its entry lobby or at $\pi$. The central server reserves the lift track at the earliest available time after the AGV is ready, respecting safety separation, then releases the next floor leg at the arrival lobby. Floor and lift windows are merged into complete plans before independent verification.
+
+Legs are dispatched either in priority order or first-come-first-served (FCFS): FCFS orders legs by release time, AGV priority, then leg index; priority order processes higher-priority AGVs' legs first and is used as a decomposition check. On the tested seeds, priority-order hybrid plans match the centralized-with-lobbies plans. Configuration C (the default hybrid) uses FCFS order.
+
+\begin{algorithm}[t]
+\caption{Hybrid floor-leg planning and lift booking}
+\label{alg:hybrid}
+\begin{algorithmic}[1]
+\REQUIRE Assigned routes, floor planners, central lift calendar, dispatch order
+\ENSURE Merged complete AGV plans
+\STATE Split each route into maximal floor-local legs at every lift.
+\STATE Insert each initial leg into the dispatch queue using the chosen order.
+\WHILE{the queue is nonempty}
+  \STATE Remove the next leg and schedule it with its floor planner.
+  \IF{the route continues on another floor}
+    \STATE Reserve the intervening lift trip centrally.
+    \STATE Release the next leg at the arrival lobby after lift travel.
+  \ENDIF
+\ENDWHILE
+\STATE Merge floor-leg and lift windows; independently verify each plan.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{../figures/architecture.pdf}
+\caption{Hybrid architecture: central job assignment, route split, lift booking, and verification; per-floor route-leg planning; AGVs execute merged schedules, waiting only at parking $\pi$ and lift lobbies.}
+\label{fig:architecture}
+\end{figure}

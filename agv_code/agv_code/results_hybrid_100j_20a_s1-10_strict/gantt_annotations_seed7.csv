@@ -1,0 +1,4 @@
+figure,panel,agv,priority,pre_move_wait_s,service_s,last_delivery_s,imbalance_s,wait_total_s,lift_trips,lobby_waits,lobby_wait_total_s
+gantt_A_C_seed7,A,AGV-20,20,6737.262,160.000,7547.490,6734.648,62169.884,,,
+gantt_A_C_seed7,C,AGV-20,20,375.000,160.000,2549.763,1503.763,26293.079,10,,
+gantt_zoom_seed7_agv-03,C,AGV-03,3,,,,,,10,12,1179.535
